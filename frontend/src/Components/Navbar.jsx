@@ -1,17 +1,20 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
+  const path = useLocation().pathname;
   return (
     <nav>
       <header className="text-gray-600 body-font">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <div className="flex title-font font-medium items-center text-red-700 mb-4 md:mb-0">
-            <span className="ml-3 text-xl font-[Merriweather] font-bold">
-              <Link to={"/"}>TastyTrails </Link>
+            <span className="ml-3 text-xl font-bold">
+              <Link to={"/"} className="font-[Merriweather]">
+                TastyTrails{" "}
+              </Link>
             </span>
           </div>
 
@@ -41,9 +44,9 @@ const Navbar = () => {
               Healthy
             </Link>
           </nav>
-          <Link to={"/login"}>
+          <Link to={path == "/" || path == "/signup" ? "/login" : "/signup"}>
             <button className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all">
-              Login
+              {path === "/" || path == "/signup" ? "Login" : "Sign Up"}
               <FontAwesomeIcon icon={faArrowRight} className="mx-2" />
             </button>
           </Link>

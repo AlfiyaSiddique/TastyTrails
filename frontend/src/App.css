@@ -1,10 +1,14 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
 #root {
   max-width: 1366px;
   margin: 0 auto;
   overflow-x: hidden;
 }
 
-#Hero{
+#Hero {
   background-image: url('../src/assets/Images/BG.png');
   background-position: center 90%;
   background-repeat: no-repeat;

@@ -9,8 +9,6 @@ import massa from "../assets/Images/Massaman.png";
 const Landing = () => {
   return (
     <div className="min-h-screen" id="Landing">
-
-
       {/* -------------------------- Hero Section ----------------------  */}
       <section id="Hero" className="py-4 my-2">
         <div className="min-h-screen flex justify-center items-center">
@@ -19,7 +17,6 @@ const Landing = () => {
           </h1>
         </div>
       </section>
-
 
       {/* -------------------------- Features Section ----------------------  */}
       <section id="Fetaure" className="py-4 my-20 mx-8">
@@ -85,15 +82,14 @@ const Landing = () => {
         </div>
       </section>
 
-
-      {/* -------------------------- Trending Section ----------------------  */}
+      {/* -------------------------- Best Dishes Section ----------------------  */}
       <section id="Trending" className="py-4 my-20 mx-8">
         <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
-          Trending Recipes
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
+          Worlds's Best Dishes
         </h1>
         <Cards />
       </section>
-
 
       {/* -------------------------- About Section ----------------------  */}
       <section
