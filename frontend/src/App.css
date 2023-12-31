@@ -1,6 +1,12 @@
 #root {
-  max-width: 1280px;
+  max-width: 1366px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  overflow-x: hidden;
+}
+
+#Hero{
+  background-image: url('../src/assets/Images/BG.png');
+  background-position: center 90%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

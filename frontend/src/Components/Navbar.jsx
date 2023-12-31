@@ -1,0 +1,56 @@
+// eslint-disable-next-line no-unused-vars
+import React from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
+const Navbar = () => {
+  return (
+    <nav>
+      <header className="text-gray-600 body-font">
+        <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+          <div className="flex title-font font-medium items-center text-red-700 mb-4 md:mb-0">
+            <span className="ml-3 text-xl font-[Merriweather] font-bold">
+              <Link to={"/"}>TastyTrails </Link>
+            </span>
+          </div>
+
+          <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+            <Link
+              to="/recipes"
+              className="mr-5 hover:text-red-700 text-black font-semibold"
+            >
+              Recipes
+            </Link>
+            <Link
+              to="/mainmeals"
+              className="mr-5 hover:text-red-700 text-black font-semibold"
+            >
+              Main Meals
+            </Link>
+            <Link
+              to="/smallbites"
+              className="mr-5 hover:text-red-700 text-black font-semibold"
+            >
+              Small Bites
+            </Link>
+            <Link
+              to="/healthy"
+              className="mr-5 hover:text-red-700 text-black font-semibold"
+            >
+              Healthy
+            </Link>
+          </nav>
+          <Link to={"/login"}>
+            <button className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all">
+              Login
+              <FontAwesomeIcon icon={faArrowRight} className="mx-2" />
+            </button>
+          </Link>
+        </div>
+      </header>
+    </nav>
+  );
+};
+
+export default Navbar;

@@ -1,13 +1,23 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
+import {BrowserRouter, Route, Routes} from "react-router-dom"
 import './App.css'
+import Navbar from './Components/Navbar'
+import Landing from './Pages/Landing'
+import Footer from './Components/Footer'
 
 function App() {
   return (
-    <>
-      <div className='text-3xl text-center m-14'>
-      TastyTrails
-        </div>
-    </>
+    <main>
+  <BrowserRouter>
+  <Navbar/>
+  <Routes>
+  <Route path='/' element={<Landing/>}/>
+  <Route path='/login' element={<Landing/>}/>
+  </Routes>
+  <Footer/>
+  </BrowserRouter>
+  </main>
   )
 }
 
