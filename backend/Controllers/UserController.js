@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-
 /**
  * @route {POST} /api/signup
  * @description Create a new user
@@ -47,7 +46,8 @@ const getAllUserName = async (req, res) => {
     const nameArr = [];
     names.forEach((val) => nameArr.push(val.username));
     res.status(200).json({ usernames: nameArr, success: true });
-  } catch {
+  } catch(error){
+    console.log(error)
     res.status(404).json({ success: false, message: "Internal server error" });
   }
 };
@@ -103,15 +103,17 @@ const Login = async (req, res) => {
  * @description Verifies an user token an implement session
  * @access public
  */
-const verifyUserByToken =  (req, res)=>{
-    jwt.verify(req.body.token, process.env.SECRET, async(err, decoded) => {
-        if (err) {
-          return res.status(400).json({success: false, message: "Token verification failed. Please Login"})
-        } else {
-          const user = await User.findById(decoded.userId)
-          return res.status(200).json({success: true, user})
-        }
-      });
+const verifyUserByToken =  async (req, res)=>{
+  try{
+        const user = await User.findById(req.user.userId)
+        return res.status(200).json({success: true, user})
+  }catch (error){
+    console.log(error);
+    return res
+      .status(404)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+ 
 }
 
 const UserController = {

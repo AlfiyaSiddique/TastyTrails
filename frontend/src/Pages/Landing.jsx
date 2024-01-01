@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
 import Cooking from "../assets/Images/Cooking.png";
@@ -11,10 +11,16 @@ import backendURL from "../../common/backendUrl";
 
 const Landing = () => {
   const navigator = useNavigate();
+  const [best, setBest] = useState([])
+
   useEffect(()=>{
     const token = JSON.parse(localStorage.getItem("tastytoken"));
    if(token){
-     axios.post(`${backendURL}/api/token`, {token})
+     axios.get(`${backendURL}/api/token`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Set the Authorization header
+      },
+     })
      .then((res)=>{
        if(res.data.success){
         navigator(`/user/${res.data.user._id}`, {state: {user: res.data.user}})
@@ -25,13 +31,22 @@ const Landing = () => {
      })
    }
   }, [])
+
+  useEffect(()=>{
+    axios.get(`${backendURL}/api/recipes`)
+    .then((res)=>{
+      setBest(res.data.recipes.slice(0,3))
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }, [best, setBest])
   
   return (
     <div className="min-h-screen" id="Landing">
       {/* -------------------------- Hero Section ----------------------  */}
       <section id="Hero" className="py-4 my-2">
-        <div className="min-h-screen flex justify-center items-center">
-          <h1 className=" font-extrabold text-red-700 text-[3rem] text-center md:w-[40%] sm:w-[60%] font-[Roboto]">
+        <div className="min-h-screen flex justify-center items-start">
+          <h1 className="animated-text font-extrabold text-red-700 text-[4rem] text-center lg:mt-[5rem] md:w-[40%] sm:w-[60%] font-[Roboto]">
             Where Flovour Meets Perfection
           </h1>
         </div>
@@ -107,7 +122,11 @@ const Landing = () => {
           {/* eslint-disable-next-line react/no-unescaped-entities */}
           Worlds's Best Dishes
         </h1>
-        <Cards />
+        <div className="grid grid-cols-1 md:grid-cols-3">
+        {best.map((food)=>{
+          return <Cards dish={food} key={food._id}/>
+        })}
+        </div>
       </section>
 
       {/* -------------------------- About Section ----------------------  */}

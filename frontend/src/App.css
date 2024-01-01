@@ -18,3 +18,18 @@
 .error{
   margin-top: 0 !important;
 }
+
+/* Animations */
+.animated-text {
+  animation: scaleText .7s ease-in-out 1 alternate; /* Animation properties */
+  transition: all smooth;
+}
+
+@keyframes scaleText {
+  from {
+    font-size: 8rem; /* Initial font size */
+  }
+  to {
+    font-size: 4rem; /* Final font size */
+  }
+}

@@ -12,7 +12,11 @@ const Navbar = () => {
   useEffect(()=>{
     const token = JSON.parse(localStorage.getItem("tastytoken"));
    if(token){
-     axios.post(`${backendURL}/api/token`, {token})
+     axios.get(`${backendURL}/api/token`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+     })
      .then((res)=>{
        if(res.data.success){
         setUser(()=>{return {...res.data.user}})

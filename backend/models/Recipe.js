@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const recipeSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', 
+    ref: "User",
     default: null,
   },
   name: {
@@ -24,15 +24,15 @@ const recipeSchema = new mongoose.Schema({
   },
   author: {
     type: String,
-    required: true,
+    default: null,
   },
   date: {
     type: Date,
     default: Date.now,
   },
   image: {
-    type: String, 
-    required: true, 
+    type: String,
+    required: true,
   },
   likes: {
     type: Number,
@@ -42,8 +42,11 @@ const recipeSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  type: {
+    type: [String],
+  required: true}
 });
 
-const Recipe = mongoose.model('Recipe', recipeSchema);
+const Recipe = mongoose.model("Recipe", recipeSchema);
 
 export default Recipe;
