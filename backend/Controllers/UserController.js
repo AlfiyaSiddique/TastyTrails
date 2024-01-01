@@ -93,15 +93,32 @@ const Login = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res
-      .status(200)
+      .status(404)
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
+/**
+ * @route {POST} /api/token
+ * @description Verifies an user token an implement session
+ * @access public
+ */
+const verifyUserByToken =  (req, res)=>{
+    jwt.verify(req.body.token, process.env.SECRET, async(err, decoded) => {
+        if (err) {
+          return res.status(400).json({success: false, message: "Token verification failed. Please Login"})
+        } else {
+          const user = await User.findById(decoded.userId)
+          return res.status(200).json({success: true, user})
+        }
+      });
+}
 
 const UserController = {
   Signup,
   Login,
   getAllUserName,
+  verifyUserByToken
 };
 
 export default UserController;

@@ -1,12 +1,31 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import React, { useEffect } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
 import Cooking from "../assets/Images/Cooking.png";
 import Cards from "../Components/Cards";
 import massa from "../assets/Images/Massaman.png";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import backendURL from "../../common/backendUrl";
 
 const Landing = () => {
+  const navigator = useNavigate();
+  useEffect(()=>{
+    const token = JSON.parse(localStorage.getItem("tastytoken"));
+   if(token){
+     axios.post(`${backendURL}/api/token`, {token})
+     .then((res)=>{
+       if(res.data.success){
+        navigator(`/user/${res.data.user._id}`, {state: {user: res.data.user}})
+       }
+     })
+     .catch((err)=>{
+      console.log(err)
+     })
+   }
+  }, [])
+  
   return (
     <div className="min-h-screen" id="Landing">
       {/* -------------------------- Hero Section ----------------------  */}
