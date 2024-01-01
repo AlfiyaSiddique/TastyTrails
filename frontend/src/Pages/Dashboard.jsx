@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-const Dashboard = () => {
+const Dashboard = ({user}) => {
   return (
     <div id="userDashboard" className="border-gray-200 border-t-[1px]">
       <div className="grid md:grid-cols-[67%_33%] grid-cols-1">

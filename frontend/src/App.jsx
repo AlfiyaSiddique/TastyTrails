@@ -9,10 +9,24 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Recipes from "./Pages/Recipes";
 import Dashboard from "./Pages/Dashboard";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <main>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -20,7 +34,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/recipes" element={<Recipes />} />
-          <Route path="/user" element={<Dashboard />} />
+          <Route path="/user/:id" element={<Dashboard />} />
         </Routes>
         <Footer />
       </BrowserRouter>

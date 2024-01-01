@@ -1,8 +1,47 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import backendURL from "../../common/backendUrl";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
+  const navigator = useNavigate();
+  const [show, setShow] = useState(false); //Eye EyeSlaSH Toggle
+  const [form, setForm] = useState({
+    searchTerm: "",
+    password: "",
+  });
+
+  const handleChange = async (e) => {
+    // Handling Login Form
+    const { name, value } = e.target;
+    setForm((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const handleSubmit = (e) => {
+    // Handle Login Submit
+    e.preventDefault();
+    axios
+      .post(`${backendURL}/api/login`, form)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("Login Successful");
+          localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+          navigator(`/user/${res.data.user._id}`, {
+            state: { user: res.data.user },
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
   return (
     <div>
       <section className="bg-gray-50 dark:bg-gray-900">
@@ -12,21 +51,23 @@ const Login = () => {
               <h1 className="font-[Merriweather] text-xl font-bold leading-tight tracking-tight text-red-700 md:text-2xl dark:text-white">
                 Login to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your email
+                    Enter email or Username
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
+                    type="text"
+                    name="searchTerm"
+                    id="searchTerm"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
-                    required=""
+                    required={true}
+                    value={form.searchTerm}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
@@ -36,14 +77,23 @@ const Login = () => {
                   >
                     Password
                   </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
-                  />
+                  <div className="relative">
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="••••••••"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required={true}
+                      value={form.password}
+                      onChange={handleChange}
+                    />
+                    <FontAwesomeIcon
+                      icon={show ? faEye : faEyeSlash}
+                      onClick={() => setShow(!show)}
+                      className="absolute top-0 right-0 m-3 cursor-pointer"
+                    />
+                  </div>
                 </div>
                 <button
                   type="submit"
