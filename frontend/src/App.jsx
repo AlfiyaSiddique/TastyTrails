@@ -33,8 +33,12 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/recipes" element={<Recipes />} />
+          <Route path="/recipes" element={<Recipes key={"recipes"} type=""/>} />
+          <Route path="/mainmeals" element={<Recipes key={"Main-meal"} type="Main-meal"/>} />
+          <Route path="/smallbites" element={<Recipes key={"Small-bite"} type="Small-bite"/>} />
+          <Route path="/healthy" element={<Recipes key={"Healthy"} type="Healthy"/>} />
           <Route path="/user/:id" element={<Dashboard />} />
+          <Route path="/recipe/:id" element={<Dashboard />} />
         </Routes>
         <Footer />
       </BrowserRouter>

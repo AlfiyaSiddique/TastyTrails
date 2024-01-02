@@ -8,12 +8,14 @@ import { faArrowRight, faHeart, faShare } from "@fortawesome/free-solid-svg-icon
 // Cards Component for Creating Recipe Cards
 const Cards = ({dish}) => {
   return (
+    <Link to={`/recipe/${dish._id}`}>
     <div className="p-4">
-      <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+      <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
         <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
           src={dish.image}
           alt={dish.name}
+          loading="lazy"
         />
         <div className="p-6">
           <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
@@ -27,9 +29,7 @@ const Cards = ({dish}) => {
             {dish.description.length>174? "...": null}
           </p>
           <div className="flex items-center flex-wrap ">
-            <Link  to={`recipe/${dish._id}`} className="text-red-500 inline-flex items-center md:mb-2 lg:mb-0">
-              <span>Recipe <FontAwesomeIcon icon={faArrowRight} /></span>
-            </Link>
+              <span className="text-red-500 inline-flex items-center md:mb-2 lg:mb-0">Recipe <FontAwesomeIcon icon={faArrowRight} /></span>
             <span className="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200 cursor-pointer">
               <FontAwesomeIcon icon={faHeart} className="mx-2 "/>
               {dish.likes}
@@ -42,6 +42,7 @@ const Cards = ({dish}) => {
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 

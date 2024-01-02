@@ -64,6 +64,7 @@ const Landing = () => {
                 alt="content"
                 className="object-center w-[30%] h-[30%] m-auto"
                 src={Foods}
+                loading="lazy"
               />
             </div>
             <h2 className="text-xl title-font text-gray-900 mt-5 font-semibold">
@@ -82,6 +83,7 @@ const Landing = () => {
                 alt="content"
                 className="object-center w-[30%] h-[30%] m-auto"
                 src={Search}
+                loading="lazy"
               />
             </div>
             <h2 className="text-xl title-font text-gray-900 mt-5 font-semibold">
@@ -101,6 +103,7 @@ const Landing = () => {
                 alt="content"
                 className="object-center w-[30%] h-[30%] m-auto"
                 src={Cooking}
+                loading="lazy"
               />
             </div>
             <h2 className="text-xl title-font text-gray-900 mt-5 font-semibold">
@@ -134,8 +137,8 @@ const Landing = () => {
         className="text-gray-600 body-font overflow-hidden py-4 my-20 mx-8"
         id="About"
       >
-        <div className="container">
-          <div className=" w-[70vw] mx-auto grid md:grid-cols-2 sm:grid-cols-1">
+        <div className="container m-auto">
+          <div className=" w-[80vw] mx-auto grid md:grid-cols-2 sm:grid-cols-1">
             <div className="w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0 flex flex-col justify-center items-center">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
                 TastyTrails
@@ -144,18 +147,15 @@ const Landing = () => {
                 About Us
               </h1>
 
-              <p className="leading-relaxed mb-4 w-[80%]">
-                Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo
-                juiceramps cornhole raw denim forage brooklyn. Everyday carry +1
-                seitan poutine tumeric. Gastropub blue bottle austin listicle
-                pour-over, neutra jean.
+              <p className="leading-relaxed mb-4">
+              Welcome to TastyTrails, your passport to a world of delectable flavors and culinary adventures! At TastyTrails, we are passionate about bringing together food enthusiasts, aspiring chefs, and seasoned cooks on a flavorful journey. Our platform curates a diverse collection of recipes, from time-honored classics to innovative creations, catering to every taste bud. Whether you are a novice in the kitchen or a seasoned pro, TastyTrails is your companion in exploring, sharing, and celebrating the art of cooking. Join us in discovering, creating, and savoring delightful dishes that inspire and unite food lovers worldwide
               </p>
             </div>
             <img
               alt="ecommerce"
-              className="object-cover object-center rounded sm:w-[80%] mx-auto"
+              className="object-cover object-center rounded sm:w-[90%] mx-auto"
               src={massa}
+              loading="lazy"
             />
           </div>
         </div>
