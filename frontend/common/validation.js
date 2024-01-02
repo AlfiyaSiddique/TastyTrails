@@ -78,6 +78,43 @@ const validate = {
       return { cpassword: false, cpasswordError: false };
     }
   },
+  name: (value)=>{
+    if (value.trim().length < 6) {
+      return {
+        name: true,
+        nameError: "Recipe name must be 4 characters long.",
+      };
+    } else {
+      return { name: false, nameError: false };
+    }
+  },
+
+  description: (value)=>{
+    if (value.trim().split(" ").length < 20 ||
+    value.trim().split(" ").length > 100
+    ) {
+      return {
+        description: true,
+        descriptionError: "Min. 20 words max. 100 words.",
+      };
+    } else {
+      return { description: false, descriptionError: false };
+    }
+  },
+
+  arr: (minLen, len, name, message)=>{
+    if(len < minLen ){
+      return {
+        [name]: true,
+        [name+"Error"]: message,
+      };
+    }else{
+        return {
+          [name]: false,
+          [name+"Error"]: false,
+        }
+    }
+  },
 };
 
 export default validate;

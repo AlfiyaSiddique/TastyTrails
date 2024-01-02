@@ -33,6 +33,7 @@ const Dashboard = () => {
                 className="lg:w-2/5 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded-[100%]"
                 alt="profile"
                 src={user.profile}
+                loading="lazy"
               />
               <div className="text-center lg:w-2/3 w-full">
                 <h1>{user.firstName} {user.lastName}</h1>
