@@ -11,6 +11,8 @@ import Recipes from "./Pages/Recipes";
 import Dashboard from "./Pages/Dashboard";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import AddRecipe from "./Pages/AddRecipe";
+import OneRecipe from "./Pages/OneRecipe";
 
 function App() {
   return (
@@ -38,7 +40,8 @@ function App() {
           <Route path="/smallbites" element={<Recipes key={"Small-bite"} type="Small-bite"/>} />
           <Route path="/healthy" element={<Recipes key={"Healthy"} type="Healthy"/>} />
           <Route path="/user/:id" element={<Dashboard />} />
-          <Route path="/recipe/:id" element={<Dashboard />} />
+          <Route path="/user/:id/new/recipe" element={<AddRecipe />} />
+          <Route path="/recipe/:id" element={<OneRecipe/>} />
         </Routes>
         <Footer />
       </BrowserRouter>

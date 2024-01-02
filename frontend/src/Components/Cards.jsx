@@ -1,15 +1,19 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import PropTypes from  "prop-types"
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faHeart, faShare } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 // Cards Component for Creating Recipe Cards
 const Cards = ({dish}) => {
+
+  const navigator = useNavigate()
+  const handleClick = ()=>{
+   navigator(`/recipe/${dish._id}`, {state: {dish}})
+  }
   return (
-    <Link to={`/recipe/${dish._id}`}>
-    <div className="p-4">
+    <div className="p-4 cursor-pointer" onClick={handleClick}>
       <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
         <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
@@ -42,7 +46,6 @@ const Cards = ({dish}) => {
         </div>
       </div>
     </div>
-    </Link>
   );
 };
 
