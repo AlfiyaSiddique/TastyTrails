@@ -1,16 +1,3 @@
-import axios from "axios";
-import backendURL from "./backendUrl";
-
-// Get all the current username present
-const getUsernames = async () => {
-  return await axios
-    .get(`${backendURL}/api/usernames`)
-    .then((data) => data.data.usernames)
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 
 // Regex
 const PasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
@@ -47,11 +34,6 @@ const validate = {
         usernameError: "Username must 3 characters long.",
       };
     } else {
-      const usernames = await getUsernames();
-      console.log(usernames)
-      if (usernames.includes(value)) {
-        return { username: true, usernameError: "Username already exist." };
-      }
       return { username: false, usernameError: false };
     }
   },

@@ -12,8 +12,9 @@ const Navbar = () => {
   const [user, setUser] = useState(null)
   
   useEffect(()=>{
-    const token = JSON.parse(localStorage.getItem("tastytoken"));
+    let token = localStorage.getItem("tastytoken");
    if(token){
+    token = JSON.parse(token) 
      axios.get(`${backendURL}/api/token`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -79,11 +80,11 @@ const Navbar = () => {
             </Link>
           ) : (
             <div className="flex justify-center items-center">
-              <Link to={`/user/${user._id}/profile`} className="mx-2">
+              <div onClick={(()=>navigator(`/user/${user._id}`, {state: {user}}))} className="mx-2 cursor-pointer">
                 <FontAwesomeIcon icon={faUserCircle} className="mx-2 text-red-700 text-lg" />
                 <span className="text-black font-semibold">Profile</span>
-              </Link>
-              <div onClick={(()=>navigator(`/user/${user._id}/new/recipe`, {state: {user}}))}className="mx-2">
+              </div>
+              <div onClick={(()=>navigator(`/user/${user._id}/new/recipe`, {state: {user}}))} className="mx-2 cursor-pointer">
                 <FontAwesomeIcon icon={faPenSquare} className="mx-2 text-red-700 text-lg" />
                 <span className="text-black font-semibold">Add Recipe</span>
               </div>

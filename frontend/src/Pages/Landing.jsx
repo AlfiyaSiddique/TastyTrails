@@ -15,8 +15,9 @@ const Landing = () => {
 
   // UseEffect to check if user is already Logged In
   useEffect(()=>{
-    const token = JSON.parse(localStorage.getItem("tastytoken"));
+    let token = localStorage.getItem("tastytoken");
    if(token){
+    token = JSON.parse(token)
      axios.get(`${backendURL}/api/token`, {
       headers: {
         Authorization: `Bearer ${token}`, // Set the Authorization header

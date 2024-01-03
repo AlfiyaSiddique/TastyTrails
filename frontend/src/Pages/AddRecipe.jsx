@@ -333,11 +333,11 @@ const AddRecipe = () => {
             <ul className="list-disc list-inside">
               {form.ingredients.map((item, index) => {
                 return (
-                  <li
+                  <div
                     className="py-1 flex justify-between items-center"
                     key={index}
                   >
-                    <span>{item}</span>
+                    <li className="list-item">{item}</li>
                     <span className="inline-flex items-center mt-4">
                       <FontAwesomeIcon
                         icon={faPen}
@@ -358,7 +358,7 @@ const AddRecipe = () => {
                         }
                       />
                     </span>
-                  </li>
+                  </div>
                 );
               })}
             </ul>
@@ -412,11 +412,11 @@ const AddRecipe = () => {
             <ol className="list-inside list-decimal">
               {form.steps.map((item, index) => {
                 return (
-                  <li
+                  <div
                     className="py-1 flex justify-between items-center"
                     key={index}
                   >
-                    <span>{item}</span>
+                    <li className="list-item">{item}</li>
                     <span className="inline-flex items-center mt-4">
                       <FontAwesomeIcon
                         icon={faPen}
@@ -437,7 +437,7 @@ const AddRecipe = () => {
                         }
                       />
                     </span>
-                  </li>
+                  </div>
                 );
               })}
             </ol>

@@ -11,7 +11,8 @@ import backendURL from "../../common/backendUrl";
 const Signup = () => {
   const navigator = useNavigate();
   const [show, setShow] = useState(false); //Eye EyeSlaSH Toggle
-  const [form, setForm] = useState({       // Signup Form Data
+  const [form, setForm] = useState({
+    // Signup Form Data
     firstName: "",
     lastName: "",
     username: "",
@@ -20,7 +21,8 @@ const Signup = () => {
     cpassword: "",
   });
 
-  const [error, setError] = useState({    // Inline validation Statements
+  const [error, setError] = useState({
+    // Inline validation Statements
     firstName: false,
     firstNameError: false,
     lastName: false,
@@ -35,7 +37,8 @@ const Signup = () => {
     cpasswordError: false,
   });
 
-  const handleChange = async (e) => {      // Handling Signup Form
+  const handleChange = async (e) => {
+    // Handling Signup Form
     const { name, value } = e.target;
     let message = {};
     if (name === "cpassword") {
@@ -54,8 +57,19 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {       // Handle Signup Submit
-    e.preventDefault(); 
+  // Get all the current username present
+  const getUsernames = async () => {
+    return await axios
+      .get(`${backendURL}/api/usernames`)
+      .then((data) => data.data.usernames)
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleSubmit = async (e) => {
+    // Handle Signup Submit
+    e.preventDefault();
     let submitable = true;
 
     Object.values(error).forEach((val) => {
@@ -66,20 +80,28 @@ const Signup = () => {
     });
 
     if (submitable) {
-      axios
-        .post(`${backendURL}/api/signup`, form)
-        .then((res) => {
-          if (res.data.success) {
-            toast.success("User Created Successfully");
-            localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
-            navigator(`/user/${res.data.user._id}`, {
-              state: { user: res.data.user },
-            });
-          }
-        })
-        .catch((err) => {
-          toast.error(err.response.data.message);
-        });
+      const usernames = await getUsernames();
+      if (usernames.includes(form.username)) {
+        toast.error("Username already exist please try another.");
+      } else {
+        axios
+          .post(`${backendURL}/api/signup`, form)
+          .then((res) => {
+            if (res.data.success) {
+              toast.success("User Created Successfully");
+              localStorage.setItem(
+                "tastytoken",
+                JSON.stringify(res.data.token)
+              );
+              navigator(`/user/${res.data.user._id}`, {
+                state: { user: res.data.user },
+              });
+            }
+          })
+          .catch((err) => {
+            toast.error(err.response.data.message);
+          });
+      }
     } else {
       toast.error("Fill all fields with valid values");
     }

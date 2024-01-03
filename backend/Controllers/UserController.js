@@ -25,7 +25,7 @@ const Signup = async (req, res) => {
         .json({ success: false, message: "Username Already Exist" });
 
     const createdUser = await newUser.save();
-    const token = jwt.sign({ userid: createdUser._id }, process.env.SECRET, {
+    const token = jwt.sign({ userId: createdUser._id }, process.env.SECRET, {
       expiresIn: "30d",
     });
     res.status(200).json({ success: true, user: createdUser, token: token });
@@ -106,6 +106,7 @@ const Login = async (req, res) => {
 const verifyUserByToken =  async (req, res)=>{
   try{
         const user = await User.findById(req.user.userId)
+        console.log(req.user)
         return res.status(200).json({success: true, user})
   }catch (error){
     console.log(error);

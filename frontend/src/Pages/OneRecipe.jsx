@@ -38,9 +38,8 @@ const OneRecipe = () => {
               >
               <span className="text-red-700 mx-2">Date:</span>{`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`}
               </div>
-              {recipe.author && <span><span className="text-red-700 ">Author:</span>{recipe.author}</span>}
-             
             </div>
+            {recipe.author && <span className=" mx-4 text-md font-bold"><span className="text-red-700">Author:</span>{recipe.author}</span>}
           </div>
         </div>
 
