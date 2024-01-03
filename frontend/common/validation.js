@@ -1,6 +1,7 @@
 import axios from "axios";
 import backendURL from "./backendUrl";
 
+// Get all the current username present
 const getUsernames = async () => {
   return await axios
     .get(`${backendURL}/api/usernames`)
@@ -10,9 +11,13 @@ const getUsernames = async () => {
     });
 };
 
+
+// Regex
 const PasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+
+// Validation for each form field
 const validate = {
   firstName: (value) => {
     if (value.trim().length < 3) {

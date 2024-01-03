@@ -9,22 +9,23 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const navigator = useNavigate();
-  const [show, setShow] = useState(false); //Eye EyeSlaSH Toggle
+
+  const [show, setShow] = useState(false); //Eye EyeSlash Toggle
   const [form, setForm] = useState({
     searchTerm: "",
     password: "",
   });
 
+  // Handling Login Form
   const handleChange = async (e) => {
-    // Handling Login Form
     const { name, value } = e.target;
     setForm((prev) => {
       return { ...prev, [name]: value };
     });
   };
 
+  // Handle Login Submit
   const handleSubmit = (e) => {
-    // Handle Login Submit
     e.preventDefault();
     axios
       .post(`${backendURL}/api/login`, form)

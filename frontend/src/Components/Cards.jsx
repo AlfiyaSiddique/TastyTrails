@@ -4,13 +4,21 @@ import PropTypes from  "prop-types"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faHeart, faShare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // Cards Component for Creating Recipe Cards
 const Cards = ({dish}) => {
-
   const navigator = useNavigate()
-  const handleClick = ()=>{
-   navigator(`/recipe/${dish._id}`, {state: {dish}})
+
+  // Checks if user is authenticated or not
+  const handleClick = async()=>{
+    const token = await JSON.parse(localStorage.getItem("tastytoken"))
+    if(token !== null){
+      navigator(`/recipe/${dish._id}`, {state: {dish}})
+    }else{
+      toast.info("Please Login First")
+      navigator("/login")
+    }
   }
   return (
     <div className="p-4 cursor-pointer" onClick={handleClick}>

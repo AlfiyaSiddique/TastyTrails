@@ -11,13 +11,17 @@ const port = process.env.PORT
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb' }));
-app.use(cors())
+
+const origin = "https://delightful-daifuku-a9f6ea.netlify.app"
+// const origin = "http://localhost:5173"
+app.use(cors({origin:origin }))
 app.use("/api", router)
 
 app.get("/", (req, res)=>{
   res.send("TastyTrails Backend")
 })
-// Database Connection
+
+// Database Connection and server
   try {
     await mongoose.connect(process.env.DATABASE, {
       useNewUrlParser: true,

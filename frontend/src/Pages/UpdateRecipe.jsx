@@ -8,14 +8,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-const AddRecipe = () => {
-  //  Route hooks
+const UpdateRecipe = () => {
+    // Route Hooks
+  const recipe = useLocation().state.recipe;
   const user = useLocation().state.user;
   const navigator = useNavigate();
 
-  // States
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState("");
+//   States
+  const [selectedImage, setSelectedImage] = useState(recipe.image);
+  const [imagePreview, setImagePreview] = useState(recipe.image);
   const [ingredient, setIngredient] = useState("");
   const [steps, setSteps] = useState("");
   const [arrUpdate, setArrUpdate] = useState(false);
@@ -33,21 +34,22 @@ const AddRecipe = () => {
   });
 
   const [form, setForm] = useState({
-    name: "",
-    description: "",
-    type: [],
-    ingredients: [],
-    steps: [],
-    image: "",
+    name: recipe.name,
+    description: recipe.description,
+    type: recipe.type,
+    ingredients: recipe.ingredients,
+    steps: recipe.steps,
+    image: recipe.image,
     imagename: "",
     user: user._id,
     author: `${user.firstName} ${user.lastName}`,
+    id: recipe._id
   });
 
-  // Token
+    // Token
   const token = JSON.parse(localStorage.getItem("tastytoken"));
 
-  // Function to handle Image Change
+    // Function to handle Image Change
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     form.imagename = file.name;
@@ -99,6 +101,7 @@ const AddRecipe = () => {
     handleError(e);
   };
 
+
   // Function to handle inline validation error
   const handleError = (e) => {
     const { name, value } = e.target;
@@ -119,7 +122,7 @@ const AddRecipe = () => {
     });
   };
 
-  // Function to handle Submission of form
+    // Function to handle Submission of form
   const handleSubmit = () => {
     let submitable = true;
     Object.values(error).forEach((val) => {
@@ -135,7 +138,7 @@ const AddRecipe = () => {
 
     if (submitable) {
       axios
-        .post(`${backendURL}/api/recipe/add`, form, {
+        .post(`${backendURL}/api/recipe/update`, form, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -160,7 +163,7 @@ const AddRecipe = () => {
   return (
     <div className="w-[80vw] m-auto my-12">
       <h1 className="text-3xl font-extrabold text-red-700 my-8 text-center">
-        New Recipe
+        Update Recipe
       </h1>
       <form>
         <div className="grid grid-cols-[50%_50%] space-x-4">
@@ -274,6 +277,7 @@ const AddRecipe = () => {
                     name="type"
                     className="w-4 h-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onChange={handleCheckbox}
+                    checked={form.type.includes("Main-meal")}
                   />
                   <label
                     htmlFor="type1"
@@ -290,6 +294,7 @@ const AddRecipe = () => {
                     name="type"
                     className="w-4 h-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onChange={handleCheckbox}
+                    checked={form.type.includes("Small-bite")}
                   />
                   <label
                     htmlFor="type2"
@@ -306,6 +311,8 @@ const AddRecipe = () => {
                     name="type"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onChange={handleCheckbox}
+                    checked={form.type.includes("Healthy")}
+
                   />
                   <label
                     htmlFor="type3"
@@ -485,11 +492,11 @@ const AddRecipe = () => {
           type="submit"
           className="bg-red-700 border-0 py-1 px-32 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all"
         >
-          Publish
+          Update
         </button>
       </div>
     </div>
   );
 };
 
-export default AddRecipe;
+export default UpdateRecipe;

@@ -13,6 +13,7 @@ const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
 
+  // UseEffect to check if user is already Logged In
   useEffect(()=>{
     const token = JSON.parse(localStorage.getItem("tastytoken"));
    if(token){
@@ -32,6 +33,7 @@ const Landing = () => {
    }
   }, [])
 
+  // UseEffect for getting recipe data to display on Best Dishes Section
   useEffect(()=>{
     axios.get(`${backendURL}/api/recipes`)
     .then((res)=>{

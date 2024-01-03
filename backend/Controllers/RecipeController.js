@@ -1,6 +1,7 @@
 import Recipe from "../models/Recipe.js"
 import axios from "axios"
 import User from "../models/User.js"
+import mongoose from "mongoose"
 
 
 /**
@@ -11,7 +12,7 @@ import User from "../models/User.js"
 
 const addRecipe = async (req, res)=>{
   try{ 
-    const {name, description, ingredients, steps, image, imagename, user, author} = req.body
+    const {name, description, ingredients, steps,type, image, imagename, user, author} = req.body
         const lastDocument = await Recipe.findOne().sort({ _id: -1 }); 
         const unique = lastDocument._id.toString()
         const URL = await imageToGithub(image, imagename, unique.slice(-4))
@@ -22,7 +23,8 @@ const addRecipe = async (req, res)=>{
           ingredients,
           steps,
           image: URL,
-          author
+          author,
+          type
         }
         const newRecipe =  new Recipe(data)
         const saved = await newRecipe.save()
@@ -93,9 +95,68 @@ const imageToGithub = async (fileImage, name, unique)=>{
   }
 }
 
+/**
+ * @POST /api/recipes/readall
+ * @description Returns recipe created by an User
+ * @access private
+ */
+const getOneUserRecipes = async (req, res)=>{
+  try{
+    const recipes = await Recipe.find({user: req.body.id});
+    return res.status(200).json({success: true, recipes})
+  }catch(error){
+   console.log(error);
+   res.status(404).json({ success: false, message: "Internal server error" });
+  }
+}
+
+
+/**
+ * @POST /api/recipes/update
+ * @description Updates a Recipe
+ * @access private
+ */
+const updateRecipe = async (req, res)=>{
+  try{ 
+    const {name, description, ingredients, steps,type, user, author, id} = req.body
+        const data = {
+          user,
+          name,
+          description,
+          ingredients,
+          steps,
+          author,
+          type
+        }
+        const update = await Recipe.updateOne({_id: id}, {$set: data}, {new:true})
+        return res.status(200).json({success: true, message: "Recipe Updates Successfully"})
+  }catch(error){
+    console.log(error);
+    res.status(404).json({ success: false, message: "Internal server error" });
+  }
+}
+
+/**
+ * @POST /api/recipes/delete
+ * @description Deletes a Recipe
+ * @access private
+ */
+const deleteRecipe = async (req, res)=>{
+  try{
+    await Recipe.deleteOne({_id: req.body.id});
+    return res.status(200).json({success: true})
+  }catch(error){
+   console.log(error);
+   res.status(404).json({ success: false, message: "Internal server error" });
+  }
+}
+
 const RecipeController = {
     addRecipe,
     allRecipe,
+    getOneUserRecipes,
+    updateRecipe,
+    deleteRecipe
 }
 
 export default RecipeController

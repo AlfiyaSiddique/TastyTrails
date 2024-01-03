@@ -12,6 +12,7 @@ const Recipes = ({type}) => {
   const [recipe, setRecipe] = useState([])
   const [filter, setFilter] = useState([])
 
+  // Gets all recipes
   useEffect(()=>{
     axios.get(`${backendURL}/api/recipes`)
     .then((res)=>{
@@ -28,6 +29,7 @@ const Recipes = ({type}) => {
     })
   }, [])
 
+  // Filter Recipe based on search term
   const handleSearch = (e)=>{
 
     if(e.target.value === "") setFilter(recipe)

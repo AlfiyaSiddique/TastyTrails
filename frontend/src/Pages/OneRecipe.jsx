@@ -2,10 +2,11 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
+// Displays single Recipe
 const OneRecipe = () => {
     const recipe = useLocation().state.dish;
     const date = new Date(recipe.date)
-    console.log(recipe)
+
   return (
     <div className="w-[80vw] m-auto  my-12">
       <h1 className="text-3xl font-extrabold text-red-700 my-8 text-center">{recipe.name}</h1>

@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import AddRecipe from "./Pages/AddRecipe";
 import OneRecipe from "./Pages/OneRecipe";
+import UpdateRecipe from "./Pages/UpdateRecipe";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/healthy" element={<Recipes key={"Healthy"} type="Healthy"/>} />
           <Route path="/user/:id" element={<Dashboard />} />
           <Route path="/user/:id/new/recipe" element={<AddRecipe />} />
+          <Route path="/user/:id/update/recipe" element={<UpdateRecipe />} />
           <Route path="/recipe/:id" element={<OneRecipe/>} />
         </Routes>
         <Footer />

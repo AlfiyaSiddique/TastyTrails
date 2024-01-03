@@ -10,6 +10,7 @@ const Navbar = () => {
   const path = useLocation().pathname;
   const navigator = useNavigate();
   const [user, setUser] = useState(null)
+  
   useEffect(()=>{
     const token = JSON.parse(localStorage.getItem("tastytoken"));
    if(token){
