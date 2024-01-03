@@ -1,4 +1,6 @@
 import Recipe from "../models/Recipe.js"
+import axios from "axios"
+import User from "../models/User.js"
 
 
 /**
@@ -9,7 +11,20 @@ import Recipe from "../models/Recipe.js"
 
 const addRecipe = async (req, res)=>{
   try{ 
-        const newRecipe =  new Recipe(req.body)
+    const {name, description, ingredients, steps, image, imagename, user, author} = req.body
+        const lastDocument = await Recipe.findOne().sort({ _id: -1 }); 
+        const unique = lastDocument._id.toString()
+        const URL = await imageToGithub(image, imagename, unique.slice(-4))
+        const data = {
+          user,
+          name,
+          description,
+          ingredients,
+          steps,
+          image: URL,
+          author
+        }
+        const newRecipe =  new Recipe(data)
         const saved = await newRecipe.save()
         return res.status(200).json({success: true, message: "Recipe Published Successfully"})
   }catch(error){
@@ -18,6 +33,11 @@ const addRecipe = async (req, res)=>{
   }
 }
 
+/**
+ * @route {POST} /api/recipes
+ * @description Returns all recipes in result
+ * @access public
+ */
 const allRecipe = async (req,res)=>{
    try{
      const recipes = await Recipe.find({});
@@ -28,9 +48,54 @@ const allRecipe = async (req,res)=>{
   }
 }
 
+/**
+ * @function
+ * @description Uploads Image to a github repo and returns the downloadable link
+ * @access private
+ */
+const imageToGithub = async (fileImage, name, unique)=>{
+  const owner = 'AlfiyaSiddique'; 
+  const repo = 'ImageDatabase'; 
+  const branch = 'main'; 
+
+  const base64Content = fileImage.split(';base64,').pop();
+  const fileContent = Buffer.from(base64Content, 'base64').toString('base64');
+  const path = `TastyTrails/Recipe/${unique}${name}`; 
+  const message = `Add ${unique} ${name} via API`; // Commit message
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+
+  try {
+    const response = await axios.put(
+      url,
+      {
+        message,
+        content: fileContent,
+        branch,
+      },
+      {
+        headers: {
+          Authorization: `TOKEN ${process.env.TOKEN}`,
+          'X-GitHub-Api-Version': '2022-11-28'
+        },
+      }
+    );
+
+    if (response.status === 201) {
+      return response.data.content.download_url; // Returns the URL of the uploaded image
+    } else {
+      console.error('Failed to upload image:', response.status, response.statusText);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error uploading image:', error.message);
+    console.error('Error uploading image:', error.response ? error.response.data : error.message);
+    return null;
+  }
+}
+
 const RecipeController = {
     addRecipe,
-    allRecipe
+    allRecipe,
 }
 
 export default RecipeController

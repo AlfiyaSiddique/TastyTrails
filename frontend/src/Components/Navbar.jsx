@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useEffect, useState} from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPenSquare, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import backendURL from "../../common/backendUrl";
@@ -8,6 +8,7 @@ import axios from "axios";
 
 const Navbar = () => {
   const path = useLocation().pathname;
+  const navigator = useNavigate();
   const [user, setUser] = useState(null)
   useEffect(()=>{
     const token = JSON.parse(localStorage.getItem("tastytoken"));
@@ -81,10 +82,10 @@ const Navbar = () => {
                 <FontAwesomeIcon icon={faUserCircle} className="mx-2 text-red-700 text-lg" />
                 <span className="text-black font-semibold">Profile</span>
               </Link>
-              <Link to={`/user/${user._id}/new/recipe`} className="mx-2">
+              <div onClick={(()=>navigator(`/user/${user._id}/new/recipe`, {state: {user}}))}className="mx-2">
                 <FontAwesomeIcon icon={faPenSquare} className="mx-2 text-red-700 text-lg" />
                 <span className="text-black font-semibold">Add Recipe</span>
-              </Link>
+              </div>
             </div>
           )}
         </div>

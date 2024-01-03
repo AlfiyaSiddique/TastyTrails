@@ -1,9 +1,14 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, { useState} from "react";
 import validate from "../../common/validation";
 import { toast } from "react-toastify";
+import axios from "axios";
+import backendURL from "../../common/backendUrl";
+import {useNavigate, useLocation} from "react-router-dom"
 
 const AddRecipe = () => {
+  const user = useLocation().state.user
+  const navigator = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [ingredient, setIngredient] = useState("");
@@ -27,20 +32,27 @@ const AddRecipe = () => {
     type: [],
     ingredients: [],
     steps: [],
-    image: [],
+    image: "",
+    imagename:"",
+    user: user._id,
+    author: `${user.firstName} ${user.lastName}`
   });
 
-  const handleImageChange = (e) => {
+  const token = JSON.parse(localStorage.getItem("tastytoken"))
+
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
+    form.imagename = file.name
 
     if (file) {
       setSelectedImage(file);
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
+      const readDataURL = new FileReader();
+      readDataURL.onloadend = () => {
+        setImagePreview(readDataURL.result);
+        form.image = readDataURL.result
       };
-      reader.readAsDataURL(file);
+      readDataURL.readAsDataURL(file);
     }
   };
 
@@ -110,7 +122,23 @@ const AddRecipe = () => {
     }
 
     if (submitable) {
-      alert("yes");
+       axios.post(`${backendURL}/api/recipe/add`, form,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+       })
+       .then((res)=>{
+        if(res.data.success){
+          toast.success(res.data.message)
+          navigator(`/user/${user.id}`, {state: {user}})
+        }else{
+          toast.error("Some Error occured please try again later.")
+        }
+       })
+       .catch((err)=>{
+        toast.success("Some Error occured please try again later.")
+        console.log(err)
+       })
     } else {
       toast.error("Fill all fields with valid values");
     }

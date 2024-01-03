@@ -79,7 +79,7 @@ const validate = {
     }
   },
   name: (value)=>{
-    if (value.trim().length < 6) {
+    if (value.trim().length < 4) {
       return {
         name: true,
         nameError: "Recipe name must be 4 characters long.",
