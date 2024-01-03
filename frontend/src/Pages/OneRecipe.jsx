@@ -48,7 +48,7 @@ const OneRecipe = () => {
             <div
               className="text-red-700 font-semibold text-lg"
             >
-              List Ingredients
+              List of Ingredients
             </div>
              <ul className="list-disc list-inside">
 

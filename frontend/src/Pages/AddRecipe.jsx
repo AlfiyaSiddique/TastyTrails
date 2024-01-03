@@ -328,7 +328,7 @@ const AddRecipe = () => {
               htmlFor="ingredients"
               className="text-red-700 font-semibold text-lg"
             >
-              List Ingredients
+              List of Ingredients
             </label>
             <ul className="list-disc list-inside">
               {form.ingredients.map((item, index) => {
