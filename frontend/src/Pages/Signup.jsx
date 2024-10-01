@@ -236,6 +236,8 @@ const Signup = () => {
                       required={true}
                       value={form.password}
                       onChange={handleChange}
+                      onFocus={() => setPasswordFocused(true)} 
+                      onBlur={() => setPasswordFocused(false)}    
                     />
                     <FontAwesomeIcon
                       icon={show ? faEye : faEyeSlash}
@@ -244,11 +246,15 @@ const Signup = () => {
                     />
                   </div>
                 </div>
-                {error.password && (
-                  <p className="error mb-2 text-red-500 text-sm mt-0">
-                    {error.passwordError}
-                  </p>
-                )}
+                {error.password && (<div className="text-red-500 text-sm mt-2">
+    <ul className="list-disc list-inside">
+      <li>Minimum 8 characters</li>
+      <li>At least 1 uppercase letter</li>
+      <li>At least 1 lowercase letter</li>
+      <li>At least 1 number</li>
+      <li>At least 1 symbol</li>
+    </ul>
+  </div>)}      
                 <div>
                   <label
                     htmlFor="cpassword"
@@ -272,6 +278,7 @@ const Signup = () => {
                     {error.cpasswordError}
                   </p>
                 )}
+                
                 <button
                   type="submit"
                   className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pt-gray-900 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
