@@ -2,6 +2,8 @@
 
 **Introduction**
  TastyTrails is a project beyond recipes — it is about creating a social network where people connect with food and culture. 🍽️🌏 .TastyTrails is a platform where food enthusiasts from around the globe can come together, explore delightful recipes, share their own creations, and celebrate the diverse flavors of different cultures.
+ 
+**[For GSSOC Contributors](#gssoc-contributors)**
 
 ## Tech Stack
 
@@ -39,12 +41,14 @@ TastyTrails is in its very early stage of development and there's space for ever
 1. Improve `CONTRIBUTING.md` with detailed guidelines on the code of conduct or steps to setting up the project locally.
 2. Add a template for Issue Creation
 3. Add a template for Pull Request.
+4. Propose better content for the website
 
 **Technical**
 1. Add OAuth - Google
 2. Follow - Unfollow feature
 3. Recipe Like - Unlike Feature
 4. Implementation of Chat System
+5. Add Lazy laoding for Images
 
 - If you are interested in any of the above features do open an issue.
 - Apart from these feel free to propose your ideas using `issues` or if you find a bug make sure to open an issue for it.
