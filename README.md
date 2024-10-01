@@ -49,10 +49,10 @@ TastyTrails is in its very early stage of development and there's space for ever
 - If you are interested in any of the above features do open an issue.
 - Apart from these feel free to propose your ideas using `issues` or if you find a bug make sure to open an issue for it.
 - You can divide Big features into small issues and earn your points for them.
-- Labels will be assigned based on the following criteria:
-   Bug - level1
-   Implemented feature improved: level2
-   New Feature introduced and Implemented: level3
+- Labels will mostly be assigned based on the following criteria:
+-  Bug - level1
+-  Implemented feature improved: level2
+-  New Feature introduced and Implemented: level3
 
 Hope you will find a lot to contribute.
 Make worthy contributions that help you learn, don't contribute just for points.
