@@ -36,7 +36,7 @@ First of Congratulations on joining the GSSOC 2024 Extended Program. 🎉
 TastyTrails is in its very early stage of development and there's space for everyone to build something on it as per their level. If you don't know what to contribute, do not worry. I am listing some of the Technical and Non-Technical features or tasks to be implemented below, do check it out. 
 
 **Non-Technical**
-1. Improve `CONTRIBUTING.md` with detailed guidelines on the code of conduct or setting up the project locally.
+1. Improve `CONTRIBUTING.md` with detailed guidelines on the code of conduct or steps to setting up the project locally.
 2. Add a template for Issue Creation
 3. Add a template for Pull Request.
 
