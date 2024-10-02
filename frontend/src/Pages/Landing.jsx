@@ -45,7 +45,7 @@ const Landing = () => {
   }, [best, setBest])
   
   return (
-    <div className="min-h-screen" id="Landing">
+    <div className="min-h-screen max-w-[1366px] m-auto" id="Landing">
       {/* -------------------------- Hero Section ----------------------  */}
       <section id="Hero" className="py-4 my-2">
         <div className="min-h-screen flex justify-center items-start">
