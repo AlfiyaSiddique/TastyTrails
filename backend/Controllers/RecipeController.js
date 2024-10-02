@@ -56,7 +56,7 @@ const allRecipe = async (req,res)=>{
  * @access private
  */
 const imageToGithub = async (fileImage, name, unique)=>{
-  const owner = 'AlfiyaSiddique'; 
+  const owner = 'sadath2001'; 
   const repo = 'ImageDatabase'; 
   const branch = 'main'; 
 
