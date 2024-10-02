@@ -84,6 +84,7 @@ const Signup = () => {
       if (usernames.includes(form.username)) {
         toast.error("Username already exist please try another.");
       } else {
+        console.log(form)
         axios
           .post(`${backendURL}/api/signup`, form)
           .then((res) => {

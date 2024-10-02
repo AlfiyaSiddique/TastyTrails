@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv"
+
+dotenv.config()
 /**
  * @route {POST} /api/signup
  * @description Create a new user
