@@ -77,15 +77,13 @@ const allRecipe = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: {
-        recipes,
-        pagination: {
-          totalRecipes,
-          currentPage: page,
-          totalPages: Math.ceil(totalRecipes / limit),
-          limit,
+      recipes,
+      pagination: {
+        totalRecipes,
+        currentPage: page,
+        totalPages: Math.ceil(totalRecipes / limit),
+        limit,
         },
-      },
     });
   } catch (error) {
     console.log(error);
