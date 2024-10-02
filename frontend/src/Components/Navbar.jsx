@@ -38,44 +38,44 @@ const Navbar = () => {
       <header className="text-gray-600 body-font">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <div className="flex title-font font-medium items-center text-red-700 mb-4 md:mb-0">
-            <span className="ml-3 text-xl font-bold">
+            <span className="ml-3 text-3xl font-bold">
               <Link to={"/"} className="font-[Merriweather]">
                 TastyTrails{" "}
               </Link>
             </span>
           </div>
 
-          <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+          <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-[1.2rem] justify-center gap-12 font-medium">
             <Link
               to="/recipes"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
+              className="hover:text-red-700 text-black"
             >
               Recipes
             </Link>
             <Link
               to="/mainmeals"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
+              className="hover:text-red-700 text-black"
             >
               Main Meals
             </Link>
             <Link
               to="/smallbites"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
+              className="hover:text-red-700 text-black"
             >
               Small Bites
             </Link>
             <Link
               to="/healthy"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
+              className="hover:text-red-700 text-black"
             >
               Healthy
             </Link>
           </nav>
           {user === null ? (
             <Link to={path == "/" || path == "/signup" ? "/login" : "/signup"}>
-              <button className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all">
+              <button className=" font-semibold inline-flex items-center bg-red-700 border-0 py-1 px-4 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all">
                 {path === "/" || path == "/signup" ? "Login" : "Sign Up"}
-                <FontAwesomeIcon icon={faArrowRight} className="mx-2" />
+                <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
               </button>
             </Link>
           ) : (
