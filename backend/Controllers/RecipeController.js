@@ -60,10 +60,6 @@ const imageToGithub = async (fileImage, name, unique)=>{
   const owner = 'AlfiyaSiddique'; 
   const repo = 'ImageDatabase'; 
   const branch = 'main'; 
-  // const owner = 'sadath2001'; 
-  // const repo = 'ImageDatabase'; 
-  // const branch = 'main'; 
-  
 
   const base64Content = fileImage.split(';base64,').pop();
   const fileContent = Buffer.from(base64Content, 'base64').toString('base64');
