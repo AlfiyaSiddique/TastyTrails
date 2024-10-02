@@ -3,7 +3,8 @@
 **Introduction**
  TastyTrails is a project beyond recipes — it is about creating a social network where people connect with food and culture. 🍽️🌏 .TastyTrails is a platform where food enthusiasts from around the globe can come together, explore delightful recipes, share their own creations, and celebrate the diverse flavors of different cultures.
  
-**[For GSSOC Contributors](#gssoc-contributors)**
+**[For GSSOC24-Ext Contributors](#gssoc-contributors)**<br/>
+**[For GSSOC24-Ext Mentors](https://github.com/AlfiyaSiddique/TastyTrails/discussions/21)**
 
 ## Tech Stack
 
