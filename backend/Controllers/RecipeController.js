@@ -76,7 +76,7 @@ const imageToGithub = async (fileImage, name, unique)=>{
       },
       {
         headers: {
-          Authorization: `TOKEN ${process.env.TOKEN}`,
+          Authorization: `token ${process.env.TOKEN}`,
           'X-GitHub-Api-Version': '2022-11-28'
         },
       }
