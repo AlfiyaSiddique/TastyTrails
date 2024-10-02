@@ -70,7 +70,7 @@ const Navbar = () => {
             >
               Healthy
             </Link>
-          </nav>gi
+          </nav>
           {user === null ? (
             <div className="flex items-center">
             <Link to={path === "/" || path === "/signup" ? "/login" : "/signup"}>
