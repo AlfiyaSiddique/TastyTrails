@@ -79,9 +79,6 @@ const Navbar = () => {
                 <FontAwesomeIcon icon={faArrowRight} className="mx-2" />
               </button>
             </Link>
-            <div onClick={() => navigator(`/notifications`)} className="ml-4 cursor-pointer">
-                <FontAwesomeIcon icon={faBell} className="text-Black-700 text-lg" />
-              </div>
             </div>
           ) : (
             <div className="flex justify-center items-center">
