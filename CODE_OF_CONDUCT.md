@@ -7,8 +7,8 @@ This project aims to foster an inclusive, respectful, and productive community.
  **Be Respectful**: Treat others with kindness and consideration.
  **Be Inclusive**: Welcome everyone, regardless of their background or skill level.
  **Provide Constructive Feedback**: Offer helpful and specific feedback.
- **Collaborative** : Work together in a constructive, transparent, and supportive manner.
- **Avoid Discrimination and Harrasment** : Offensive behavior, harassment, or discrimination of any kind will not be tolerated.
+ **Collaborative**: Work together in a constructive, transparent, and supportive manner.
+ **Avoid Discrimination and Harassment**: Offensive behavior, harassment, or discrimination of any kind will not be tolerated.
 
  ## Unacceptable Behavior
   **Discriminatory or offensive comments or jokes**.
@@ -17,4 +17,4 @@ This project aims to foster an inclusive, respectful, and productive community.
   **Dismissing or belittling other contributors' ideas or contributions**.
 
   ## Reporting and Enforcement
-If you witness or experience behavior that violates this Code of Conduct, please report it to the project administrators at  admin@tastytrails.com .
+If you witness or experience behavior that violates this Code of Conduct, please report it to the project admin at alfiyasiddique1708@gmail.com.
