@@ -3,7 +3,8 @@
 **Introduction**
  TastyTrails is a project beyond recipes — it is about creating a social network where people connect with food and culture. 🍽️🌏 .TastyTrails is a platform where food enthusiasts from around the globe can come together, explore delightful recipes, share their own creations, and celebrate the diverse flavors of different cultures.
  
-**[For GSSOC Contributors](#gssoc-contributors)**
+**[For GSSOC24-Ext Contributors](#gssoc-contributors)**<br/>
+**[For GSSOC24-Ext Mentors](https://github.com/AlfiyaSiddique/TastyTrails/discussions/21)**
 
 ## Tech Stack
 
@@ -53,8 +54,8 @@ TastyTrails is in its very early stage of development and there's space for ever
 - If you are interested in any of the above features do open an issue.
 - Apart from these feel free to propose your ideas using `issues` or if you find a bug make sure to open an issue for it.
 - You can divide Big features into small issues and earn your points for them.
-- Labels will mostly be assigned based on the following criteria:
-  -  Bug - level1
+- Labels will mostly be assigned based on the following criteria(The labels can differ based on difficulty level as well):
+  -  Bug or minor change in code- level1
   -  Implemented feature improved: level2
   -  New Feature introduced and Implemented: level3
 
