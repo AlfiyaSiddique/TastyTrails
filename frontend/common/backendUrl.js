@@ -1,4 +1,4 @@
-// const backendURL  = 'http://localhost:4000' // local environment
+// const backendURL  = 'http://localhost:3000' // local environment
 
 const backendURL  = 'https://tastytrails.onrender.com' 
 
