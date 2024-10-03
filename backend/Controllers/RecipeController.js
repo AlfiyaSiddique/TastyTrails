@@ -15,7 +15,6 @@ const addRecipe = async (req, res)=>{
     const {name, description, ingredients, steps,type, image, imagename, user, author} = req.body
         const lastDocument = await Recipe.findOne().sort({ _id: -1 }); 
         const unique = lastDocument._id.toString()
-        console.log(unique)
         const URL = await imageToGithub(image, imagename, unique.slice(-4))
         const data = {
           user,
