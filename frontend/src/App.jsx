@@ -1,8 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
+import { useState,useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./Components/Navbar";
+import ScrollToTop from "./Components/Scrolltotop";
 import Landing from "./Pages/Landing";
 import Footer from "./Components/Footer";
 import Login from "./Pages/Login";
@@ -15,7 +17,25 @@ import AddRecipe from "./Pages/AddRecipe";
 import OneRecipe from "./Pages/OneRecipe";
 import UpdateRecipe from "./Pages/UpdateRecipe";
 
+
 function App() {
+  const [showScroll, setShowScroll] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 200) {
+      setShowScroll(true);
+    } else {
+      setShowScroll(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <main>
       <ToastContainer
@@ -47,6 +67,8 @@ function App() {
         </Routes>
         <Footer />
       </BrowserRouter>
+
+      {showScroll && <ScrollToTop />}
     </main>
   );
 }
