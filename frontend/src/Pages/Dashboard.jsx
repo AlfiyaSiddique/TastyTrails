@@ -54,7 +54,9 @@ const Dashboard = () => {
       .then((res) => {
         if(res.data.success){
           toast.success("Recipe Deleted Succesfully")
+          window.location.reload(); // reload the page to fix the issue
           navigator(`/user/${user._id}`, {state: {user}})
+
         }else{
           toast.error("Fail to Delete. Please try again later.")
         }
