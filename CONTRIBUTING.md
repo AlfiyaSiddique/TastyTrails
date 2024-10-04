@@ -8,7 +8,24 @@ Welcome to the TastyTrails project! We're excited to have you contribute and hel
 - Fork the repository and clone it to your local machine.
 - Create a new branch for your feature or bug fix: `git checkout -b feature-name` or `git checkout -b bugfix-name`.
 - Make sure to keep your fork updated by pulling from the `main` branch regularly.
+- You can follow the below video to setup your project locally (Instructions may vary for windows as i have set this up on Linux)
+- [How to setup project locally](https://youtu.be/cksPqPCRqfw) | [How to generate github API key](https://www.youtube.com/watch?v=iLrywUfs7yU)
+- Here is a list of required packages to install as mentioned in the video
+  - **Mongo and its packages**: 
+    - MongoDB Community Edition – https://www.mongodb.com/try/download/community
+    - Mongodb shell – https://www.mongodb.com/try/download/shell
+    - Mongodb compass – https://www.mongodb.com/try/download/compass
+    - Make sure to check if mongo is up and running (You can refer youtube for troubleshooting)
+  - **Npm packages**: 
+    To setup initial required packages for both front-end and backend, go to respective folders i.e */frontend and /backend* and execute the below command
+    > `npm i install`
 
+    To install Nodemon to run your server (optional), go to /backend and execute the below command
+    > `npm install --save-dev nodemon`
+    
+  - **For any errors**: You can simply search the error on either stackoverflow or as in [Q & A section](https://github.com/AlfiyaSiddique/TastyTrails/discussions/37).
+- Thats it, You are all set with your project.
+  
 ### 2. Reporting Bugs 🐛
 - Search through [existing issues](link_to_issues) to avoid duplicates.
 - If you find a bug, open a new issue with the following:
