@@ -1,4 +1,4 @@
-# 🌍🍽️ **TastyTrails - Explore Culinary Delights Around the Globe!** 🎉
+# 🍽️ **TastyTrails - Explore Culinary Delights Around the Globe!** 🌍
 
 **TastyTrails** is more than just recipes — it’s a vibrant social network where food lovers can connect, discover, and share the unique flavors of their cultures. A platform for passionate food enthusiasts to dive into a world of tastes!
 
