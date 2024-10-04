@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import backendURL from "../../common/backendUrl";
 import axios from "axios";
 import Cards from "../Components/Cards";
@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import Pagination from "../Components/Pagination";
 
 const Recipes = ({type}) => {
+  const [loading, setLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
   const [pagination, setPagination] = useState({
     totalRecipes: 5,
@@ -41,6 +42,8 @@ const Recipes = ({type}) => {
         }));
       } catch (err) {
         console.log(err);
+      }finally{
+        setLoading(false);
       }
     };
 
@@ -95,13 +98,28 @@ const Recipes = ({type}) => {
           Search
         </button>
       </div>
+      {
+        loading ? 
+          (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
+                {Array.from({ length: 6 }).map((item, i) => {
+                    return (
+                        <div key={i} className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm" />
+                    );
+                })}
+            </div>
+          )
+          : 
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 my-20">
+          {
+            recipes.map((food) => (
+              <Cards dish={food} key={food._id} />
+            ))
+          }
+        </div>
+      }
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 my-20">
-        {recipes.map((food) => (
-          <Cards dish={food} key={food._id} />
-        ))}
-
-      </div>
+      
       {recipes.length === 0 && recipes.length > 0 && (
         <div className="flex flex-col justify-center items-center">
           <p className="text-3xl text-gray-400">No such Dish found.</p>
