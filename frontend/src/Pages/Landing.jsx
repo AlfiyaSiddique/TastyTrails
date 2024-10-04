@@ -42,7 +42,7 @@ const Landing = () => {
     }).catch((err)=>{
       console.log(err)
     })
-  }, [best, setBest])
+  }, [])
   
   return (
     <div className="min-h-screen" id="Landing">

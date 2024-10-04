@@ -374,7 +374,9 @@ const AddRecipe = () => {
               onChange={(e) => setIngredient(e.target.value)}
               value={ingredient}
             />
-            <button
+                        {/* added validation  */}
+
+            <button disabled={ingredient.trim() === ""}
               type="button"
               className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all"
               onClick={() => {
@@ -454,9 +456,10 @@ const AddRecipe = () => {
               }}
               value={steps}
             />
-            <button
+            {/* added validation  */}
+            <button disabled={steps.trim() === ""}
               className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all"
-              type="button"
+              type="button" 
               onClick={() => {
                 if (typeof arrUpdate === "number") {
                   setForm((prev) => {
