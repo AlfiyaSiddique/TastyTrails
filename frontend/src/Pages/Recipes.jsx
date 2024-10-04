@@ -34,13 +34,11 @@ const Recipes = ({type}) => {
 
         setRecipes(recipes);
         
-        if (pagination) {
-          setPagination((prev) => ({
-            ...prev,
-            totalRecipes: pag.totalRecipes,
-            totalPages: pag.totalPages
-          }));
-       }
+        setPagination((prev) => ({
+          ...prev,
+          totalRecipes: pag.totalRecipes,
+          totalPages: pag.totalPages
+        }));
       } catch (err) {
         console.log(err);
       }
