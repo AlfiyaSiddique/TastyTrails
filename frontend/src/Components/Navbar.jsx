@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import backendURL from "../../common/backendUrl";
 import axios from "axios";
+import ThemeProvider from "../../darkMode";
 
 const Navbar = () => {
   const path = useLocation().pathname;
@@ -58,16 +59,15 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav
-      className={`z-50 ${
+    <div className="navbr">
+    <nav className={`z-50 ${
         isSticky ? "fixed top-0 left-0 w-full bg-white shadow-md" : ""
-      }`}
-    >
-      <header className='text-gray-600 body-font'>
-        <div className='container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center'>
-          <div className='flex title-font font-medium items-center text-red-700 mb-4 md:mb-0'>
-            <span className='ml-3 text-xl font-bold'>
-              <Link to={"/"} className='font-[Merriweather]'>
+      }`}>
+      <header>
+        <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+          <div className="flex title-font font-medium items-center text-red-700 mb-4 md:mb-0">
+            <span className="ml-3 text-xl font-bold">
+              <Link to={"/"} className="font-[Merriweather]">
                 TastyTrails{" "}
               </Link>
             </span>
@@ -76,25 +76,25 @@ const Navbar = () => {
           <nav className='md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center'>
             <Link
               to='/recipes'
-              className='mr-5 hover:text-red-700 text-black font-semibold'
+              className='mr-5 hover:text-red-700  font-semibold'
             >
               Recipes
             </Link>
             <Link
               to='/mainmeals'
-              className='mr-5 hover:text-red-700 text-black font-semibold'
+              className='mr-5 hover:text-red-700  font-semibold'
             >
               Main Meals
             </Link>
             <Link
               to='/smallbites'
-              className='mr-5 hover:text-red-700 text-black font-semibold'
+              className='mr-5 hover:text-red-700  font-semibold'
             >
               Small Bites
             </Link>
             <Link
               to='/healthy'
-              className='mr-5 hover:text-red-700 text-black font-semibold'
+              className='mr-5 hover:text-red-700  font-semibold'
             >
               Healthy
             </Link>
@@ -147,9 +147,12 @@ const Navbar = () => {
               </div>
             </div>
           )}
+          <ThemeProvider/>
         </div>
+        
       </header>
     </nav>
+  </div>
   );
 };
 

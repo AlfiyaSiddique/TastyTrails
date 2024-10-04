@@ -33,3 +33,59 @@
     font-size: 4rem; /* Final font size */
   }
 }
+
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+}
+
+[data-theme='dark'] {
+  --bg-color: #313030;
+  --text-color: #ffffff;
+  --nav-color:rgb(19, 19, 20);
+}
+
+body {
+  Background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.darkBtn {
+  Background-color: var(--text-color);
+  color: var(--bg-color);
+  padding: 10px;
+  border-radius: 20px;
+  margin-left: 4rem;
+}
+
+button{
+  color: var(--text-color);
+}
+.nav{
+  color: var(--text-color);
+}
+
+h2{
+  color: var(--text-color);
+}
+
+
+p{
+  color: var(--text-color);
+}
+
+
+.navbar{
+  background-color: var(--nav-color);
+}
+
+.navbr{
+  color: var(--text-color);
+}
+
+.darkBtn{
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
