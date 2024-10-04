@@ -48,8 +48,7 @@ body:
         - label: "I agree to follow the Code of Conduct"
           required: true
         - label: "I'm a GSSOC'24 Ext contributor"
-    validations:
-        required: true
+          required: true
 
   - type: markdown
     attributes:
