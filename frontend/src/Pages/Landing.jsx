@@ -7,12 +7,14 @@ import Cards from "../Components/Cards";
 import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import backendURL from "../../common/backendUrl";
+//import backendURL from "../../common/backendUrl";
 
 const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
   const [loading, setLoading] = useState(true);
+   const backendURL = import.meta.env.VITE_BACKEND_URL;
+   //console.log(backendURL);
 
   // UseEffect to check if user is already Logged In
   useEffect(()=>{
@@ -36,16 +38,22 @@ const Landing = () => {
   }, [])
 
   // UseEffect for getting recipe data to display on Best Dishes Section
-  useEffect(()=>{
-    setLoading(false)
+  useEffect(() => {
+    setLoading(true); // Set loading to true at the start of the fetch
+
     axios.get(`${backendURL}/api/recipes`)
-    .then((res)=>{
-      setBest(res.data.recipes.slice(0,3))
-    }).catch((err)=>{
-      console.log(err)
-    }).finally(()=> setLoading(false))
-  }, [best, setBest])
-  
+        .then((res) => {
+            console.log(res.data); // Log the response data
+            setBest(res.data.recipes.slice(0, 3)); // Set the best recipes
+        })
+        .catch((err) => {
+            console.log(err); // Log any errors
+        })
+        .finally(() => {
+            setLoading(false); // Set loading to false after the request is complete
+        });
+}, [setBest]); // Removed `best` from the dependency array
+
   return (
     <div className="min-h-screen" id="Landing">
       {/* -------------------------- Hero Section ----------------------  */}
