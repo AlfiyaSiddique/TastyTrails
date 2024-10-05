@@ -59,7 +59,7 @@ const Landing = () => {
       <section id="Hero" className="py-4 my-2">
         <div className="min-h-screen flex justify-center items-start">
           <h1 className="animated-text font-extrabold text-red-700 text-[4rem] text-center lg:mt-[5rem] md:w-[40%] sm:w-[60%] font-[Roboto]">
-            Where Flovour Meets Perfection
+            Where Flavour Meets Perfection
           </h1>
         </div>
       </section>
