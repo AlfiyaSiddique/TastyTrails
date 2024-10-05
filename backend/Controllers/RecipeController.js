@@ -40,15 +40,56 @@ const addRecipe = async (req, res)=>{
  * @description Returns all recipes in result
  * @access public
  */
-const allRecipe = async (req,res)=>{
-   try{
-     const recipes = await Recipe.find({});
-     return res.status(200).json({success: true, recipes})
-   }catch(error){
+const allRecipe = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || '';
+    const type = req.query.type ? req.query.type.split(',') : []; 
+
+    const skip = (page - 1) * limit;
+
+    let searchQuery = {};
+    
+    if (search) {
+      searchQuery = {
+        ...searchQuery,
+        $or: [
+          { name: { $regex: search, $options: 'i' } }, 
+          { description: { $regex: search, $options: 'i' } }
+        ]
+      };
+    }
+
+    if (type.length) {
+      searchQuery = {
+        ...searchQuery,
+        type: { $in: type }
+      };
+    }
+
+    const totalRecipes = await Recipe.countDocuments(searchQuery);
+
+    const recipes = await Recipe.find(searchQuery)
+      .skip(skip)
+      .limit(limit);
+
+
+    return res.status(200).json({
+      success: true,
+      recipes,
+      pagination: {
+        totalRecipes,
+        currentPage: page,
+        totalPages: Math.ceil(totalRecipes / limit),
+        limit,
+        },
+    });
+  } catch (error) {
     console.log(error);
-    res.status(404).json({ success: false, message: "Internal server error" });
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
+};
 
 /**
  * @function
