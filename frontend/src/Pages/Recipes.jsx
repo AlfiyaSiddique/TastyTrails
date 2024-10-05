@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import axios from "axios";
 import Cards from "../Components/Cards";
@@ -32,22 +32,14 @@ const Recipes = ({type}) => {
           },
         });
 
-        const { recipes, pagination: pag } = response.data;
-
-if (pag) {
-          setPagination((prev) => ({
-            ...prev,
-            totalRecipes: pag.totalRecipes,
-            totalPages: pag.totalPages
-          }));
-        }
-        
+        const { recipes, pagination: pagination } = response.data;     
+          
         setRecipes(recipes);
-        
+     
         setPagination((prev) => ({
           ...prev,
-          totalRecipes: pag.totalRecipes,
-          totalPages: pag.totalPages
+          totalRecipes: pagination.totalRecipes,
+          totalPages: pagination.totalPages
         }));
       } catch (err) {
         console.log(err);
