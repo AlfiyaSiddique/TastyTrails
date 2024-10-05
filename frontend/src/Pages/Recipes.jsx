@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, { useState, useEffect } from "react";
-import backendURL from "../../common/backendUrl";
+
 import axios from "axios";
 import Cards from "../Components/Cards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import Pagination from "../Components/Pagination";
 const Recipes = ({type}) => {
   const [loading, setLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [pagination, setPagination] = useState({
     totalRecipes: 5,
     currentPage: 1,
@@ -33,6 +34,14 @@ const Recipes = ({type}) => {
 
         const { recipes, pagination: pag } = response.data;
 
+if (pag) {
+          setPagination((prev) => ({
+            ...prev,
+            totalRecipes: pag.totalRecipes,
+            totalPages: pag.totalPages
+          }));
+        }
+        
         setRecipes(recipes);
         
         setPagination((prev) => ({

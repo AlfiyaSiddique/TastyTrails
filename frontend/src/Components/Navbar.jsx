@@ -8,11 +8,12 @@ import {
   faUserCircle,
   faBell,
 } from "@fortawesome/free-solid-svg-icons";
-import backendURL from "../../common/backendUrl";
+
 import axios from "axios";
 
 const Navbar = () => {
   const path = useLocation().pathname;
+  const backendURL=import.meta.env.VITE_BACKEND_URL;
   const navigator = useNavigate();
   const [user, setUser] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
