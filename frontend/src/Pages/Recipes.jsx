@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, { useState, useEffect } from "react";
-//import backendURL from "../../common/backendUrl";
+
 import axios from "axios";
 import Cards from "../Components/Cards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
