@@ -11,7 +11,7 @@ import Pagination from "../Components/Pagination";
 const Recipes = ({type}) => {
   const [loading, setLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
-  const backendURL = "import.meta.env.VITE_BACKEND_URL";
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [pagination, setPagination] = useState({
     totalRecipes: 5,
     currentPage: 1,

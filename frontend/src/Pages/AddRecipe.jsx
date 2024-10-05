@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import validate from "../../common/validation";
 import { toast } from "react-toastify";
 import axios from "axios";
-import backendURL from "../../common/backendUrl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +11,7 @@ const AddRecipe = () => {
   //  Route hooks
   const user = useLocation().state.user;
   const navigator = useNavigate();
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   // States
   const [selectedImage, setSelectedImage] = useState(null);

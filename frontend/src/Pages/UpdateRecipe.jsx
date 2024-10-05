@@ -1,9 +1,8 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, { useState } from "react";
 import validate from "../../common/validation";
 import { toast } from "react-toastify";
 import axios from "axios";
-import backendURL from "../../common/backendUrl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +12,7 @@ const UpdateRecipe = () => {
   const recipe = useLocation().state.recipe;
   const user = useLocation().state.user;
   const navigator = useNavigate();
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 //   States
   const [selectedImage, setSelectedImage] = useState(recipe.image);

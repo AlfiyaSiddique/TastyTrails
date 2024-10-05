@@ -20,7 +20,7 @@ const allowedOrigins = [
   "http://localhost:5173"  
 ];
 
-// CORS middleware to handle multiple origins
+
 app.use(
   cors({
     origin: function (origin, callback) {
