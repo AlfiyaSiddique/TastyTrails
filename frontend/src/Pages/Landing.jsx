@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, { useEffect, useState } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
@@ -16,14 +16,13 @@ const Landing = () => {
    const backendURL = import.meta.env.VITE_BACKEND_URL;
    
 
-  // UseEffect to check if user is already Logged In
   useEffect(()=>{
     let token = localStorage.getItem("tastytoken");
    if(token){
     token = JSON.parse(token)
      axios.get(`${backendURL}/api/token`, {
       headers: {
-        Authorization: `Bearer ${token}`, // Set the Authorization header
+        Authorization: `Bearer ${token}`,
       },
      })
      .then((res)=>{
@@ -37,22 +36,22 @@ const Landing = () => {
    }
   }, [])
 
-  // UseEffect for getting recipe data to display on Best Dishes Section
+  
   useEffect(() => {
-    setLoading(true); // Set loading to true at the start of the fetch
+    setLoading(true); 
 
     axios.get(`${backendURL}/api/recipes`)
         .then((res) => {
             
-            setBest(res.data.recipes.slice(0, 3)); // Set the best recipes
+            setBest(res.data.recipes.slice(0, 3)); 
         })
         .catch((err) => {
-            console.log(err); // Log any errors
+            console.log(err); 
         })
         .finally(() => {
-            setLoading(false); // Set loading to false after the request is complete
+            setLoading(false); 
         });
-}, [setBest]); // Removed `best` from the dependency array
+}, [setBest]); 
 
   return (
     <div className="min-h-screen" id="Landing">
