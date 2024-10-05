@@ -23,16 +23,11 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (
-        !origin ||
-        allowedOrigins.some((o) =>
-          typeof o === "string" ? o === origin : o.test(origin)
-        )
-      ) {
+      if (!origin || allowedOrigins.some((o) => (typeof o === "string" ? o === origin : o.test(origin)))) {
         callback(null, true);
       } else {
-        console.error("Blocked by CORS:", origin);
-        callback(new Error("Not allowed by CORS"));
+        console.error("Blocked by CORS:", origin); 
+        callback(new Error("Not allowed by CORS")); 
       }
     },
   })
@@ -54,7 +49,7 @@ app.get("/", (req, res)=>{
     .then(()=>{
     console.log('Successfully Connected To MongoDB Server!');
     
-    app.listen(process.env.PORT, ()=>{
+    app.listen(port, ()=>{
       console.log(`The server is running at ${process.env.PORT}`)
     })
     })
