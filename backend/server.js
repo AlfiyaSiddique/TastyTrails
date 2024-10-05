@@ -17,7 +17,7 @@ app.use(express.urlencoded({ limit: '10mb' }));
 const allowedOrigins = [
   "https://delightful-daifuku-a9f6ea.netlify.app",
   /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
-  "http://localhost:5173"  // Add localhost for development
+  "http://localhost:5173"  
 ];
 
 // CORS middleware to handle multiple origins
