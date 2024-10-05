@@ -11,7 +11,7 @@ const OneRecipe = () => {
     <div className="w-[80vw] m-auto  my-12">
       <h1 className="text-3xl font-extrabold text-red-700 my-8 text-center">{recipe.name}</h1>
       <form>
-        <div className="grid grid-cols-[50%_50%] space-x-4">
+        <div className="md:grid md:grid-cols-[50%_50%] space-x-4">
           <input
             type="image"
             src={recipe.image}
@@ -27,14 +27,14 @@ const OneRecipe = () => {
             <div
               className="w-full h-40 bg-red-100 bg-opacity-50 rounded border border-gray-300 focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out my-2"
             >{recipe.description}</div>
-            <div className="flex justify-start items-center">
+            <div className="flex md:justify-start md:items-center flex-col items-start">
               <div
                 className="font-bold text-md text-center mx-4"
               >
                 <span className="text-red-700 ">Category:</span> {recipe.type.join(", ")}
               </div>
               <div
-                className="flex justify-between text-md font-bold text-center mx-4"
+                className="flex md:justify-between text-md font-bold text-center mx-4"
               >
               <span className="text-red-700 mx-2">Date:</span>{`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`}
               </div>
@@ -43,7 +43,7 @@ const OneRecipe = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-[40%_60%] my-16">
+        <div className="md:grid md:grid-cols-[40%_60%] my-16 ">
           <div className="px-4 border-e border-gray-200">
             <div
               className="text-red-700 font-semibold text-lg"
@@ -57,7 +57,7 @@ const OneRecipe = () => {
                 })}
              </ul>
           </div>
-          <div className="px-4">
+          <div className="px-4 mt-5 md:mt-0">
             <div
               className="text-red-700 font-semibold text-lg"
             >
