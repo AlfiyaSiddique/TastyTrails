@@ -1,8 +1,7 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import backendURL from "../../common/backendUrl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
@@ -10,6 +9,7 @@ import { toast } from "react-toastify";
 const Dashboard = () => {
     // Routes hooks and passed data
     const navigator = useNavigate();
+    const backendURL = import.meta.env.VITE_BACKEND_URL;
     const token = JSON.parse(localStorage.getItem("tastytoken"));
     const user = useLocation().state.user;
     const [loading, setLoading] = useState(true);

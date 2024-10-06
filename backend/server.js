@@ -20,9 +20,7 @@ const allowedOrigins = [
     "https://delightful-daifuku-a9f6ea.netlify.app",
     /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
 ];
-// const origin = "http://localhost:5173"
 
-// CORS middleware to handle multiple origins
 app.use(
     cors({
         origin: function (origin, callback) {
@@ -55,8 +53,9 @@ try {
         })
         .then(() => {
             console.log("Successfully Connected To MongoDB Server!");
+
             app.listen(port, () => {
-                console.log(`The server is running at ${port}`);
+                console.log(`The server is running at ${process.env.PORT}`);
             });
         });
 } catch (error) {
