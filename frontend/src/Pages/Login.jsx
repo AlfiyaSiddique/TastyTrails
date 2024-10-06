@@ -1,14 +1,14 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import backendURL from "../../common/backendUrl";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const navigator = useNavigate();
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   const [show, setShow] = useState(false); //Eye EyeSlash Toggle
   const [form, setForm] = useState({

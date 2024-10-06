@@ -1,64 +1,87 @@
-# TastyTrails
+# 🍽️ **TastyTrails - Explore Culinary Delights Around the Globe!** 🌍
 
-**Introduction**
- TastyTrails is a project beyond recipes — it is about creating a social network where people connect with food and culture. 🍽️🌏 .TastyTrails is a platform where food enthusiasts from around the globe can come together, explore delightful recipes, share their own creations, and celebrate the diverse flavors of different cultures.
- 
-**[For GSSOC24-Ext Contributors](#gssoc-contributors)**<br/>
+**TastyTrails** is more than just recipes — it’s a vibrant social network where food lovers can connect, discover, and share the unique flavors of their cultures. A platform for passionate food enthusiasts to dive into a world of tastes!
+
+---
+
+## 🚀 **Project Overview**
+
+TastyTrails is designed to offer an immersive experience for discovering and contributing to diverse recipes. The sleek **frontend**, built with **ReactJS**, **Tailwind CSS**, and **TypeScript**, ensures a visually captivating and user-friendly interface. On the backend, **Node.js**, **Express.js**, and **MongoDB** power robust data handling and API functionality for smooth performance.
+
+**[For GSSOC24-Ext Contributors](#for-gssoc24-ext-contributors)**<br/>
 **[For GSSOC24-Ext Mentors](https://github.com/AlfiyaSiddique/TastyTrails/discussions/21)**
 
-## Tech Stack
+---
 
-- **Frontend:**
-  - ReactJS
-  - Tailwind CSS
-  - TypeScript
+## ⚙️ **Tech Stack**
 
-- **Backend:**
-  - Node.js
-  - Express.js
-  - MongoDB
+### 🌐 Frontend:
+- **ReactJS**  
+- **Tailwind CSS**  
+- **TypeScript**  
 
-## Folder Structure
+### 🖥️ Backend:
+- **Node.js**  
+- **Express.js**  
+- **MongoDB**  
 
-The project is organized into two main directories within the root folder:
+---
 
-1. **frontend:** Contains all the files related to the frontend development.
-2. **backend:** Holds the backend codebase and configurations.
+## 📁 **Folder Structure**
+
+The project is structured as follows:
+- **frontend/**: Contains files for frontend development.
+- **backend/**: Includes the backend code and configurations.
+
+---
+
+## ✨ **For GSSOC24-Ext Contributors**
+
+**Welcome to GSSOC24 Extended and TastyTrails!** ✨  
+We’re thrilled to have you onboard, guided by our Project Admin **Alfiya**! 🎉 Congratulations on joining this exciting journey.
+
+TastyTrails is in its early development phase, and there’s plenty of room for everyone to contribute. Whether you’re a beginner or an advanced developer, there are opportunities to make meaningful contributions! If you’re not sure where to start, check out the tasks below and refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file to set up the project locally.
+
+### 🔍 **Non-Technical Tasks**
+
+- Improve **CONTRIBUTING.md** with detailed guidelines on setup and conduct.
+- Create templates for **Issues** and **Pull Requests**.
+- Propose engaging content for the website.
+
+### 🛠️ **Technical Features**
 
 
-## Project Overview
+- **Add OAuth - Google** 🔑: Add support for secure Google login.
+- **Follow - Unfollow feature** 👥: Let users follow fellow food enthusiasts.
+- **Recipe Like - Unlike Feature** ❤️: Enable liking and unliking recipes.
+- **Implementation of Chat System** 💬: Implement a real-time chat feature.
+- **Add Lazy loading for Images** 🖼️: Optimize image load times.
 
-TastyTrails aims to provide a seamless user experience for discovering, searching, and contributing to an extensive collection of diverse recipes. The frontend leverages ReactJS, TypeScript, and Tailwind CSS to create a visually appealing and intuitive interface. Meanwhile, the backend, built with Node.js, Express.js, and MongoDB, ensures robust API functionality and data management.
 
-Stay tuned for an immersive culinary journey with TastyTrails!
+Feel free to open an issue for any of the tasks above or suggest your ideas. You can also propose bug fixes, new features, or improvements.
 
-## GSSOC Contributors.
-Greetings from the Project Admin - Alfiya, and Welcome to TastyTrails!✨
-First of Congratulations on joining the GSSOC 2024 Extended Program. 🎉
+## 🏷️ **Contribution Labels**
 
-TastyTrails is in its very early stage of development and there's space for everyone to build something on it as per their level. If you don't know what to contribute, do not worry. I am listing some of the Technical and Non-Technical features or tasks to be implemented below. Before that check out the contributing guidelines in `CONTRIBUTING.md` and set up the project on your machine.
+- **Level 1**: Bug fixes or small changes.
+- **Level 2**: Feature improvements.
+- **Level 3**: New feature implementations.
 
-**Non-Technical**
-1. Improve `CONTRIBUTING.md` with detailed guidelines on the code of conduct or steps to setting up the project locally.
-2. Add a template for Issue Creation
-3. Add a template for Pull Request.
-4. Propose better content for the website
+---
 
-**Technical**
-1. Add OAuth - Google
-2. Follow - Unfollow feature
-3. Recipe Like - Unlike Feature
-4. Implementation of Chat System
-5. Add Lazy laoding for Images
+## 👀 Our Contributors
 
-- If you are interested in any of the above features do open an issue.
-- Apart from these feel free to propose your ideas using `issues` or if you find a bug make sure to open an issue for it.
-- You can divide Big features into small issues and earn your points for them.
-- Labels will mostly be assigned based on the following criteria(The labels can differ based on difficulty level as well):
-  -  Bug or minor change in code- level1
-  -  Implemented feature improved: level2
-  -  New Feature introduced and Implemented: level3
+- We extend our heartfelt gratitude for your invaluable contribution to our project! Your efforts play a pivotal role in elevating this project to greater heights.
+- Make sure you show some love by giving ⭐ to our repository.
 
-Hope you will find a lot to contribute.
-Make worthy contributions that help you learn, don't contribute just for points.
-All the Best! 👍🏻
+<div align="center">
+  <a href="https://github.com/AlfiyaSiddique/TastyTrails">
+    <img src="https://contrib.rocks/image?repo=AlfiyaSiddique/TastyTrails&&max=10" />
+  </a>
+</div>
+
+---
+## 🎉 **Join the Culinary Adventure!**
+
+Whether you’re contributing code, improving documentation, or suggesting new features, your involvement matters. We value contributions that help you learn and grow, not just for gaining points. Let's make **TastyTrails** a flavorful success — one contribution at a time!
+
+All the Best! 💫 **Happy Coding & Cooking!** 🍳
