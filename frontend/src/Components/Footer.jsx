@@ -23,9 +23,10 @@ const Footer = () => {
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent form from refreshing the page
 
-    // Check for mandatory fields
-    if (!email || !message) {
-      alert("Email and Message are mandatory fields!");
+
+     // Check for mandatory fields
+     if (!name || !email || !message || rating === 0) {
+      alert("Name, Email, Message, and Rating are mandatory fields!");
       return; // Exit the function if validation fails
     }
 
@@ -91,7 +92,7 @@ const Footer = () => {
                 onClick={() => setShowModal(true)}
                 className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
               >
-                Contact Us
+                Feedback
               </button>
             </div>
           </footer>
@@ -100,9 +101,9 @@ const Footer = () => {
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
               <div className="bg-white p-6 rounded-lg w-full max-w-lg">
-                <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+                <h2 className="text-2xl font-bold mb-4">Feedback</h2>
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                  <div>
+                <div>
                     <label className="block text-gray-700">Name</label>
                     <input
                       type="text"
@@ -110,6 +111,7 @@ const Footer = () => {
                       placeholder="Your Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)} // Update name state
+                      required // HTML5 required attribute
                     />
                   </div>
 
@@ -151,6 +153,9 @@ const Footer = () => {
                         </span>
                       ))}
                     </div>
+                    {!rating && (
+                      <p className="text-red-600 text-sm">Rating is required!</p>
+                    )}
                   </div>
 
                   <div className="flex justify-end">
