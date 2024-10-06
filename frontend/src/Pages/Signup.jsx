@@ -117,54 +117,58 @@ const Signup = () => {
                 Create an Account
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    className="w-full bg-gray-600 rounded border border-gray-300 focus:border-indigo-500 focus:bg-gray-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                    placeholder="Ex. John"
-                    value={form.firstName}
-                    onChange={handleChange}
-                    required={true}
-                  />
-                  {error.firstName && (
-                    <p className="text-red-500 text-sm">
-                      {error.firstNameError}
-                    </p>
-                  )}
+                {/* First Name and Last Name Side by Side */}
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label
+                      htmlFor="firstName"
+                      className="block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
+                      placeholder="Ex. John"
+                      value={form.firstName}
+                      onChange={handleChange}
+                      required={true}
+                    />
+                    {error.firstName && (
+                      <p className="text-red-500 text-sm">
+                        {error.firstNameError}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex-1">
+                    <label
+                      htmlFor="lastName"
+                      className="block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
+                      placeholder="Ex. Doe"
+                      value={form.lastName}
+                      onChange={handleChange}
+                      required={true}
+                    />
+                    {error.lastName && (
+                      <p className="text-red-500 text-sm">
+                        {error.lastNameError}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    className="w-full bg-gray-600 rounded border border-gray-300 focus:border-indigo-500 focus:bg-gray-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                    placeholder="Ex. Doe"
-                    value={form.lastName}
-                    onChange={handleChange}
-                    required={true}
-                  />
-                  {error.lastName && (
-                    <p className="text-red-500 text-sm">
-                      {error.lastNameError}
-                    </p>
-                  )}
-                </div>
-
+                {/* Username Field */}
                 <div>
                   <label
                     htmlFor="username"
@@ -176,7 +180,7 @@ const Signup = () => {
                     type="text"
                     id="username"
                     name="username"
-                    className="w-full bg-gray-600 rounded border border-gray-300 focus:border-indigo-500 focus:bg-gray-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
                     placeholder="Ex. jhonedoe12"
                     value={form.username}
                     onChange={handleChange}
@@ -189,6 +193,7 @@ const Signup = () => {
                   )}
                 </div>
 
+                {/* Email Field */}
                 <div>
                   <label
                     htmlFor="email"
@@ -200,7 +205,7 @@ const Signup = () => {
                     type="email"
                     id="email"
                     name="email"
-                    className="w-full bg-gray-600 rounded border border-gray-300 focus:border-indigo-500 focus:bg-gray-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
                     placeholder="abc@gmail.com"
                     value={form.email}
                     onChange={handleChange}
@@ -211,6 +216,7 @@ const Signup = () => {
                   )}
                 </div>
 
+                {/* Password Field */}
                 <div>
                   <label
                     htmlFor="password"
@@ -224,7 +230,7 @@ const Signup = () => {
                       name="password"
                       id="password"
                       placeholder="••••••••"
-                      className="bg-gray-600 rounded border border-gray-300 text-gray-100 focus:border-indigo-500 focus:bg-gray-500 focus:ring-2 focus:ring-indigo-200 w-full py-1 px-3 transition-colors duration-200 ease-in-out"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
                       required={true}
                       value={form.password}
                       onChange={handleChange}
@@ -250,6 +256,7 @@ const Signup = () => {
                   )}
                 </div>
 
+                {/* Confirm Password Field */}
                 <div>
                   <label
                     htmlFor="cpassword"
@@ -262,7 +269,7 @@ const Signup = () => {
                     name="cpassword"
                     id="cpassword"
                     placeholder="••••••••"
-                    className="bg-gray-600 rounded border border-gray-300 text-gray-100 focus:border-indigo-500 focus:bg-gray-500 focus:ring-2 focus:ring-indigo-200 w-full py-1 px-3 transition-colors duration-200 ease-in-out"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
                     required={true}
                     value={form.cpassword}
                     onChange={handleChange}
@@ -274,6 +281,7 @@ const Signup = () => {
                   )}
                 </div>
 
+                {/* Submit Button */}
                 <button
                   type="submit"
                   className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pt-gray-900 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -281,6 +289,7 @@ const Signup = () => {
                   Sign Up
                 </button>
 
+                {/* Already Have an Account */}
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already Have an Account?{" "}
                   <Link
