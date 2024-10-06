@@ -143,7 +143,7 @@ const AddRecipe = () => {
         .then((res) => {
           if (res.data.success) {
             toast.success(res.data.message);
-            navigator(`/user/${user.id}`, { state: { user } });
+            navigator(`/user/${user._id}`, { state: { user } });
           } else {
             toast.error("Some Error occured please try again later.");
           }
