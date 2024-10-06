@@ -37,13 +37,10 @@ The project is structured as follows:
 
 ## ✨ **For GSSOC24-Ext Contributors**
 
-## For GSSOC24-Ext Contributors
 **Welcome to GSSOC24 Extended and TastyTrails!** ✨  
 We’re thrilled to have you onboard, guided by our Project Admin **Alfiya**! 🎉 Congratulations on joining this exciting journey.
 
 TastyTrails is in its early development phase, and there’s plenty of room for everyone to contribute. Whether you’re a beginner or an advanced developer, there are opportunities to make meaningful contributions! If you’re not sure where to start, check out the tasks below and refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file to set up the project locally.
-
----
 
 ### 🔍 **Non-Technical Tasks**
 
@@ -63,6 +60,11 @@ TastyTrails is in its early development phase, and there’s plenty of room for 
 
 Feel free to open an issue for any of the tasks above or suggest your ideas. You can also propose bug fixes, new features, or improvements.
 
+## 🏷️ **Contribution Labels**
+
+- **Level 1**: Bug fixes or small changes.
+- **Level 2**: Feature improvements.
+- **Level 3**: New feature implementations.
 
 ---
 
@@ -78,15 +80,6 @@ Feel free to open an issue for any of the tasks above or suggest your ideas. You
 </div>
 
 ---
-
-## 🏷️ **Contribution Labels**
-
-- **Level 1**: Bug fixes or small changes.
-- **Level 2**: Feature improvements.
-- **Level 3**: New feature implementations.
-
----
-
 ## 🎉 **Join the Culinary Adventure!**
 
 Whether you’re contributing code, improving documentation, or suggesting new features, your involvement matters. We value contributions that help you learn and grow, not just for gaining points. Let's make **TastyTrails** a flavorful success — one contribution at a time!
