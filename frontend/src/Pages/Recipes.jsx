@@ -1,28 +1,48 @@
-
 import { useState, useEffect } from "react";
-
 import axios from "axios";
 import Cards from "../Components/Cards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
 import Pagination from "../Components/Pagination";
+import emptyStateImage1 from "/assets/blank1.svg";
+import emptyStateImage2 from "/assets/blank2.svg";
+import emptyStateImage3 from "/assets/blank3.svg";
 
-const Recipes = ({type}) => {
+const Recipes = ({ type }) => {
   const [loading, setLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
+  const [error, setError] = useState(false);
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [pagination, setPagination] = useState({
     totalRecipes: 5,
     currentPage: 1,
-    totalPages: 1
+    totalPages: 1,
   });
   const [searchTerm, setSearchTerm] = useState("");
   const limit = 10;
 
+  let coverImage;
+
+  switch (type) {
+    case "":
+      coverImage = emptyStateImage1;
+      break;
+    case "Main-meal":
+      coverImage = emptyStateImage2;
+      break;
+    case "Small-bite":
+      coverImage = emptyStateImage3;
+      break;
+    default:
+      coverImage = emptyStateImage1;
+      break;
+  }
+
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
+        setError(false);
         const response = await axios.get(`${backendURL}/api/recipes`, {
           params: {
             page: pagination.currentPage,
@@ -32,24 +52,23 @@ const Recipes = ({type}) => {
           },
         });
 
-        const { recipes, pagination: pagination } = response.data;     
-          
+        const { recipes, pagination: pagination } = response.data;
         setRecipes(recipes);
-     
         setPagination((prev) => ({
           ...prev,
           totalRecipes: pagination.totalRecipes,
-          totalPages: pagination.totalPages
+          totalPages: pagination.totalPages,
         }));
       } catch (err) {
         console.log(err);
-      }finally{
+        setError(true);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchRecipes();
-  }, [pagination.currentPage, type, searchTerm]); 
+  }, [pagination.currentPage, type, searchTerm]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -60,7 +79,7 @@ const Recipes = ({type}) => {
     if (pagination.currentPage < pagination.totalPages) {
       setPagination((prev) => ({
         ...prev,
-        currentPage: prev.currentPage + 1
+        currentPage: prev.currentPage + 1,
       }));
     }
   };
@@ -69,7 +88,7 @@ const Recipes = ({type}) => {
     if (pagination.currentPage > 1) {
       setPagination((prev) => ({
         ...prev,
-        currentPage: prev.currentPage - 1
+        currentPage: prev.currentPage - 1,
       }));
     }
   };
@@ -99,37 +118,50 @@ const Recipes = ({type}) => {
           Search
         </button>
       </div>
-      {
-        loading ? 
-          (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
-                {Array.from({ length: 6 }).map((item, i) => {
-                    return (
-                        <div key={i} className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm" />
-                    );
-                })}
-            </div>
-          )
-          : 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 my-20">
-          {
-            recipes.map((food) => (
-              <Cards dish={food} key={food._id} />
-            ))
-          }
-        </div>
-      }
 
-      
-      {recipes.length === 0 && recipes.length > 0 && (
-        <div className="flex flex-col justify-center items-center">
-          <p className="text-3xl text-gray-400">No such Dish found.</p>
-          <p className="text-md text-gray-400">
-            If you know the Recipe, share it with the community.
-          </p>
+      {/* Loading Skeleton */}
+      {loading && (
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
+          {Array.from({ length: 6 }).map((item, i) => {
+            return (
+              <div
+                key={i}
+                className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm"
+              />
+            );
+          })}
         </div>
       )}
-      {/* -------------------Use Pagination component-----------------------------*/}
+
+      {/* Display Data */}
+      {!loading && !error && recipes.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 my-20">
+          {recipes.map((food) => (
+            <Cards dish={food} key={food._id} />
+          ))}
+        </div>
+      )}
+
+      {/* Empty Data or Error Handling */}
+      {!loading && (recipes.length === 0 || error) && (
+        <div className="flex flex-col justify-center items-center my-10">
+          <img src={coverImage} alt="No data" className="w-[300px] mb-6" />
+          {error ? (
+            <p className="text-2xl text-red-500">
+              Oops! Something went wrong with the server.
+            </p>
+          ) : (
+            <>
+              <p className="text-3xl text-gray-400">No such Dish found.</p>
+              <p className="text-md text-gray-400">
+                If you know the Recipe, share it with the community.
+              </p>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Pagination */}
       <Pagination
         currentPage={pagination.currentPage}
         totalPages={pagination.totalPages}
