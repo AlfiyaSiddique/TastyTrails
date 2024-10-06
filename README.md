@@ -63,6 +63,20 @@ TastyTrails is in its early development phase, and there’s plenty of room for 
 
 Feel free to open an issue for any of the tasks above or suggest your ideas. You can also propose bug fixes, new features, or improvements.
 
+
+---
+
+## 👀 Our Contributors
+
+- We extend our heartfelt gratitude for your invaluable contribution to our project! Your efforts play a pivotal role in elevating this project to greater heights.
+- Make sure you show some love by giving ⭐ to our repository.
+
+<div align="center">
+  <a href="https://github.com/AlfiyaSiddique/TastyTrails">
+    <img src="https://contrib.rocks/image?repo=AlfiyaSiddique/TastyTrails&&max=10" />
+  </a>
+</div>
+
 ---
 
 ## 🏷️ **Contribution Labels**
