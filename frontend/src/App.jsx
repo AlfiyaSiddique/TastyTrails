@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AddRecipe from "./Pages/AddRecipe";
 import OneRecipe from "./Pages/OneRecipe";
 import UpdateRecipe from "./Pages/UpdateRecipe";
+import Footer1 from "./Components/Footer1";
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
   }, []);
 
   return (
-    <main>
+    <main className="grid grid-rows-[auto,1fr,auto] min-h-screen">
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -65,7 +66,9 @@ function App() {
           <Route path="/user/:id/update/recipe" element={<UpdateRecipe />} />
           <Route path="/recipe/:id" element={<OneRecipe/>} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
+        <Footer1 />
+        
       </BrowserRouter>
 
       {showScroll && <ScrollToTop />}
