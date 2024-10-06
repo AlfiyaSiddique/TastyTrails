@@ -98,7 +98,7 @@ const allRecipe = async (req, res) => {
  * @access private
  */
 const imageToGithub = async (fileImage, name, unique)=>{
-  const owner = 'sadath2001'; 
+  const owner = 'AlfiyaSiddique'; 
   const repo = 'ImageDatabase'; 
   const branch = 'main'; 
 
@@ -192,7 +192,7 @@ const deleteRecipe = async (req, res) => {
     }
 
     const imageName = recipe.image;
-    const owner = 'sadath2001';
+    const owner = 'AlfiyaSiddique';
     const repo = 'ImageDatabase';
     const branch='main';
     const result = trimUrl(imageName, owner, repo);
