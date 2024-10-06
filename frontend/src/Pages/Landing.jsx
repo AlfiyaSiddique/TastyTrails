@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, { useEffect, useState } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
@@ -7,20 +7,22 @@ import Cards from "../Components/Cards";
 import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import backendURL from "../../common/backendUrl";
+
 
 const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
+  const [loading, setLoading] = useState(true);
+   const backendURL = import.meta.env.VITE_BACKEND_URL;
+   
 
-  // UseEffect to check if user is already Logged In
   useEffect(()=>{
     let token = localStorage.getItem("tastytoken");
    if(token){
     token = JSON.parse(token)
      axios.get(`${backendURL}/api/token`, {
       headers: {
-        Authorization: `Bearer ${token}`, // Set the Authorization header
+        Authorization: `Bearer ${token}`,
       },
      })
      .then((res)=>{
@@ -34,23 +36,30 @@ const Landing = () => {
    }
   }, [])
 
-  // UseEffect for getting recipe data to display on Best Dishes Section
-  useEffect(()=>{
-    axios.get(`${backendURL}/api/recipes`)
-    .then((res)=>{
-      setBest(res.data.recipes.slice(0,3))
-    }).catch((err)=>{
-      console.log(err)
-    })
-  }, [best, setBest])
   
+  useEffect(() => {
+    setLoading(true); 
+
+    axios.get(`${backendURL}/api/recipes`)
+        .then((res) => {
+            
+            setBest(res.data.recipes.slice(0, 3)); 
+        })
+        .catch((err) => {
+            console.log(err); 
+        })
+        .finally(() => {
+            setLoading(false); 
+        });
+}, [setBest]); 
+
   return (
     <div className="min-h-screen" id="Landing">
       {/* -------------------------- Hero Section ----------------------  */}
       <section id="Hero" className="py-4 my-2">
         <div className="min-h-screen flex justify-center items-start">
           <h1 className="animated-text font-extrabold text-red-700 text-[4rem] text-center lg:mt-[5rem] md:w-[40%] sm:w-[60%] font-[Roboto]">
-            Where Flovour Meets Perfection
+            Where Flavour Meets Perfection
           </h1>
         </div>
       </section>
@@ -128,11 +137,25 @@ const Landing = () => {
           {/* eslint-disable-next-line react/no-unescaped-entities */}
           Worlds's Best Dishes
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-3">
-        {best.map((food)=>{
-          return <Cards dish={food} key={food._id}/>
-        })}
+        {/* integrated a loading skeleton for landing page */}
+        {
+          loading ? 
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 py-4">
+              {Array.from({ length: 6 }).map((item, i) => {
+                  return (
+                      <div key={i} className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm" />
+                  );
+              })}
+          </div>
+          : 
+          <div className="grid grid-cols-1 md:grid-cols-3">
+            { 
+              best.map((food)=>{
+                return <Cards dish={food} key={food._id}/>
+              })
+            }
         </div>
+        }
       </section>
 
       {/* -------------------------- About Section ----------------------  */}

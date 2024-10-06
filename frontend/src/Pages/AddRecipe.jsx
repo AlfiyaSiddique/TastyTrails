@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import validate from "../../common/validation";
 import { toast } from "react-toastify";
 import axios from "axios";
-import backendURL from "../../common/backendUrl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +11,7 @@ const AddRecipe = () => {
   //  Route hooks
   const user = useLocation().state.user;
   const navigator = useNavigate();
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   // States
   const [selectedImage, setSelectedImage] = useState(null);
@@ -163,7 +163,7 @@ const AddRecipe = () => {
         New Recipe
       </h1>
       <form>
-        <div className="grid grid-cols-[50%_50%] space-x-4">
+        <div className="md:grid md:grid-cols-[50%_50%] md:space-x-4  ">
           {!selectedImage ? (
             <div className="flex items-center justify-center w-full">
               <label
@@ -265,7 +265,7 @@ const AddRecipe = () => {
               >
                 Choose Categories:
               </label>
-              <div className="flex justify-between">
+              <div className="flex md:justify-between md:flex-row  flex-col gap-2">
                 <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
                   <input
                     id="type1"
@@ -322,11 +322,11 @@ const AddRecipe = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-[40%_60%] my-16">
-          <div className="px-4 border-e border-gray-200">
+        <div className="sm:grid sm:grid-cols-[40%_60%] my-16 flex flex-col gap-y-8 ">
+          <div className="px-4 border-e border-gray-200 ">
             <label
               htmlFor="ingredients"
-              className="text-red-700 font-semibold text-lg"
+              className="text-red-700 font-bold text-lg"
             >
               List of Ingredients
             </label>
@@ -374,7 +374,10 @@ const AddRecipe = () => {
               onChange={(e) => setIngredient(e.target.value)}
               value={ingredient}
             />
+            {/* added validation  */}
+
             <button
+              disabled={ingredient.trim() === ""}
               type="button"
               className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all"
               onClick={() => {
@@ -399,14 +402,13 @@ const AddRecipe = () => {
                 setIngredient("");
               }}
             >
-              {typeof arrUpdate === "number" && ingredient !== ""? "Update" : "Add"}
+              {typeof arrUpdate === "number" && ingredient !== ""
+                ? "Update"
+                : "Add"}
             </button>
           </div>
-          <div className="px-4">
-            <label
-              htmlFor="steps"
-              className="text-red-700 font-semibold text-lg"
-            >
+          <div className="px-4 ">
+            <label htmlFor="steps" className="text-red-700 font-bold text-lg">
               Steps
             </label>
             <ol className="list-inside list-decimal">
@@ -454,7 +456,9 @@ const AddRecipe = () => {
               }}
               value={steps}
             />
+            {/* added validation  */}
             <button
+              disabled={steps.trim() === ""}
               className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all"
               type="button"
               onClick={() => {
@@ -475,7 +479,9 @@ const AddRecipe = () => {
                 setSteps("");
               }}
             >
-              {typeof arrUpdate === "number" && steps!== ""? "Update Steps": "Add Steps"} 
+              {typeof arrUpdate === "number" && steps !== ""
+                ? "Update Steps"
+                : "Add Steps"}
             </button>
           </div>
         </div>
