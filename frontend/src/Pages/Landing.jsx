@@ -1,9 +1,9 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
 import Cooking from "../assets/Images/Cooking.png";
-import Cards from "../Components/Cards";
+import Cards from "../Components/Cards.jsx";
 import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
