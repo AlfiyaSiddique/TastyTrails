@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
 import Cooking from "../assets/Images/Cooking.png";

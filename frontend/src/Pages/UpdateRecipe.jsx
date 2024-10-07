@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 import validate from "../../common/validation.js";
 import { toast } from "react-toastify";
 import axios from "axios";
