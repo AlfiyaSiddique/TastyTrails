@@ -1,9 +1,9 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import validate from "../../common/validation";
+import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -237,8 +237,8 @@ const Signup = () => {
                       required={true}
                       value={form.password}
                       onChange={handleChange}
-                      onFocus={() => setPasswordFocused(true)} 
-                      onBlur={() => setPasswordFocused(false)}    
+                      // onFocus={() => setPasswordFocused(true)} 
+                      // onBlur={() => setPasswordFocused(false)}    
                     />
                     <FontAwesomeIcon
                       icon={show ? faEye : faEyeSlash}
