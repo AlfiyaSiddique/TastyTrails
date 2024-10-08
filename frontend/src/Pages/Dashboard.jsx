@@ -6,87 +6,50 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
-    // Routes hooks and passed data
-    const navigator = useNavigate();
-    const backendURL = import.meta.env.VITE_BACKEND_URL;
-    const token = JSON.parse(localStorage.getItem("tastytoken"));
-    const user = useLocation().state.user;
-    const [loading, setLoading] = useState(true);
-    const [recipes, setRecipes] = useState([]);
-    const [error, setError] = useState(null); // Track any errors
+  // Routes hooks and passed data
+  const navigator = useNavigate();
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const token = JSON.parse(localStorage.getItem("tastytoken"));
+  const user = useLocation().state.user;
+  const [loading, setLoading] = useState(true);
+  const [recipes, setRecipes] = useState([]);
+  const [error, setError] = useState(null); // Track any errors
 
-    // Function to fetch all recipes for the user
-    const fetchRecipes = () => {
-        setLoading(true);
-        setError(null); // Reset any previous errors
-        axios
-            .post(
-                `${backendURL}/api/recipe/readall`,
-                { id: user._id },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            )
-            .then((res) => {
-                setRecipes(res.data.recipes);
-            })
-            .catch((err) => {
-                console.error("Error fetching recipes:", err);
-                setError("Failed to fetch recipes. Please try again.");
-            })
-            .finally(() => setLoading(false));
-    };
-
-    useEffect(() => {
-        if (user._id) {
-            fetchRecipes(); // Only fetch recipes if user ID is available
-        } else {
-            console.error("User ID is missing!");
-            setError("User data is not available.");
-        }
-    }, [user._id]);
-
-    const handleDelete = (id) => {
-        const val = confirm("Are you sure you want to delete this recipe?");
-        if (val) {
-            axios
-                .post(
-                    `${backendURL}/api/recipe/delete`,
-                    { id },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                )
-                .then((res) => {
-                    if (res.data.success) {
-                        toast.success("Recipe Deleted Successfully");
-                        setRecipes((prevRecipes) =>
-                            prevRecipes.filter((recipe) => recipe._id !== id)
-                        );
-                    } else {
-                        toast.error("Failed to delete. Please try again later.");
-                    }
-                })
-                .catch((err) => {
-                    console.error("Error deleting recipe:", err);
-                });
+  // Function to fetch all recipes for the user
+  const fetchRecipes = () => {
+    setLoading(true);
+    setError(null); // Reset any previous errors
+    axios
+      .post(
+        `${backendURL}/api/recipe/readall`,
+        { id: user._id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       )
       .then((res) => {
-        setRecipe(res.data.recipes);
+        setRecipes(res.data.recipes);
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Error fetching recipes:", err);
+        setError("Failed to fetch recipes. Please try again.");
       })
       .finally(() => setLoading(false));
-  }, []);
+  };
+
+  useEffect(() => {
+    if (user._id) {
+      fetchRecipes(); // Only fetch recipes if user ID is available
+    } else {
+      console.error("User ID is missing!");
+      setError("User data is not available.");
+    }
+  }, [user._id]);
 
   const handleDelete = (id) => {
-    const val = confirm("Are you sure you want to delete this recipe");
+    const val = confirm("Are you sure you want to delete this recipe?");
     if (val) {
       axios
         .post(
@@ -101,13 +64,15 @@ const Dashboard = () => {
         .then((res) => {
           if (res.data.success) {
             toast.success("Recipe Deleted Successfully");
-            navigator(`/user/${user._id}`, { state: { user } });
+            setRecipes((prevRecipes) =>
+              prevRecipes.filter((recipe) => recipe._id !== id)
+            );
           } else {
-            toast.error("Failed to Delete. Please try again later.");
+            toast.error("Failed to delete. Please try again later.");
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error("Error deleting recipe:", err);
         });
     }
   };
@@ -144,12 +109,15 @@ const Dashboard = () => {
                   ))}
                 </div>
               ) : recipes.length === 0 ? (
-                <div className="flex justify-center items-center h-auto w-auto">
+                <div className="flex justify-center flex-col items-center h-auto w-auto py-10 overflow-hidden">
                   <img
-                    src="/assets/blank2.svg" 
+                    src="/assets/errorimg4.svg"
                     alt="Cover"
-                    className="object-cover rounded-md"
+                    className="object-cover rounded-md w-[60%]"
                   />
+                  <p className="text-2xl text-red-500">
+                    Let's cook some delicious recipes
+                  </p>
                 </div>
               ) : (
                 <div className="-my-8 divide-y-2 divide-gray-100">

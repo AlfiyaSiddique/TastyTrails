@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
 import Pagination from "../Components/Pagination";
-import emptyStateImage1 from "/assets/blank1.svg";
-import emptyStateImage2 from "/assets/blank2.svg";
-import emptyStateImage3 from "/assets/blank3.svg";
+import emptyStateImage1 from "/assets/errorimg1.svg";
+import emptyStateImage2 from "/assets/errorimg2.svg";
+import emptyStateImage3 from "/assets/errorimg3.svg";
+import emptyStateImage4 from "/assets/errorimg4.svg";
 
 
 const Recipes = ({ type }) => {
@@ -36,7 +37,7 @@ const Recipes = ({ type }) => {
       coverImage = emptyStateImage3;
       break;
     default:
-      coverImage = emptyStateImage1;
+      coverImage = emptyStateImage4;
       break;
   }
 
