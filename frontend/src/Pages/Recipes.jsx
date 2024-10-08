@@ -32,14 +32,14 @@ const Recipes = ({type}) => {
           },
         });
 
-        const { recipes, pagination: pagination } = response.data;     
+        const { recipes, pagination: paginationData } = response.data;     
           
         setRecipes(recipes);
      
         setPagination((prev) => ({
           ...prev,
-          totalRecipes: pagination.totalRecipes,
-          totalPages: pagination.totalPages
+          totalRecipes: paginationData.totalRecipes,
+          totalPages: paginationData.totalPages
         }));
       } catch (err) {
         console.log(err);
