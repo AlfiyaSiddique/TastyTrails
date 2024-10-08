@@ -2,26 +2,39 @@
 // Regex
 const PasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
+const nameRegex=/^[a-zA-Z]{3,}$/
 
 // Validation for each form field
 const validate = {
   firstName: (value) => {
-    if (value.trim().length < 3) {
+   if (value.length < 3) {
+      // Error if the name is shorter than 3 characters
       return {
         firstName: true,
-        firstNameError: "First name must 3 characters long.",
+        firstNameError: "First name must be at least 3 characters long.",
+      };
+    } else if (!nameRegex.test(value)) {
+      // Error if the name contains special characters or numbers
+      return {
+        firstName: true,
+        firstNameError: "Special characters or numbers are not allowed.",
       };
     } else {
       return { firstName: false, firstNameError: false };
     }
   },
-
   lastName: (value) => {
     if (value.trim().length < 3) {
+      // Error if the last name is shorter than 3 characters
       return {
         lastName: true,
-        lastNameError: "Last name must 3 characters long.",
+        lastNameError: "Last name must be at least 3 characters long.",
+      };
+    } else if (!nameRegex.test(value)) {
+      // Error if the last name contains special characters or numbers
+      return {
+        lastName: true,
+        lastNameError: "Special characters or numbers are not allowed.",
       };
     } else {
       return { lastName: false, lastNameError: false };
