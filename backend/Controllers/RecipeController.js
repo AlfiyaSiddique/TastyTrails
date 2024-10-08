@@ -1,10 +1,11 @@
 import Recipe from "../models/Recipe.js"
 import axios from "axios"
-import User from "../models/User.js"
-import mongoose from "mongoose"
 import { Octokit } from '@octokit/rest';
 
-
+const owner = process.env.OWNER; 
+const repo = process.env.REPO; 
+const branch = process.env.BRANCH; 
+const email=process.env.GITHUB_EMAIL;
 /**
  * @route {POST} /api/recipe/add
  * @description Add a REcipe to database
@@ -98,9 +99,6 @@ const allRecipe = async (req, res) => {
  * @access private
  */
 const imageToGithub = async (fileImage, name, unique)=>{
-  const owner = 'AlfiyaSiddique'; 
-  const repo = 'ImageDatabase'; 
-  const branch = 'main'; 
 
   const base64Content = fileImage.split(';base64,').pop();
   const fileContent = Buffer.from(base64Content, 'base64').toString('base64');
@@ -192,9 +190,6 @@ const deleteRecipe = async (req, res) => {
     }
 
     const imageName = recipe.image;
-    const owner = 'AlfiyaSiddique';
-    const repo = 'ImageDatabase';
-    const branch='main';
     const result = trimUrl(imageName, owner, repo);
 
     const octokit = new Octokit({
@@ -205,7 +200,6 @@ const deleteRecipe = async (req, res) => {
       // To remove the unncessary part from the URL
       const parsedUrl = new URL(url);
       const trimmedPath = parsedUrl.pathname.slice(1);
-      console.log(trimmedPath)
       const partToRemove = `${owner}/${repo}/${branch}/`;
       const finalPath = trimmedPath.replace(partToRemove, '');
 
@@ -226,7 +220,6 @@ const deleteRecipe = async (req, res) => {
         });
         const sha=response.data.sha;
         // Getting the SHA key so that it can assist in deletion
-        console.log('File Content:',sha );
         await octokit.request('DELETE /repos/{owner}/{repo}/contents/{path}', {
         owner: owner,
         repo: repo,
@@ -234,7 +227,7 @@ const deleteRecipe = async (req, res) => {
         message: 'deleted the image',
         committer: {
           name: recipe.author,
-          email: 'xyz@github.com'
+          email: email
         },
         sha:sha,
         headers: {
