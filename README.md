@@ -37,36 +37,49 @@ The project is structured as follows:
 
 ## ✨ **For GSSOC24-Ext Contributors**
 
-**Welcome to GSSOC24 Extended and TastyTrails!** ✨  
-We’re thrilled to have you onboard, guided by our Project Admin **Alfiya**! 🎉 Congratulations on joining this exciting journey.
 
-TastyTrails is in its early development phase, and there’s plenty of room for everyone to contribute. Whether you’re a beginner or an advanced developer, there are opportunities to make meaningful contributions! If you’re not sure where to start, check out the tasks below and refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file to set up the project locally.
-
-### 🔍 **Non-Technical Tasks**
-
-- Improve **CONTRIBUTING.md** with detailed guidelines on setup and conduct.
-- Create templates for **Issues** and **Pull Requests**.
-- Propose engaging content for the website.
-
-### 🛠️ **Technical Features**
+![Untitled design (1)](https://github.com/user-attachments/assets/ad852d84-edfa-4d79-a4eb-e73af348e8c7)
 
 
-- **Add OAuth - Google** 🔑: Add support for secure Google login.
-- **Follow - Unfollow feature** 👥: Let users follow fellow food enthusiasts.
-- **Recipe Like - Unlike Feature** ❤️: Enable liking and unliking recipes.
-- **Implementation of Chat System** 💬: Implement a real-time chat feature.
-- **Add Lazy loading for Images** 🖼️: Optimize image load times.
+ How to Contribute to This Project
+We’re excited to have you contribute to the WordWise Blogging Website project! Follow these simple steps to get started:
 
+🍴 Fork the Repository
 
-Feel free to open an issue for any of the tasks above or suggest your ideas. You can also propose bug fixes, new features, or improvements.
+Go to the repository page.
+Click the Fork button (top right) to create a copy in your GitHub account.
+💻 Clone Your Fork
 
-## 🏷️ **Contribution Labels**
+Open your terminal and run:
+git clone https://github.com/your-username/TastyTrails.git
+Replace your-username with your GitHub username.
+🌿 Create a New Branch
 
-- **Level 1**: Bug fixes or small changes.
-- **Level 2**: Feature improvements.
-- **Level 3**: New feature implementations.
+Create a new branch for your work:
+git checkout -b your-branch-name
+🛠️ Make Your Changes
 
----
+Open the project files in your code editor and make your changes.
+Contact the project manager  for any queries.
+✅ Test Your Changes
+
+Test your changes locally by opening the index.html file in your browser.
+💬 Commit Your Changes
+
+Once ready, commit them with a descriptive message:
+git add .
+git commit -m "Added feature X or Fixed issue Y"
+📤 Push Your Changes
+
+Push your changes to your forked repository:
+git push origin your-branch-name
+🔄 Create a Pull Request (PR)
+
+Go back to the original repository here.
+Click the Compare & pull request button, write a short description of your changes, and submit the PR.
+🔎 Review Changes
+
+The project manager will review your PR, and if approved, your request will be merged.
 
 ## 👀 Our Contributors
 
