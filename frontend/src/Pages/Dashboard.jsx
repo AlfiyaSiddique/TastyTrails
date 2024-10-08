@@ -18,7 +18,6 @@ const Dashboard = () => {
 
     // Function to fetch all recipes for the user
     const fetchRecipes = () => {
-        console.log("Fetching recipes...");
         setLoading(true);
         setError(null); // Reset any previous errors
         axios
@@ -32,7 +31,6 @@ const Dashboard = () => {
                 }
             )
             .then((res) => {
-                console.log("Recipes fetched:", res.data.recipes);
                 setRecipes(res.data.recipes);
             })
             .catch((err) => {
