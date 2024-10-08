@@ -149,7 +149,7 @@ const Recipes = ({ type }) => {
           <img src={coverImage} alt="No data" className="w-[300px] mb-6" />
           {error ? (
             <p className="text-2xl text-red-500">
-              Oops! Something went wrong with the server.
+              Oops! Something went wrong, we are fixing it.
             </p>
           ) : (
             <>
