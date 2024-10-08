@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
-const Dashboard = () => {
+const Dashboard = ({ darkMode }) => {
     // Routes hooks and passed data
     const navigator = useNavigate();
     const backendURL = import.meta.env.VITE_BACKEND_URL;
@@ -85,27 +84,27 @@ const Dashboard = () => {
     };
 
     return (
-        <div id="userDashboard" className="border-gray-200 border-t-[1px]">
+        <div id="userDashboard" className={`border-gray-200 border-t-[1px] ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
             <div className="grid md:grid-cols-[70%_30%] grid-cols-1 relative">
-                <div className="p-16 h-[100vh] relative overflow-y-scroll max-w-[100%]">
-                    <h1 className="title-font sm:text-4xl text-2xl mb-4 font-medium text-gray-900 font-[Merriweather]">
-                        {user.username}
-                    </h1>
+                <div className={`p-16 h-[100vh] relative overflow-y-scroll max-w-[100%] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                    <h1 className="title-font sm:text-4xl text-2xl mb-4 font-medium">{user.username}</h1>
                     <nav className="md:ml-auto md:mr-auto flex flex-wrap items-start text-base justify-star border-b border-gray-200">
-                        <span className="mr-5 hover:text-gray-900 cursor-pointer border-b border-red-700 pb-1">
+                        <span className={`mr-5 hover:text-gray-900 cursor-pointer border-b border-red-700 pb-1 ${darkMode ? 'text-gray-300 hover:text-white' : ''}`}>
                             My Recipe
                         </span>
-                        <span className="mr-5 hover:text-gray-900 cursor-pointer">Liked Recipe</span>
+                        <span className={`mr-5 hover:text-gray-900 cursor-pointer ${darkMode ? 'text-gray-300 hover:text-white' : ''}`}>
+                            Liked Recipe
+                        </span>
                     </nav>
                     <section className="text-gray-600 body-font overflow-hidden">
                         <div className="container px-4 py-8 mx-auto">
                             {loading ? (
-                                <div className="">
+                                <div>
                                     {Array.from({ length: 6 }).map((item, i) => {
                                         return (
                                             <div
                                                 key={i}
-                                                className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm mb-4"
+                                                className={`h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm mb-4 ${darkMode ? 'bg-gray-700' : ''}`}
                                             />
                                         );
                                     })}
@@ -116,7 +115,7 @@ const Dashboard = () => {
                                         return (
                                             <div
                                                 key={recipe._id}
-                                                className="cursor-pointer py-8 flex flex-wrap md:flex-nowrap"
+                                                className={`cursor-pointer py-8 flex flex-wrap md:flex-nowrap ${darkMode ? 'hover:bg-gray-700' : ''}`}
                                             >
                                                 <div className="md:w-[7rem] md:mb-0 mb-6 flex-shrink-0 flex flex-col">
                                                     <span className="font-semibold title-font text-gray-700">
@@ -129,7 +128,7 @@ const Dashboard = () => {
                                                     </span>
                                                 </div>
                                                 <div className="md:flex-grow">
-                                                    <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">
+                                                    <h2 className={`text-2xl font-medium title-font mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                                                         {recipe.name}
                                                     </h2>
                                                     <p className="leading-relaxed">
@@ -143,16 +142,14 @@ const Dashboard = () => {
                                                                     state: { recipe, user },
                                                                 })
                                                             }
+                                                            className={`mr-4 cursor-pointer ${darkMode ? 'text-gray-300 hover:text-white' : 'text-red-500'}`}
                                                         >
-                                                            {" "}
-                                                            <FontAwesomeIcon icon={faPen} />
-                                                            Update
+                                                            <FontAwesomeIcon icon={faPen} /> Update
                                                         </span>
                                                         <span
                                                             onClick={() => handleDelete(recipe._id)}
-                                                            className="mx-4 text-red-500"
+                                                            className={`mx-4 cursor-pointer ${darkMode ? 'text-red-300 hover:text-red-400' : 'text-red-500'}`}
                                                         >
-                                                            {" "}
                                                             <FontAwesomeIcon icon={faTrash} /> Delete
                                                         </span>
                                                     </span>
@@ -181,19 +178,14 @@ const Dashboard = () => {
                                 <h1 className="text-black">
                                     Followers: {user.followers.length} Following: {user.following.length}
                                 </h1>
-                                {/* <p className="mb-8 leading-relaxed">
-                  Meggings kinfolk echo park stumptown DIY, kale chips beard
-                  jianbing tousled. Chambray dreamcatcher trust fund, kitsch
-                  vice godard disrupt ramps
-                </p> */}
                                 <div className="flex justify-center">
                                     <button
-                                        className="inline-flex text-white bg-red-700 border-0 py-2 px-3 focus:outline-none hover:bg-red-500 rounded text-md m-2"
+                                        className={`inline-flex text-white bg-red-700 border-0 py-2 px-3 focus:outline-none hover:bg-red-500 rounded text-md m-2 ${darkMode ? 'bg-red-600 hover:bg-red-700' : ''}`}
                                         onClick={logout}
                                     >
                                         Log Out
                                     </button>
-                                    <button className="ml-4 inline-flex text-gray-700 bg-gray-100 py-2 px-3 focus:outline-none hover:bg-gray-200 rounded text-md border border-red-600 m-2">
+                                    <button className={`ml-4 inline-flex ${darkMode ? 'text-gray-300 bg-gray-700' : 'text-gray-700 bg-gray-100'} py-2 px-3 focus:outline-none hover:bg-gray-200 rounded text-md border border-red-600 m-2`}>
                                         Follow
                                     </button>
                                 </div>
