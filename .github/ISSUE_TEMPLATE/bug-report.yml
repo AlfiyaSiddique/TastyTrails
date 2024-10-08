@@ -1,7 +1,7 @@
 name: "🐞 Bug Report"
 description: Report a bug or propose to fix a bug
 title: "BUG: "
-labels: [Bug, Needs Triage]
+labels: ["enhancement", "Needs Triage"]
 body:
   - type: checkboxes
     attributes:
@@ -59,8 +59,6 @@ body:
         - label: "I agree to follow the Code of Conduct"
           required: true
         - label: "I'm a GSSOC'24 Ext contributor"
-          required: true
-
   - type: markdown
     attributes:
       value: |

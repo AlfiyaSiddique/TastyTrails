@@ -1,7 +1,7 @@
 name: "🌟 Enhancement"
 description: Enhance any existing feature / functionality which will improve the existing state of the application.
 title: "ENHANCEMENT: "
-labels: ["enhancement","Needs Triage"]
+labels: ["enhancement", "Needs Triage"]
 body:
   - type: checkboxes
     attributes:
@@ -18,7 +18,7 @@ body:
     attributes:
       label: Describe the improvement
       description: Describe your idea which you would like to implement on an existing module. Add necessary prototypes or rough sketch or an overview on how you will be proceeding.
-      placeholder: Eg - Improving the UI and making it responsive, Improving the animations etc. 
+      placeholder: Eg - Improving the UI and making it responsive, Improving the animations etc.
     validations:
       required: true
   - type: textarea
@@ -48,8 +48,6 @@ body:
         - label: "I agree to follow the Code of Conduct"
           required: true
         - label: "I'm a GSSOC'24 Ext contributor"
-          required: true
-
   - type: markdown
     attributes:
       value: |
