@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Cards from "../Components/Cards";
+import Cards from "../Components/Cards.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
@@ -8,6 +8,7 @@ import Pagination from "../Components/Pagination";
 import emptyStateImage1 from "/assets/blank1.svg";
 import emptyStateImage2 from "/assets/blank2.svg";
 import emptyStateImage3 from "/assets/blank3.svg";
+
 
 const Recipes = ({ type }) => {
   const [loading, setLoading] = useState(true);
