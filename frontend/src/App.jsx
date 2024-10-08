@@ -3,19 +3,19 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Navbar from "./Components/Navbar";
-import ScrollToTop from "./Components/Scrolltotop";
-import Landing from "./Pages/Landing";
-import Footer from "./Components/Footer";
-import Login from "./Pages/Login";
-import Signup from "./Pages/Signup";
-import Recipes from "./Pages/Recipes";
-import Dashboard from "./Pages/Dashboard";
+import Navbar from "./Components/Navbar.jsx";
+import ScrollToTop from "./Components/Scrolltotop.jsx";
+import Landing from "./Pages/Landing.jsx";
+import Footer from "./Components/Footer.jsx";
+import Login from "./Pages/Login.jsx";
+import Signup from "./Pages/Signup.jsx";
+import Recipes from "./Pages/Recipes.jsx";
+import Dashboard from "./Pages/Dashboard.jsx";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import AddRecipe from "./Pages/AddRecipe";
-import OneRecipe from "./Pages/OneRecipe";
-import UpdateRecipe from "./Pages/UpdateRecipe";
+import AddRecipe from "./Pages/AddRecipe.jsx";
+import OneRecipe from "./Pages/OneRecipe.jsx";
+import UpdateRecipe from "./Pages/UpdateRecipe.jsx";
 
 
 function App() {
