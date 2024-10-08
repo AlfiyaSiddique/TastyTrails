@@ -26,7 +26,7 @@ const Footer = () => {
 
      // Check for mandatory fields
      if (!name || !email || !message || rating === 0) {
-      alert("Name, Email, Message, and Rating are mandatory fields!");
+      toast("Name, Email, Message, and Rating are mandatory fields!");
       return; // Exit the function if validation fails
     }
 
