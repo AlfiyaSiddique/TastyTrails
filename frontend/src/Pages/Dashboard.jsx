@@ -13,11 +13,13 @@ const Dashboard = () => {
     const token = JSON.parse(localStorage.getItem("tastytoken"));
     const user = useLocation().state.user;
     const [loading, setLoading] = useState(true);
+    const [recipes, setRecipes] = useState([]);
+    const [error, setError] = useState(null); // Track any errors
 
-    const [recipes, setRecipe] = useState([]);
-
-    // Recievinf data from backend
-    useEffect(() => {
+    // Function to fetch all recipes for the user
+    const fetchRecipes = () => {
+        setLoading(true);
+        setError(null); // Reset any previous errors
         axios
             .post(
                 `${backendURL}/api/recipe/readall`,
@@ -29,17 +31,26 @@ const Dashboard = () => {
                 }
             )
             .then((res) => {
-                setRecipe(res.data.recipes);
+                setRecipes(res.data.recipes);
             })
             .catch((err) => {
-                console.log(err);
+                console.error("Error fetching recipes:", err);
+                setError("Failed to fetch recipes. Please try again.");
             })
             .finally(() => setLoading(false));
-    }, []);
+    };
 
-    // Function to handle when a recipe is about to delete
+    useEffect(() => {
+        if (user._id) {
+            fetchRecipes(); // Only fetch recipes if user ID is available
+        } else {
+            console.error("User ID is missing!");
+            setError("User data is not available.");
+        }
+    }, [user._id]);
+
     const handleDelete = (id) => {
-        const val = confirm("Are you sure you want to delete this recipe");
+        const val = confirm("Are you sure you want to delete this recipe?");
         if (val) {
             axios
                 .post(
@@ -53,14 +64,16 @@ const Dashboard = () => {
                 )
                 .then((res) => {
                     if (res.data.success) {
-                        toast.success("Recipe Deleted Succesfully");
-                        navigator(`/user/${user._id}`, { state: { user } });
+                        toast.success("Recipe Deleted Successfully");
+                        setRecipes((prevRecipes) =>
+                            prevRecipes.filter((recipe) => recipe._id !== id)
+                        );
                     } else {
-                        toast.error("Fail to Delete. Please try again later.");
+                        toast.error("Failed to delete. Please try again later.");
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.error("Error deleting recipe:", err);
                 });
         }
     };
