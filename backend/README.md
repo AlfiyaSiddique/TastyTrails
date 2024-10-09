@@ -9,7 +9,7 @@
    Go to the server folder of your project:
 
    ```bash
-   cd <your-project-path>/server
+   cd <your-project-path>/backend
 
    ```
 
