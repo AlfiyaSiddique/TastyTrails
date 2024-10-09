@@ -38,10 +38,24 @@ app.use(
     })
 );
 
+const collectDefaultMetrics = client.collectDefaultMetrics;
+
+collectDefaultMetrics({ register: client.register });
+
 app.use("/api", router);
 
-app.get("/", (req, res) => {
-    res.send("TastyTrails Backend");
+app.get("/", (_, res) => {
+  res.send("TastyTrails Backend");
+});
+
+app.get("/ping", async (_, res) => {
+  res.status(200).json({ message: "pong" });
+});
+
+app.get("/metrics", async (_, res) => {
+  res.setHeader("Content-Type", client.register.contentType);
+  const metrics = await client.register.metrics();
+  res.send(metrics);
 });
 
 // Database Connection and server
