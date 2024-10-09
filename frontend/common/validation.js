@@ -17,7 +17,7 @@ const validate = {
       // Error if the name contains special characters or numbers
       return {
         firstName: true,
-        firstNameError: "Special characters or numbers are not allowed.",
+        firstNameError: "No symbols or digits..",
       };
     } else {
       return { firstName: false, firstNameError: false };
@@ -34,7 +34,7 @@ const validate = {
       // Error if the last name contains special characters or numbers
       return {
         lastName: true,
-        lastNameError: "Special characters or numbers are not allowed.",
+        lastNameError: "No symbols or digits.",
       };
     } else {
       return { lastName: false, lastNameError: false };
