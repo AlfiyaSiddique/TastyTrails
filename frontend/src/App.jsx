@@ -64,6 +64,7 @@ function App() {
           <Route path="/user/:id/new/recipe" element={<AddRecipe />} />
           <Route path="/user/:id/update/recipe" element={<UpdateRecipe />} />
           <Route path="/recipe/:id" element={<OneRecipe/>} />
+          <Route path="/offline" element={<OfflineMessage />} />
         </Routes>
         <Footer />
       </BrowserRouter>
