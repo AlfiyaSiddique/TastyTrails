@@ -57,12 +57,25 @@ const Landing = () => {
     <div className="min-h-screen" id="Landing">
       {/* -------------------------- Hero Section ----------------------  */}
       <section id="Hero" className="py-4 my-2">
-        <div className="min-h-screen flex justify-center items-start">
-          <h1 className="animated-text font-extrabold text-red-700 text-[4rem] text-center lg:mt-[5rem] md:w-[40%] sm:w-[60%] font-[Roboto]">
-            Where Flavour Meets Perfection
-          </h1>
-        </div>
-      </section>
+      <div className="min-h-screen flex justify-center items-start">
+        <h1
+          className="font-extrabold text-red-700 text-[4rem] text-center lg:mt-[5rem] md:w-[40%] sm:w-[60%] font-[Roboto]"
+          style={{
+            transition: 'color 0.3s ease, transform 0.3s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#ff6347'; // Change color on hover
+            e.currentTarget.style.transform = 'scale(1.05)'; // Scale up on hover
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = ''; // Reset color
+            e.currentTarget.style.transform = ''; // Reset scale
+          }}
+        >
+          Where Flavour Meets Perfection
+        </h1>
+      </div>
+    </section>
 
       {/* -------------------------- Features Section ----------------------  */}
       <section id="Fetaure" className="py-4 my-20 mx-8">
