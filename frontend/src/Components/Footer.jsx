@@ -11,7 +11,7 @@ import { Link, useLocation } from "react-router-dom";
 const Footer = () => {
   const path = useLocation().pathname;
   return (
-    <div className="fixed bottom-0 bg-white w-full">
+    <div className="fixed bottom-0 bg-white  w-full">
       {path !== "/user" && (
         <footer className="text-gray-600 body-font">
           <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
