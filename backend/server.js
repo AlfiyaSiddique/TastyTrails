@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import router from "./routes/web.js";
 import mongoose from "mongoose";
 import { rateLimit } from "./middleware/rateLimit.js";
-
+import client from "prom-client"
 dotenv.config();
 
 const app = express();
