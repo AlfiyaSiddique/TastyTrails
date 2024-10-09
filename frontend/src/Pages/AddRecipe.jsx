@@ -1,14 +1,11 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import validate from "../../common/validation.js";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-const AddRecipe = () => {
-  //  Route hooks
+const AddRecipe = ({ darkMode }) => {
+  // Route hooks
   const user = useLocation().state.user;
   const navigator = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
@@ -18,7 +15,6 @@ const AddRecipe = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [steps, setSteps] = useState("");
-  const [arrUpdate, setArrUpdate] = useState(false);
   const [error, setError] = useState({
     name: false,
     nameError: false,
@@ -145,30 +141,30 @@ const AddRecipe = () => {
             toast.success(res.data.message);
             navigator(`/user/${user._id}`, { state: { user } });
           } else {
-            toast.error("Some Error occured please try again later.");
+            toast.error("Some error occurred. Please try again later.");
           }
         })
         .catch((err) => {
-          toast.success("Some Error occured please try again later.");
+          toast.error("Some error occurred. Please try again later.");
           console.log(err);
         });
     } else {
-      toast.error("Fill all fields with valid values");
+      toast.error("Fill all fields with valid values.");
     }
   };
 
   return (
-    <div className="w-[80vw] m-auto my-12">
+    <div className={`w-[80vw] m-auto my-12 ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}>
       <h1 className="text-3xl font-extrabold text-red-700 my-8 text-center">
         New Recipe
       </h1>
       <form>
-        <div className="md:grid md:grid-cols-[50%_50%] md:space-x-4  ">
+        <div className="md:grid md:grid-cols-[50%_50%] md:space-x-4">
           {!selectedImage ? (
             <div className="flex items-center justify-center w-full">
               <label
                 htmlFor="dropzone-file"
-                className="h-[70vh] flex flex-col items-center justify-center w-full border-2 border-red-700 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                className={`h-[70vh] flex flex-col items-center justify-center w-full border-2 ${darkMode ? "border-red-600" : "border-red-700"} border-dashed rounded-lg cursor-pointer ${darkMode ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-50 hover:bg-gray-100"}`}
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <svg
@@ -186,14 +182,14 @@ const AddRecipe = () => {
                       d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                     />
                   </svg>
-                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <p className="mb-2 text-sm">
                     <span className="font-semibold">
                       Click to upload Recipe Image
                     </span>{" "}
                     or drag and drop
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    PNG, JPG and JPEG(MAX. 800x400px)
+                  <p className="text-xs">
+                    PNG, JPG and JPEG (MAX. 800x400px)
                   </p>
                 </div>
                 <input
@@ -228,7 +224,7 @@ const AddRecipe = () => {
               id="name"
               value={form.name}
               placeholder="Recipe Name"
-              className="bg-gray-50 mb-4 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className={`bg-gray-50 mb-4 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ${darkMode ? "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" : "dark:bg-white dark:border-gray-300 dark:placeholder-gray-600 dark:text-gray-800 dark:focus:ring-blue-500 dark:focus:border-blue-500"}`}
               required={true}
               onChange={(e) => {
                 handleChange(e, "string");
@@ -248,252 +244,123 @@ const AddRecipe = () => {
             <textarea
               id="description"
               name="description"
-              className="w-full h-40 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out mb-4"
+              className={`w-full mb-4 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 ${darkMode ? "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" : "dark:bg-white dark:border-gray-300 dark:placeholder-gray-600 dark:text-gray-800 dark:focus:ring-blue-500 dark:focus:border-blue-500"}`}
+              placeholder="Description"
               value={form.description}
               onChange={(e) => {
                 handleChange(e, "string");
                 handleError(e);
               }}
-            ></textarea>
+              required={true}
+            />
             {error.description && (
               <p className="text-red-500 text-sm">{error.descriptionError}</p>
             )}
-            <div>
-              <label
-                htmlFor="type"
-                className="text-red-700 font-semibold text-lg text-center"
-              >
-                Choose Categories:
-              </label>
-              <div className="flex md:justify-between md:flex-row  flex-col gap-2">
-                <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                  <input
-                    id="type1"
-                    type="checkbox"
-                    value="Main-meal"
-                    name="type"
-                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    onChange={handleCheckbox}
-                  />
-                  <label
-                    htmlFor="type1"
-                    className="w-full py-2 ms-2 text-sm font-bold text-gray-900 dark:text-gray-300"
-                  >
-                    Main Meal
-                  </label>
-                </div>
-                <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                  <input
-                    id="type2"
-                    type="checkbox"
-                    value="Small-bite"
-                    name="type"
-                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    onChange={handleCheckbox}
-                  />
-                  <label
-                    htmlFor="type2"
-                    className="w-full py-2 ms-2 text-sm font-bold text-gray-900 dark:text-gray-300"
-                  >
-                    Small Bite
-                  </label>
-                </div>
-                <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                  <input
-                    id="type3"
-                    type="checkbox"
-                    value="Healthy"
-                    name="type"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    onChange={handleCheckbox}
-                  />
-                  <label
-                    htmlFor="type3"
-                    className="w-full py-2 ms-2 text-sm font-bold text-gray-900 dark:text-gray-300"
-                  >
-                    Healthy
-                  </label>
-                </div>
-              </div>
-              {error.type && (
-                <p className="text-red-500 text-sm">{error.typeError}</p>
-              )}
-            </div>
-          </div>
-        </div>
 
-        <div className="sm:grid sm:grid-cols-[40%_60%] my-16 flex flex-col gap-y-8 ">
-          <div className="px-4 border-e border-gray-200 ">
+            <label className="text-red-700 font-semibold text-lg text-center mb-2">Select Categories</label>
+            <div className="flex space-x-2 mb-4">
+              <label>
+                <input type="checkbox" value="Breakfast" onChange={handleCheckbox} />
+                Breakfast
+              </label>
+              <label>
+                <input type="checkbox" value="Lunch" onChange={handleCheckbox} />
+                Lunch
+              </label>
+              <label>
+                <input type="checkbox" value="Dinner" onChange={handleCheckbox} />
+                Dinner
+              </label>
+              <label>
+                <input type="checkbox" value="Dessert" onChange={handleCheckbox} />
+                Dessert
+              </label>
+            </div>
+            {error.type && (
+              <p className="text-red-500 text-sm">{error.typeError}</p>
+            )}
+
             <label
               htmlFor="ingredients"
-              className="text-red-700 font-bold text-lg"
+              className="text-red-700 font-semibold text-lg text-center"
             >
-              List of Ingredients
+              Ingredients
             </label>
-            <ul className="list-disc list-inside">
-              {form.ingredients.map((item, index) => {
-                return (
-                  <div
-                    className="py-1 flex justify-between items-center"
-                    key={index}
-                  >
-                    <li className="list-item">{item}</li>
-                    <span className="inline-flex items-center mt-4">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        onClick={() => {
-                          setIngredient(item);
-                          setArrUpdate(index);
-                        }}
-                      />
-                      <FontAwesomeIcon
-                        className="mx-4 text-red-500"
-                        icon={faTrash}
-                        onClick={() =>
-                          setForm((prev) => {
-                            let arr = [...form.ingredients];
-                            arr.splice(index, 1);
-                            return { ...prev, ingredients: arr };
-                          })
-                        }
-                      />
-                    </span>
-                  </div>
-                );
-              })}
+            <input
+              type="text"
+              name="ingredients"
+              id="ingredients"
+              value={ingredient}
+              placeholder="Add Ingredient"
+              className={`bg-gray-50 mb-4 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ${darkMode ? "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" : "dark:bg-white dark:border-gray-300 dark:placeholder-gray-600 dark:text-gray-800 dark:focus:ring-blue-500 dark:focus:border-blue-500"}`}
+              onChange={(e) => setIngredient(e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                if (ingredient.trim() !== "") {
+                  handleChange({ target: { name: "ingredients", value: ingredient } }, "array");
+                  setIngredient("");
+                }
+              }}
+              className="text-white bg-red-700 hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+            >
+              Add Ingredient
+            </button>
+            <ul className="list-disc pl-5 mb-4">
+              {form.ingredients.map((ing, index) => (
+                <li key={index}>{ing}</li>
+              ))}
             </ul>
             {error.ingredients && (
               <p className="text-red-500 text-sm">{error.ingredientsError}</p>
             )}
 
-            <input
-              type="text"
-              name={"ingredients"}
-              id="ingredients"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out my-4"
-              onChange={(e) => setIngredient(e.target.value)}
-              value={ingredient}
-            />
-            {/* added validation  */}
-
-            <button
-              disabled={ingredient.trim() === ""}
-              type="button"
-              className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all"
-              onClick={() => {
-                if (typeof arrUpdate === "number") {
-                  setForm((prev) => {
-                    let arr = form.ingredients;
-                    arr[arrUpdate] = ingredient;
-                    return { ...prev, ingredients: arr };
-                  });
-                  setArrUpdate(false);
-                } else {
-                  setForm((prev) => {
-                    return {
-                      ...prev,
-                      ingredients: [...prev.ingredients, ingredient],
-                    };
-                  });
-                }
-                handleError({
-                  target: { name: "ingredients", value: ingredient },
-                });
-                setIngredient("");
-              }}
+            <label
+              htmlFor="steps"
+              className="text-red-700 font-semibold text-lg text-center"
             >
-              {typeof arrUpdate === "number" && ingredient !== ""
-                ? "Update"
-                : "Add"}
-            </button>
-          </div>
-          <div className="px-4 ">
-            <label htmlFor="steps" className="text-red-700 font-bold text-lg">
               Steps
             </label>
-            <ol className="list-inside list-decimal">
-              {form.steps.map((item, index) => {
-                return (
-                  <div
-                    className="py-1 flex justify-between items-center"
-                    key={index}
-                  >
-                    <li className="list-item">{item}</li>
-                    <span className="inline-flex items-center mt-4">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        onClick={() => {
-                          setSteps(item);
-                          setArrUpdate(index);
-                        }}
-                      />
-                      <FontAwesomeIcon
-                        className="mx-4 text-red-500 cursor-pointer"
-                        icon={faTrash}
-                        onClick={() =>
-                          setForm((prev) => {
-                            let arr = [...form.steps];
-                            arr.splice(index, 1);
-                            return { ...prev, steps: arr };
-                          })
-                        }
-                      />
-                    </span>
-                  </div>
-                );
-              })}
-            </ol>
+            <textarea
+              id="steps"
+              name="steps"
+              className={`w-full mb-4 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 ${darkMode ? "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" : "dark:bg-white dark:border-gray-300 dark:placeholder-gray-600 dark:text-gray-800 dark:focus:ring-blue-500 dark:focus:border-blue-500"}`}
+              placeholder="Add Step"
+              value={steps}
+              onChange={(e) => setSteps(e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                if (steps.trim() !== "") {
+                  handleChange({ target: { name: "steps", value: steps } }, "array");
+                  setSteps("");
+                }
+              }}
+              className="text-white bg-red-700 hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+            >
+              Add Step
+            </button>
+            <ul className="list-disc pl-5 mb-4">
+              {form.steps.map((step, index) => (
+                <li key={index}>{step}</li>
+              ))}
+            </ul>
             {error.steps && (
               <p className="text-red-500 text-sm">{error.stepsError}</p>
             )}
-            <input
-              type="text"
-              name="steps"
-              id="steps"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out my-4"
-              onChange={(e) => {
-                setSteps(e.target.value);
-              }}
-              value={steps}
-            />
-            {/* added validation  */}
-            <button
-              disabled={steps.trim() === ""}
-              className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all"
-              type="button"
-              onClick={() => {
-                if (typeof arrUpdate === "number") {
-                  setForm((prev) => {
-                    let arr = form.steps;
-                    arr[arrUpdate] = steps;
-                    return { ...prev, ingredients: arr };
-                  });
-                  setArrUpdate(false);
-                } else {
-                  setForm((prev) => {
-                    return { ...prev, steps: [...prev.steps, steps] };
-                  });
-                }
 
-                handleError({ target: { name: "steps", value: steps } });
-                setSteps("");
-              }}
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="w-full text-white bg-red-700 hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
             >
-              {typeof arrUpdate === "number" && steps !== ""
-                ? "Update Steps"
-                : "Add Steps"}
+              Submit Recipe
             </button>
           </div>
         </div>
       </form>
-      <div onClick={handleSubmit} className="flex justify-center items-center">
-        <button
-          type="submit"
-          className="bg-red-700 border-0 py-1 px-32 focus:outline-none hover:bg-red-500 rounded text-white mt-4 md:mt-0 transition-all"
-        >
-          Publish
-        </button>
-      </div>
     </div>
   );
 };
