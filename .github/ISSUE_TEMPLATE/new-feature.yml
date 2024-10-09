@@ -1,7 +1,7 @@
 name: "🚀 New feature"
 description: Suggest any new feature / functionality which will actually be a meaningful addon to the application.
 title: "FEATURE: "
-labels: ["enhancement","Needs Triage"]
+labels: ["enhancement", "Needs Triage"]
 body:
   - type: checkboxes
     attributes:
@@ -47,9 +47,6 @@ body:
         - label: "I agree to follow the Code of Conduct"
           required: true
         - label: "I'm a GSSOC'24 Ext contributor"
-          required: true
-
-
   - type: markdown
     attributes:
       value: |
