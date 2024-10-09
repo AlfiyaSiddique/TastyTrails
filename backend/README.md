@@ -44,7 +44,7 @@
 
 1. **Configure Prometheus:**
 
-   - Open the `prometheus-config.yml` file.
+   - Rename the `prometheus-config.example.yml` file to `prometheus-config.yml`.
    - In the `targets` array, add the IP address of your local machine
      - If you're running this on a production server, replace it with the production server's IP address.
 
