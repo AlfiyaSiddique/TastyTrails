@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 const Signup = () => {
   const navigator = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const [passwordFocused,setPasswordFocused]=useState(false);
   const [show, setShow] = useState(false); 
   const [form, setForm] = useState({
     // Signup Form Data
