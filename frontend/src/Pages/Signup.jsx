@@ -40,24 +40,29 @@ const Signup = () => {
   });
 
   const handleChange = async (e) => {
-    // Handling Signup Form
     const { name, value } = e.target;
+  
     let message = {};
     if (name === "cpassword") {
       message = validate.cpasssword(value, form.password);
     } else if (name === "username") {
-      message = await validate.username(value);
+      const trimmedValue = value.trim(); // Trim the username value
+      message = await validate.username(trimmedValue); // Pass the trimmed value for validation
+      setForm((prev) => {
+        return { ...prev, [name]: trimmedValue }; // Set the trimmed value in the form state
+      });
     } else {
       message = validate[name](value);
+      setForm((prev) => {
+        return { ...prev, [name]: value };
+      });
     }
+  
     setError((prev) => {
       return { ...prev, ...message };
     });
-
-    setForm((prev) => {
-      return { ...prev, [name]: value };
-    });
   };
+  
 
   // Get all the current username present
   const getUsernames = async () => {
