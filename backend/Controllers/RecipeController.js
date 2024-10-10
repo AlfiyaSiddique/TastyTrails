@@ -277,7 +277,7 @@ const deleteRecipe = async (req, res) => {
         owner: owner,
         repo: repo,
         path: result,
-        message: 'deleted the image',
+        message: `deleted the image ${result.replace('TastyTrails/Recipe/',' ')}`,
         committer: {
           name: recipe.author,
           email: g_email
