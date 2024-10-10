@@ -33,3 +33,26 @@
     font-size: 4rem; /* Final font size */
   }
 }
+
+
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fafafc; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background:  #adacac;;
+  border-radius: 12px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #c2bfbf; 
+  border-radius: 12px;
+}
