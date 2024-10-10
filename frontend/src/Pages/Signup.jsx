@@ -6,7 +6,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import useGoogleAuth from "../../common/useGoogleAuth"
 
 const Signup = () => {
   const navigator = useNavigate();
@@ -108,6 +108,32 @@ const Signup = () => {
       toast.error("Fill all fields with valid values");
     }
   };
+
+  const handleGoogleSignup = async (googleUser) => {
+  const googleForm = {
+    // Defining Google-specific form data here
+    firstName: googleUser.firstName,
+    lastName: googleUser.lastName,
+    email: googleUser.email,
+    profile: googleUser.profile, 
+    username: googleUser.username, 
+    password: googleUser.password,
+  };
+  try {
+    const res = await axios.post(`${backendURL}/api/signup`, googleForm);
+    if (res.data.success) {
+      toast.success("Google Signup Successful");
+      localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+      navigator(`/user/${res.data.user._id}`, {
+        state: { user: res.data.user },
+      });
+    }
+  } catch (err) {
+    toast.error(err.response.data.message || "Google signup failed");
+  }
+};
+
+const googleSignup = useGoogleAuth(handleGoogleSignup, true);
 
   return (
     <div>
@@ -292,8 +318,10 @@ const Signup = () => {
                 >
                   Sign Up
                 </button>
-
-                {/* Already Have an Account */}
+              </form>
+               <button onClick={() => googleSignup()} className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ">
+                 Sign up with Google</button>
+                 {/* Already Have an Account */}
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already Have an Account?{" "}
                   <Link
@@ -303,7 +331,6 @@ const Signup = () => {
                     Login
                   </Link>
                 </p>
-              </form>
             </div>
           </div>
         </div>

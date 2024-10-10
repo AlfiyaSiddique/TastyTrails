@@ -1,15 +1,15 @@
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
+import { useNavigate } from "react-router-dom";
+import useGoogleAuth from "../../common/useGoogleAuth"
 const Login = () => {
-  const navigator = useNavigate();
+  const navigate = useNavigate(); 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
-
   const [show, setShow] = useState(false); //Eye EyeSlash Toggle
   const [form, setForm] = useState({
     searchTerm: "",
@@ -23,25 +23,33 @@ const Login = () => {
       return { ...prev, [name]: value };
     });
   };
+  
 
   // Handle Login Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(`${backendURL}/api/login`, form)
-      .then((res) => {
-        if (res.data.success) {
-          toast.success("Login Successful");
-          localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
-          navigator(`/user/${res.data.user._id}`, {
-            state: { user: res.data.user },
-          });
-        }
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
+    handleLogin(form);
   };
+
+  // Reusable function
+  const handleLogin = (formData) => {
+  axios
+    .post(`${backendURL}/api/login`, formData)
+    .then((res) => {
+      if (res.data.success) {
+        toast.success("Login Successful");
+        localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+        navigate(`/user/${res.data.user._id}`, {
+          state: { user: res.data.user },
+        });
+      }
+    })
+    .catch((err) => {
+      toast.error(err.response.data.message);
+    });
+  };
+  // Using custom Google Auth hook
+  const googleLogin = useGoogleAuth(handleLogin);
 
   return (
     <div>
@@ -102,6 +110,9 @@ const Login = () => {
                 >
                   Sign in
                 </button>
+              </form>
+                <button onClick={() => googleLogin()} className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ">
+                 Sign in with Google</button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
                   <Link
@@ -110,8 +121,7 @@ const Login = () => {
                   >
                     Sign up
                   </Link>
-                </p>
-              </form>
+                </p>      
             </div>
           </div>
         </div>
