@@ -49,7 +49,20 @@ export default defineConfig({
         prefer_related_applications: false
       },
       workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         // You can add custom Workbox settings here if necessary
+        runtimeCaching:[{
+          urlPattern:({url})=>{
+            return url.pathname.startsWith("/api");
+          },
+          handler:"CacheFirst",
+          options:{
+            cacheName:"api-cache",
+            cacheableResponse:{
+              statuses:[0,200]
+            }
+          }
+        }]
       }
     })
   ],
