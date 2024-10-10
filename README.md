@@ -8,7 +8,7 @@
 
 TastyTrails is designed to offer an immersive experience for discovering and contributing to diverse recipes. The sleek **frontend**, built with **ReactJS**, **Tailwind CSS**, and **TypeScript**, ensures a visually captivating and user-friendly interface. On the backend, **Node.js**, **Express.js**, and **MongoDB** power robust data handling and API functionality for smooth performance.
 
-**[For GSSOC24-Ext Contributors](#for-gssoc24-ext-contributors)**<br/>
+**[For GSSOC24-Ext Contributors](for-gssoc24-ext-contributors)**<br/>
 **[For GSSOC24-Ext Mentors](https://github.com/AlfiyaSiddique/TastyTrails/discussions/21)**
 
 ---
@@ -67,6 +67,15 @@ Feel free to open an issue for any of the tasks above or suggest your ideas. You
 - **Level 3**: New feature implementations.
 
 ---
+## 🚨 **Contribution Guidelines**
+---
+Issues are assigned on a first come, first serve basis.
+
+Any changes related to the design of the website must have a design proposal or reference first.
+
+Pull requests (PRs) should only be raised for assigned issues.
+
+Start working on the issue only after it is assigned to you.
 
 ## 👀 Our Contributors
 
