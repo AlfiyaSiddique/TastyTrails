@@ -1,42 +1,54 @@
 import Recipe from "../models/Recipe.js"
 import axios from "axios"
-
+import User from "../models/User.js"
+import mongoose from "mongoose"
 import { Octokit } from '@octokit/rest';
 
-const owner = process.env.OWNER; 
-const repo = process.env.REPO; 
-const branch = process.env.BRANCH; 
-const email=process.env.GITHUB_EMAIL;
+const g_owner = process.env.OWNER; 
+const g_repo = process.env.REPO; 
+const g_branch = process.env.BRANCH; 
+const g_email=process.env.GITHUB_EMAIL;
 /**
  * @route {POST} /api/recipe/add
  * @description Add a REcipe to database
  * @access private
  */
 
-const addRecipe = async (req, res)=>{
-  try{ 
-    const {name, description, ingredients, steps,type, image, imagename, user, author} = req.body
-        const lastDocument = await Recipe.findOne().sort({ _id: -1 }); 
-        const unique = lastDocument._id.toString()
-        const URL = await imageToGithub(image, imagename, unique.slice(-4))
-        const data = {
-          user,
-          name,
-          description,
-          ingredients,
-          steps,
-          image: URL,
-          author,
-          type
-        }
-        const newRecipe =  new Recipe(data)
-        const saved = await newRecipe.save()
-        return res.status(200).json({success: true, message: "Recipe Published Successfully"})
-  }catch(error){
+const addRecipe = async (req, res) => {
+  try {
+    const { name, description, ingredients, steps, type, image, imagename, user, author } = req.body;
+    const lastDocument = await Recipe.findOne().sort({ _id: -1 }); 
+    const unique = lastDocument ? lastDocument._id.toString().slice(-4) : "0000";
+    
+    // Upload the image to GitHub
+    const imageUrl = await imageToGithub(image, imagename, unique);
+
+    // If image upload fails, return an error
+    if (!imageUrl) {
+      return res.status(422).json({ success: false, message: "Image upload failed" });
+    }
+
+    // Prepare the recipe data
+    const data = {
+      user,
+      name,
+      description,
+      ingredients,
+      steps,
+      image: imageUrl,  // Save the URL of the uploaded image
+      author,
+      type,
+    };
+
+    const newRecipe = new Recipe(data);
+    const saved = await newRecipe.save();
+
+    return res.status(200).json({ success: true, message: "Recipe Published Successfully" });
+  } catch (error) {
     console.log(error);
-    res.status(404).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
+};
 
 /**
  * @route {POST} /api/recipes
@@ -99,42 +111,79 @@ const allRecipe = async (req, res) => {
  * @description Uploads Image to a github repo and returns the downloadable link
  * @access private
  */
-const imageToGithub = async (fileImage, name, unique)=>{
+const imageToGithub = async (fileImage, name, unique) => {
+  const owner = g_owner; 
+  const repo = g_repo; 
+  const branch = g_branch; 
 
-  const base64Content = fileImage.split(';base64,').pop();
-  const fileContent = Buffer.from(base64Content, 'base64').toString('base64');
+  const base64Content = fileImage.split(';base64,').pop(); // Extract base64 content
+  const fileContent = Buffer.from(base64Content, 'base64').toString('base64'); // Re-encode to base64
   const path = `TastyTrails/Recipe/${unique}${name}`; 
   const message = `Add ${unique} ${name} via API`; // Commit message
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
   try {
-    const response = await axios.put(
-      url,
-      {
-        message,
-        content: fileContent,
-        branch,
-      },
-      {
+    // Step 1: Check if the file already exists
+    let fileExists = false;
+    try {
+      const response = await axios.get(url, {
         headers: {
           Authorization: `TOKEN ${process.env.TOKEN}`,
-          'X-GitHub-Api-Version': '2022-11-28'
+          'X-GitHub-Api-Version': '2022-11-28',
         },
+      });
+      if (response.status === 200) {
+        fileExists = true;
       }
-    );
+    } catch (error) {
+      // If file does not exist (404), proceed with creating it
+      if (error.response && error.response.status === 404) {
+        fileExists = false;
+      } else {
+        throw error;
+      }
+    }
 
-    if (response.status === 201) {
-      return response.data.content.download_url; // Returns the URL of the uploaded image
+    // Step 2: Upload or update the file based on existence
+    const requestPayload = {
+      message,
+      content: fileContent,
+      branch,
+    };
+
+    if (fileExists) {
+      // If file exists, get the sha and update it
+      const sha = (await axios.get(url, {
+        headers: {
+          Authorization: `TOKEN ${process.env.TOKEN}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      })).data.sha;
+
+      requestPayload.sha = sha; // Required for updates
+    }
+
+    // Step 3: Upload or update the file
+    const response = await axios.put(url, requestPayload, {
+      headers: {
+        Authorization: `TOKEN ${process.env.TOKEN}`,
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    });
+
+    if (response.status === 201 || response.status === 200) {
+      return response.data.content.download_url; // Return the URL of the uploaded image
     } else {
       console.error('Failed to upload image:', response.status, response.statusText);
       return null;
     }
+
   } catch (error) {
-    console.error('Error uploading image:', error.message);
     console.error('Error uploading image:', error.response ? error.response.data : error.message);
     return null;
   }
-}
+};
+
 
 /**
  * @POST /api/recipes/readall
@@ -191,6 +240,9 @@ const deleteRecipe = async (req, res) => {
     }
 
     const imageName = recipe.image;
+    const owner = g_owner;
+    const repo = g_repo;
+    const branch=g_branch;
     const result = trimUrl(imageName, owner, repo);
 
     const octokit = new Octokit({
@@ -200,7 +252,7 @@ const deleteRecipe = async (req, res) => {
     function trimUrl(url, owner, repo) {
       // To remove the unncessary part from the URL
       const parsedUrl = new URL(url);
-      const trimmedPath = parsedUrl.pathname.slice(1);
+      const trimmedPath = decodeURIComponent(parsedUrl.pathname.slice(1)); // Decode the URL and remove leading '/'
       const partToRemove = `${owner}/${repo}/${branch}/`;
       const finalPath = trimmedPath.replace(partToRemove, '');
 
@@ -219,8 +271,8 @@ const deleteRecipe = async (req, res) => {
           'X-GitHub-Api-Version': '2022-11-28'
         }
         });
-        const sha=response.data.sha;
         // Getting the SHA key so that it can assist in deletion
+        const sha=response.data.sha;
         await octokit.request('DELETE /repos/{owner}/{repo}/contents/{path}', {
         owner: owner,
         repo: repo,
@@ -228,30 +280,31 @@ const deleteRecipe = async (req, res) => {
         message: 'deleted the image',
         committer: {
           name: recipe.author,
-          email: email
+          email: g_email
         },
         sha:sha,
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
-    })
+    });
       } catch (error) {
         // Handle and log any errors
         console.error('Error fetching file content:', error.response ? error.response.data : error.message);
+        throw new Error('Failed to delete image from GitHub');
       }
     };
 
-    // Execute the function
-    fetchFileContent();
+    // Try to delete the file from GitHub
+    await fetchFileContent();
    
 
-    // Remove the recipe from the database
+    // If successful, delete the recipe from the database
     await Recipe.deleteOne({ _id: req.body.id });
 
     return res.status(200).json({ success: true, message: "Recipe Deleted Successfully" });
   } catch (error) {
-    console.error('Error fetching file from GitHub:', error.response ? error.response.data : error.message);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    console.error('Error deleting recipie:', error.response ? error.response.data : error.message);
+    res.status(500).json({ success: false, message: error.message || "Internal server error" });
   }
 };
 

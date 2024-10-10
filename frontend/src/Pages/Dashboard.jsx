@@ -73,7 +73,7 @@ const Dashboard = () => {
                     }
                 })
                 .catch((err) => {
-                    console.error("Error deleting recipe:", err);
+                        toast.error(`Error deleting the recipe: ${err.message}`);
                 });
         }
     };
