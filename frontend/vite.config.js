@@ -62,7 +62,8 @@ export default defineConfig({
               statuses:[0,200]
             }
           }
-        }]
+        },
+      ]
       }
     })
   ],
