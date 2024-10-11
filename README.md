@@ -77,6 +77,8 @@ Pull requests (PRs) should only be raised for assigned issues.
 
 Start working on the issue only after it is assigned to you.
 
+When raising PRs, make sure to tag the issue by using the format: fixes #issue_number
+
 ## 👀 Our Contributors
 
 - We extend our heartfelt gratitude for your invaluable contribution to our project! Your efforts play a pivotal role in elevating this project to greater heights.
