@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,12 +6,11 @@ import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
 const Signup = () => {
   const navigator = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
-  const [passwordFocused,setPasswordFocused]=useState(false);
-  const [show, setShow] = useState(false); 
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     // Signup Form Data
     firstName: "",
@@ -40,29 +38,24 @@ const Signup = () => {
   });
 
   const handleChange = async (e) => {
+    // Handling Signup Form
     const { name, value } = e.target;
-  
     let message = {};
     if (name === "cpassword") {
       message = validate.cpasssword(value, form.password);
     } else if (name === "username") {
-      const trimmedValue = value.trim(); // Trim the username value
-      message = await validate.username(trimmedValue); // Pass the trimmed value for validation
-      setForm((prev) => {
-        return { ...prev, [name]: trimmedValue }; // Set the trimmed value in the form state
-      });
+      message = await validate.username(value.trim());  // Trim spaces
     } else {
       message = validate[name](value);
-      setForm((prev) => {
-        return { ...prev, [name]: value };
-      });
     }
-  
     setError((prev) => {
       return { ...prev, ...message };
     });
+
+    setForm((prev) => {
+      return { ...prev, [name]: value };
+    });
   };
-  
 
   // Get all the current username present
   const getUsernames = async () => {
@@ -88,11 +81,14 @@ const Signup = () => {
 
     if (submitable) {
       const usernames = await getUsernames();
-      if (usernames.includes(form.username)) {
-        toast.error("Username already exist please try another.");
+      const trimmedUsername = form.username.trim().toLowerCase(); // Trim and lowercase username
+
+      // Check if the trimmed, case-insensitive username exists
+      if (usernames.some((uname) => uname.toLowerCase() === trimmedUsername)) {
+        toast.error("Username already exists, please try another.");
       } else {
         axios
-          .post(`${backendURL}/api/signup`, form)
+          .post(`${backendURL}/api/signup`, { ...form, username: trimmedUsername })
           .then((res) => {
             if (res.data.success) {
               toast.success("User Created Successfully");
@@ -238,30 +234,19 @@ const Signup = () => {
                       id="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
-                      required={true}
+                      onFocus={() => setPasswordFocused(true)}
                       value={form.password}
                       onChange={handleChange}
-
-                      onFocus={() => setPasswordFocused(true)}
-                      onBlur={() => setPasswordFocused(false)}
-
+                      required={true}
                     />
                     <FontAwesomeIcon
-                      icon={show ? faEye : faEyeSlash}
-                      onClick={() => setShow(!show)}
-                      className="absolute top-0 right-0 m-3 cursor-pointer"
+                      icon={show ? faEyeSlash : faEye}
+                      className="absolute top-3 right-2 cursor-pointer"
+                      onClick={() => setShow((prev) => !prev)}
                     />
                   </div>
                   {error.password && (
-                    <div className="text-red-500 text-sm mt-2">
-                      <ul className="list-disc list-inside">
-                        <li>Minimum 8 characters</li>
-                        <li>At least 1 uppercase letter</li>
-                        <li>At least 1 lowercase letter</li>
-                        <li>At least 1 number</li>
-                        <li>At least 1 symbol</li>
-                      </ul>
-                    </div>
+                    <p className="text-red-500 text-sm">{error.passwordError}</p>
                   )}
                 </div>
 
@@ -274,38 +259,35 @@ const Signup = () => {
                     Confirm Password
                   </label>
                   <input
-                    type="password"
+                    type={show ? "text" : "password"}
                     name="cpassword"
                     id="cpassword"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
-                    required={true}
                     value={form.cpassword}
                     onChange={handleChange}
+                    required={true}
                   />
                   {error.cpassword && (
-                    <p className="error text-red-500 text-sm mt-0 mb-2">
+                    <p className="text-red-500 text-sm">
                       {error.cpasswordError}
                     </p>
                   )}
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pt-gray-900 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-colors duration-200 ease-in-out"
                 >
-                  Sign Up
+                  Create Account
                 </button>
-
-                {/* Already Have an Account */}
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Already Have an Account?{" "}
+                  Already have an account?{" "}
                   <Link
                     to="/login"
-                    className="font-medium text-pt-gray-900 hover:underline dark:text-primary-500 hover:text-red-700"
+                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
-                    Login
+                    Sign in here
                   </Link>
                 </p>
               </form>
