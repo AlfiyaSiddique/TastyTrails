@@ -43,21 +43,27 @@ const Signup = () => {
     // Handling Signup Form
     const { name, value } = e.target;
     let message = {};
+    
+    // Trim trailing spaces for username
+    const trimmedValue = name === "username" ? value.trim() : value;
+    
     if (name === "cpassword") {
-      message = validate.cpasssword(value, form.password);
+      message = validate.cpasssword(trimmedValue, form.password);
     } else if (name === "username") {
-      message = await validate.username(value);
+      message = await validate.username(trimmedValue);
     } else {
-      message = validate[name](value);
+      message = validate[name](trimmedValue);
     }
+    
     setError((prev) => {
       return { ...prev, ...message };
     });
-
+  
     setForm((prev) => {
-      return { ...prev, [name]: value };
+      return { ...prev, [name]: trimmedValue };
     });
   };
+  
 
   // Get all the current username present
   const getUsernames = async () => {
