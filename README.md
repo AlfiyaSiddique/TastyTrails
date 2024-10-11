@@ -50,12 +50,12 @@ TastyTrails is in its early development phase, and there’s plenty of room for 
 
 ### 🛠️ **Technical Features**
 
-
-- **Add OAuth - Google** 🔑: Add support for secure Google login.
-- **Follow - Unfollow feature** 👥: Let users follow fellow food enthusiasts.
-- **Recipe Like - Unlike Feature** ❤️: Enable liking and unliking recipes.
-- **Implementation of Chat System** 💬: Implement a real-time chat feature.
-- **Add Lazy loading for Images** 🖼️: Optimize image load times.
+Please do not open issues for under-development features as they will be closed under duplicate issues
+- **Add OAuth - Google** 🔑: Add support for secure Google login. (Under development)
+- **Follow - Unfollow feature** 👥: Let users follow fellow food enthusiasts. (Under development)
+- **Recipe Like - Unlike Feature** ❤️: Enable liking and unliking recipes. (Under development)
+- **Implementation of Chat System** 💬: Implement a real-time chat feature. (Under development)
+- **Add Lazy loading for Images** 🖼️: Optimize image load times. (Completed)
 
 
 Feel free to open an issue for any of the tasks above or suggest your ideas. You can also propose bug fixes, new features, or improvements.
