@@ -26,7 +26,7 @@ const Landing = () => {
       },
      })
      .then((res)=>{
-       if(res.data.success){
+        if (res.data.success && window.location.pathname != '/') {
         navigator(`/user/${res.data.user._id}`, {state: {user: res.data.user}})
        }
      })
