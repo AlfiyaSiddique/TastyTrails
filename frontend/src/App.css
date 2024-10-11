@@ -55,13 +55,3 @@
   background:  #B91C1C!important;
   border-radius: 12px !important;
 }
-
-@media (max-width: 600px) {
-  ::-webkit-scrollbar {
-    width: 7px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #B91C1C;
-  }
-}
