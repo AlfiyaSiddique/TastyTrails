@@ -26,7 +26,7 @@ const Landing = () => {
       },
      })
      .then((res)=>{
-       if(res.data.success){
+        if (res.data.success && window.location.pathname != '/') {
         navigator(`/user/${res.data.user._id}`, {state: {user: res.data.user}})
        }
      })
@@ -57,16 +57,31 @@ const Landing = () => {
     <div className="min-h-screen" id="Landing">
       {/* -------------------------- Hero Section ----------------------  */}
       <section id="Hero" className="py-4 my-2">
-        <div className="min-h-screen flex justify-center items-start">
-          <h1 className="animated-text font-extrabold text-red-700 text-[4rem] text-center lg:mt-[5rem] md:w-[40%] sm:w-[60%] font-[Roboto]">
-            Where Flavour Meets Perfection
-          </h1>
-        </div>
-      </section>
+     <div className="min-h-screen flex justify-center items-start">
+  <h1
+    className="font-extrabold text-red-700 text-[4rem] text-center lg:mt-[5rem] md:w-[40%] sm:w-[60%] font-[Roboto] transition-transform duration-300"
+    style={{
+      transition: 'transform 0.3s ease',
+      textShadow: '0 1px 0 rgba(0,0,0,0.1), 0 2px 0 rgba(0,0,0,0.1), 0 3px 0 rgba(0,0,0,0.1), 0 4px 0 rgba(0,0,0,0.1)',
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = 'translateY(-5px)'; 
+      e.currentTarget.style.textShadow = '0 5px 15px rgba(0, 0, 0, 0.3)'; 
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = ''; 
+      e.currentTarget.style.textShadow = ''; 
+    }}
+  >
+    Where Flavour Meets Perfection
+  </h1>
+</div>
+
+    </section>
 
       {/* -------------------------- Features Section ----------------------  */}
-      <section id="Fetaure" className="py-4 my-20 mx-8">
-        <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
+      <section id="Fetaure" className="sm:py-4 mt-[-36vh] sm:my-20  mx-8">
+        <h1 className="text-center font-semibold text-4xl text-red-700 sm:my-4 font-[Merriweather]">
           Features
         </h1>
         <div className="grid sm:grid-cols-1 md:grid-cols-3">
