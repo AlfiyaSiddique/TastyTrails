@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import GoogleTranslate from "./GoogleTranslate";
 const Footer = () => {
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState(0);
@@ -91,6 +91,7 @@ const Footer = () => {
                   <FontAwesomeIcon icon={faGithubSquare} />
                 </Link>
               </div>
+              <GoogleTranslate/>
               {/* Feedback Button */}
               <button
                 onClick={() => setShowModal(true)}
