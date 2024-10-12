@@ -26,7 +26,7 @@ const Landing = () => {
       },
      })
      .then((res)=>{
-       if(res.data.success){
+        if (res.data.success && window.location.pathname != '/') {
         navigator(`/user/${res.data.user._id}`, {state: {user: res.data.user}})
        }
      })
@@ -80,8 +80,8 @@ const Landing = () => {
     </section>
 
       {/* -------------------------- Features Section ----------------------  */}
-      <section id="Fetaure" className="py-4 my-20 mx-8">
-        <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
+      <section id="Fetaure" className="sm:py-4 mt-[-36vh] sm:my-20  mx-8">
+        <h1 className="text-center font-semibold text-4xl text-red-700 sm:my-4 font-[Merriweather]">
           Features
         </h1>
         <div className="grid sm:grid-cols-1 md:grid-cols-3">
