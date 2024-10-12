@@ -139,7 +139,7 @@ async function Sendcontactmail(req, res) {
 
     const mailOptions = {
       from: email,
-      to: "alfiyasiddique1708@gmail.com",
+      to: process.env.RESPONSE_MAIL,
       subject: `Feedback from ${name}`,
       text: message,
       html: `

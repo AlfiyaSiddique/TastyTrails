@@ -18,10 +18,10 @@ const Footer = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [submitStatus, setSubmitStatus] = useState(null); 
+  const [submitStatus, setSubmitStatus] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
-
-  const path = useLocation().pathname; 
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const path = useLocation().pathname;
 
   // Check if the content is smaller than the screen
   useEffect(() => {
@@ -43,12 +43,11 @@ const Footer = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     if (!name || !email || !message || rating === 0) {
       alert("Name, Email, Message, and Rating are mandatory fields!");
       return;
     }
-    toast.success("Feedback submitted succesfully.");
 
     const formData = {
       name,
@@ -58,8 +57,8 @@ const Footer = () => {
     };
 
     try {
-
-      const response = await fetch('http://localhost:8080/api/feedback', {
+      //This is the URL you can use if you are working on local machine if creating error in finding backendURL so use this in fetch request = 'http://localhost:8080/api/feedback
+      const response = await fetch(`${backendURL}/api/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +68,7 @@ const Footer = () => {
 
       const result = await response.json();
       if (response.ok) {
-        setSubmitStatus('success'); 
+        setSubmitStatus('success');
       } else {
         setSubmitStatus('error');
       }
@@ -80,58 +79,58 @@ const Footer = () => {
   };
 
   const openModal = () => {
-    setSubmitStatus(null); 
-    setShowModal(true); 
+    setSubmitStatus(null);
+    setShowModal(true);
 
-    setName("");          
-    setEmail("");         
-    setMessage("");       
-    setRating(0);         
+    setName("");
+    setEmail("");
+    setMessage("");
+    setRating(0);
     setShowModal(true);
   };
 
   return (
-  <div className="fixed bottom-0 bg-white  w-full">
+    <div className="fixed bottom-0 bg-white  w-full">
       {path !== "/user" && (
         <>
-        <footer className="text-gray-600 body-font">
-          <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
-            <span className="flex title-font font-bold items-center md:justify-start justify-center text-red-700">
-              <span className="ml-3 text-xl font-[Mrriweather]">
-                TastyTrails
+          <footer className="text-gray-600 body-font">
+            <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
+              <span className="flex title-font font-bold items-center md:justify-start justify-center text-red-700">
+                <span className="ml-3 text-xl font-[Mrriweather]">
+                  TastyTrails
+                </span>
               </span>
-            </span>
-            <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 sm:text-center">
-              © {new Date().getFullYear()} TastyTrails Developer —
-              <Link
-                to="https://twitter.com/A_l_f_i_y_a"
-                className="text-gray-600 ml-1 sm:text-center"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                @A_l_f_i_y_A
-              </Link>
-            </p>
-            <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
-              <Link
-                to={"https://www.instagram.com/alfiya.17.siddiq/"}
-                className="text-ref-500 text-red-700"
-              >
-                <FontAwesomeIcon icon={faInstagramSquare} />
-              </Link>
-              <Link
-                to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
-                className="ml-3 text-red-700"
-              >
-                <FontAwesomeIcon icon={faLinkedinIn} className="" />
-              </Link>
-              <Link
-                to={"https://github.com/AlfiyaSiddique"}
-                className="ml-3 text-red-700"
-              >
-                <FontAwesomeIcon icon={faGithubSquare} />
-              </Link>
-            </span>
+              <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 sm:text-center">
+                © {new Date().getFullYear()} TastyTrails Developer —
+                <Link
+                  to="https://twitter.com/A_l_f_i_y_a"
+                  className="text-gray-600 ml-1 sm:text-center"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  @A_l_f_i_y_A
+                </Link>
+              </p>
+              <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                <Link
+                  to={"https://www.instagram.com/alfiya.17.siddiq/"}
+                  className="text-ref-500 text-red-700"
+                >
+                  <FontAwesomeIcon icon={faInstagramSquare} />
+                </Link>
+                <Link
+                  to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
+                  className="ml-3 text-red-700"
+                >
+                  <FontAwesomeIcon icon={faLinkedinIn} className="" />
+                </Link>
+                <Link
+                  to={"https://github.com/AlfiyaSiddique"}
+                  className="ml-3 text-red-700"
+                >
+                  <FontAwesomeIcon icon={faGithubSquare} />
+                </Link>
+              </span>
               {/* Contact Us / Rate Us Button */}
               <button
                 onClick={openModal} // Call openModal when feedback button is clicked
@@ -141,8 +140,7 @@ const Footer = () => {
               </button>
             </div>
           </footer>
-            </div>
-          </footer>
+
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -194,8 +192,8 @@ const Footer = () => {
                             <span
                               key={star}
                               className={`cursor-pointer ${rating >= star
-                                  ? "text-yellow-400"
-                                  : "text-gray-400"
+                                ? "text-yellow-400"
+                                : "text-gray-400"
                                 }`}
                               onClick={() => handleRating(star)}
                             >
