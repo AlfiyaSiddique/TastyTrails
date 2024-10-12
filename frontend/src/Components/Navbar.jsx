@@ -161,6 +161,11 @@ const Navbar = () => {
 
           {user === null ? (
             <div className="flex items-center">
+              <Link to="/contributors" className="ml-4">
+                <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all">
+                  Contributors
+                </button>
+              </Link>
               <Link
                 to={path === "/" || path === "/signup" ? "/login" : "/signup"}
               >
