@@ -17,6 +17,7 @@ app.use(express.urlencoded({ limit: "10mb" }));
 
 // CORS configuration
 const allowedOrigins = [
+    "http://localhost:5173",
     "https://delightful-daifuku-a9f6ea.netlify.app",
     /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
 ];
@@ -73,5 +74,6 @@ try {
             });
         });
 } catch (error) {
+    // console.log(process.env.DATABASE);
     console.log(error);
 }

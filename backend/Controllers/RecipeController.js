@@ -1,4 +1,5 @@
 import Recipe from "../models/Recipe.js"
+import Comment from "../models/Comment.js"
 import axios from "axios"
 import User from "../models/User.js"
 import mongoose from "mongoose"
@@ -8,6 +9,8 @@ const g_owner = process.env.OWNER;
 const g_repo = process.env.REPO; 
 const g_branch = process.env.BRANCH; 
 const g_email=process.env.GITHUB_EMAIL;
+
+
 /**
  * @route {POST} /api/recipe/add
  * @description Add a REcipe to database
@@ -309,12 +312,76 @@ const deleteRecipe = async (req, res) => {
 };
 
 
+// Added fucntions for adding and fetching comments
+
+/**
+ * @POST /api/recipe/addcomment
+ * @description Add a comment to a recipe
+ * @access private
+ */
+const addComment = async (req, res) => {
+  try {
+    const { recipeId, username, content } = req.body;
+
+    // Ensure the recipe exists
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ success: false, message: "Recipe not found" });
+    }
+
+    // Create a new comment
+    const newComment = new Comment({
+      recipe: recipeId,
+      username: username,
+      content,
+    });
+
+    // Save the comment to the database
+    await newComment.save();
+
+    return res.status(201).json({ success: true, message: "Comment added successfully", comment: newComment });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+/**
+ * @GET /api/recipe/getcomments/:recipeId
+ * @description Get all comments for a specific recipe
+ * @access public
+ */
+const getComments = async (req, res) => {
+  try {
+    const {recipeId} = req.params;
+    console.log('Fetching comments for recipe:',recipeId);
+
+    // Ensure the recipe exists
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ success: false, message: "Recipe not found" });
+    }
+
+    // Fetch all comments for this recipe
+    const comments = await Comment.find({ recipe: recipeId }).select('username content date');
+    console.log(comments);
+    return res.status(200).json({ success: true, comments });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
+
 const RecipeController = {
-    addRecipe,
-    allRecipe,
-    getOneUserRecipes,
-    updateRecipe,
-    deleteRecipe
+  addRecipe,
+  allRecipe,
+  getOneUserRecipes,
+  updateRecipe,
+  deleteRecipe,
+  addComment,
+  getComments
 }
 
 export default RecipeController
