@@ -37,8 +37,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(176, 3, 3);
-  border: 2px solid #04040a;
+  background-color: rgb(246, 221, 232);
+  border: 2px solid #f5cdcd;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 1rem;
@@ -52,6 +52,7 @@
 }
 
 .contributor-card:hover p {
+  color: black;
   text-shadow: 1px 1px 2px rgb(60, 1, 2), 0 0 0.2em rgb(0, 191, 255),
     0 0 0.8em rgb(135, 206, 235);
   color: rgb(0, 0, 0);
@@ -89,12 +90,12 @@
 }
 
 .contributor-card:hover::before {
-  transform: translate(0, 0);
-  opacity: 1;
+  box-shadow: rgba(6, 1, 1, 0.9);
 }
 
 .contributor-link {
   display: block;
+  color: black;
 }
 
 .contributor-avatar {
@@ -111,14 +112,14 @@
 .contributor-name {
   font-size: 1rem;
   font-weight: 600;
-  color: #f3f4f6;
+  color: #060606;
   margin-bottom: 0.5rem;
   transition: text-shadow 0.4s ease-in-out, font-size 0.5s ease-in-out,
     text-decoration 0.4s ease-in-out;
 }
 
 .contributor-contributions {
-  color: #d1d5db;
+  color: brown;
   transition: text-shadow 0.4s ease-in-out;
 }
 
