@@ -55,3 +55,33 @@
   background:  #B91C1C!important;
   border-radius: 12px !important;
 }
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fafafc; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background:  #B91C1C !important;
+  border-radius: 12px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:  #B91C1C!important;
+  border-radius: 12px !important;
+}
+
+@media (max-width: 600px) {
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #B91C1C;
+  }
+}
