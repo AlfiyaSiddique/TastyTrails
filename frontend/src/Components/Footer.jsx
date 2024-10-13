@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -11,8 +11,11 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import { darkMode } from "../store/atom";
 
 const Footer = () => {
+  const mode = useRecoilValue(darkMode);
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState(0);
   const [name, setName] = useState("");
@@ -90,21 +93,21 @@ const Footer = () => {
   };
 
   return (
-    <div className="fixed bottom-0 bg-white  w-full">
+    <div className={`${isSticky ? "fixed bottom-0 w-full" : ""} ${mode === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
       {path !== "/user" && (
         <>
-          <footer className="text-gray-600 body-font">
+          <footer className={`body-font ${mode === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
             <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
               <span className="flex title-font font-bold items-center md:justify-start justify-center text-red-700">
                 <span className="ml-3 text-xl font-[Mrriweather]">
                   TastyTrails
                 </span>
               </span>
-              <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 sm:text-center">
+              <p className={`text-sm text-gray-500  ${mode === 'dark' ? 'text-gray-400' : 'text-gray-500'} sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 sm:text-center`}>
                 © {new Date().getFullYear()} TastyTrails Developer —
                 <Link
                   to="https://twitter.com/A_l_f_i_y_a"
-                  className="text-gray-600 ml-1 sm:text-center"
+                  className={`ml-1 ${mode === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -134,7 +137,7 @@ const Footer = () => {
               {/* Contact Us / Rate Us Button */}
               <button
                 onClick={openModal} // Call openModal when feedback button is clicked
-                className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
+                className={`ml-4 py-2 px-4 border ${mode === 'dark' ? 'border-gray-400 text-gray-300' : 'border-red-700 text-red-700'} rounded hover:bg-red-700 hover:text-white`}
               >
                 Feedback
               </button>
@@ -144,17 +147,17 @@ const Footer = () => {
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-              <div className="bg-white p-6 rounded-lg w-full max-w-lg">
+              <div className={`p-6 rounded-lg w-full max-w-lg ${mode === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
                 {submitStatus === null ? (
                   <>
                     {/* Show the form if no status has been set */}
-                    <h2 className="text-2xl font-bold mb-4">Feedback</h2>
+                    <h2 className={`text-2xl font-bold mb-4 ${mode === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>Feedback</h2>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                       <div>
-                        <label className="block text-gray-700">Name</label>
+                        <label className={`block ${mode === 'dark' ? 'text-gray-400' : 'text-gray-700'}`}>Name</label>
                         <input
                           type="text"
-                          className="w-full px-4 py-2 border border-gray-300 rounded"
+                          className={`w-full px-4 py-2 border ${mode === 'dark' ? 'border-gray-600 bg-gray-800 text-gray-300' : 'border-gray-300'} rounded`}
                           placeholder="Your Name"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
@@ -163,10 +166,10 @@ const Footer = () => {
                       </div>
 
                       <div>
-                        <label className="block text-gray-700">Email</label>
+                        <label className={`block ${mode === 'dark' ? 'text-gray-400' : 'text-gray-700'}`}>Email</label>
                         <input
                           type="email"
-                          className="w-full px-4 py-2 border border-gray-300 rounded"
+                          className={`w-full px-4 py-2 border ${mode === 'dark' ? 'border-gray-600 bg-gray-800 text-gray-300' : 'border-gray-300'} rounded`}
                           placeholder="Your Email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
@@ -175,9 +178,9 @@ const Footer = () => {
                       </div>
 
                       <div>
-                        <label className="block text-gray-700">Message</label>
+                        <label className={`block ${mode === 'dark' ? 'text-gray-400' : 'text-gray-700'}`}>Message</label>
                         <textarea
-                          className="w-full px-4 py-2 border border-gray-300 rounded"
+                          className={`w-full px-4 py-2 border ${mode === 'dark' ? 'border-gray-600 bg-gray-800 text-gray-300' : 'border-gray-300'} rounded`}
                           placeholder="Your Message"
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
@@ -186,15 +189,12 @@ const Footer = () => {
                       </div>
 
                       <div>
-                        <label className="block text-gray-700">Rate Us</label>
+                        <label className={`block ${mode === 'dark' ? 'text-gray-400' : 'text-gray-700'}`}>Rate Us</label>
                         <div className="flex text-2xl">
                           {[1, 2, 3, 4, 5].map((star) => (
                             <span
                               key={star}
-                              className={`cursor-pointer ${rating >= star
-                                ? "text-yellow-400"
-                                : "text-gray-400"
-                                }`}
+                              className={`cursor-pointer ${rating >= star ? "text-yellow-400" : "text-gray-400"}`}
                               onClick={() => handleRating(star)}
                             >
                               {rating >= star ? "★" : "☆"}
@@ -235,7 +235,7 @@ const Footer = () => {
                       Feedback sent successfully!
                     </h2>
                     <button
-                      className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700"
+                      className={`mr-4 py-2 px-4 ${mode === 'dark' ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-red-500 text-white hover:bg-red-700'} rounded`}
                       onClick={() => setShowModal(false)}
                     >
                       Close
@@ -251,7 +251,7 @@ const Footer = () => {
                       Error in sending Feedback!
                     </h2>
                     <button
-                      className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700"
+                      className={`py-2 px-4 ${mode === 'dark' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-700'} rounded`}
                       onClick={() => setShowModal(false)}
                     >
                       Close
@@ -264,6 +264,7 @@ const Footer = () => {
         </>
       )}
     </div>
+
   );
 };
 

@@ -16,9 +16,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import AddRecipe from "./Pages/AddRecipe.jsx";
 import OneRecipe from "./Pages/OneRecipe.jsx";
 import UpdateRecipe from "./Pages/UpdateRecipe.jsx";
+import { useRecoilValue } from "recoil";
+import { darkMode } from "./store/atom.js";
 
 
 function App() {
+  const mode = useRecoilValue(darkMode);
   const [showScroll, setShowScroll] = useState(false);
 
   const handleScroll = () => {
@@ -37,7 +40,7 @@ function App() {
   }, []);
 
   return (
-    <main>
+    <main className={`${mode === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-800'}`}>
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -48,7 +51,7 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme={mode === 'dark' ? 'dark' : 'light'}
       />
       <BrowserRouter>
         <Navbar />
@@ -56,20 +59,22 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/recipes" element={<Recipes key={"recipes"} type=""/>} />
-          <Route path="/mainmeals" element={<Recipes key={"Main-meal"} type="Main-meal"/>} />
-          <Route path="/smallbites" element={<Recipes key={"Small-bite"} type="Small-bite"/>} />
-          <Route path="/healthy" element={<Recipes key={"Healthy"} type="Healthy"/>} />
+          <Route path="/recipes" element={<Recipes key={"recipes"} type="" />} />
+          <Route path="/mainmeals" element={<Recipes key={"Main-meal"} type="Main-meal" />} />
+          <Route path="/smallbites" element={<Recipes key={"Small-bite"} type="Small-bite" />} />
+          <Route path="/healthy" element={<Recipes key={"Healthy"} type="Healthy" />} />
           <Route path="/user/:id" element={<Dashboard />} />
           <Route path="/user/:id/new/recipe" element={<AddRecipe />} />
           <Route path="/user/:id/update/recipe" element={<UpdateRecipe />} />
-          <Route path="/recipe/:id" element={<OneRecipe/>} />
+          <Route path="/recipe/:id" element={<OneRecipe />} />
         </Routes>
         <Footer />
       </BrowserRouter>
 
       {showScroll && <ScrollToTop />}
     </main>
+
+
   );
 }
 
