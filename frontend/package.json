@@ -19,6 +19,7 @@
     "axios": "^1.6.3",
     "install": "^0.13.0",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.452.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.2",

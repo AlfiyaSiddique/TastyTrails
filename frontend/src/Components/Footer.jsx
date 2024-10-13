@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInstagramSquare,
   faLinkedinIn,
   faGithubSquare,
+  faTwitterSquare,
+  faFacebookSquare,
 } from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -44,7 +46,7 @@ const Footer = () => {
       alert("Name, Email, Message, and Rating are mandatory fields!");
       return;
     }
-    toast.success("Feedback submitted succesfully.");
+    toast.success("Feedback submitted successfully.");
 
     console.log("Submitted Data:", {
       name,
@@ -64,16 +66,19 @@ const Footer = () => {
     <div className={`${isSticky ? "fixed bottom-0 w-full" : ""} bg-white`}>
       {path !== "/user" && (
         <>
-          <footer className="text-gray-600 body-font">
-            <div className="container mx-auto px-5 py-6 flex flex-col sm:flex-row justify-between items-center">
-              <span className="flex title-font font-bold items-center text-red-700">
+          {/* Divider line */}
+          <hr className="border-t border-gray-300 my-4" />
+          
+          <footer className="text-gray-600 body-font bg-gray-100">
+            <div className="container mx-auto px-5 py-8 flex flex-col sm:flex-row justify-between items-center">
+              <span className="flex title-font font-bold items-center text-red-700 hover:text-red-800 transition-colors duration-300 transform hover:scale-105">
                 <span className="ml-3 text-xl font-[Mrriweather]">TastyTrails</span>
               </span>
               <p className="text-sm text-gray-500 mt-4 sm:mt-0">
                 © {new Date().getFullYear()} TastyTrails Developer —
                 <Link
                   to="https://twitter.com/A_l_f_i_y_a"
-                  className="text-gray-600 ml-1"
+                  className="text-gray-600 ml-1 hover:text-red-700 transition-colors duration-300 hover:underline"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -81,20 +86,16 @@ const Footer = () => {
                 </Link>
               </p>
               <div className="flex justify-center sm:justify-start space-x-4 mt-4 sm:mt-0">
-                <Link to="https://www.instagram.com/alfiya.17.siddiq/" className="text-red-700">
-                  <FontAwesomeIcon icon={faInstagramSquare} />
-                </Link>
-                <Link to="https://www.linkedin.com/in/alfiya-siddique-987a59240/" className="text-red-700">
-                  <FontAwesomeIcon icon={faLinkedinIn} />
-                </Link>
-                <Link to="https://github.com/AlfiyaSiddique" className="text-red-700">
-                  <FontAwesomeIcon icon={faGithubSquare} />
-                </Link>
+                <SocialIcon to="https://www.instagram.com/alfiya.17.siddiq/" icon={faInstagramSquare} hoverColor="hover:text-pink-600" />
+                <SocialIcon to="https://www.linkedin.com/in/alfiya-siddique-987a59240/" icon={faLinkedinIn} hoverColor="hover:text-blue-600" />
+                <SocialIcon to="https://github.com/AlfiyaSiddique" icon={faGithubSquare} hoverColor="hover:text-gray-800" />
+                <SocialIcon to="#" icon={faTwitterSquare} hoverColor="hover:text-blue-400" />
+                <SocialIcon to="#" icon={faFacebookSquare} hoverColor="hover:text-blue-800" />
               </div>
               {/* Feedback Button */}
               <button
                 onClick={() => setShowModal(true)}
-                className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
+                className="ml-4 py-2 px-4 bg-red-700 text-white rounded hover:bg-red-800 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
               >
                 Feedback
               </button>
@@ -160,14 +161,14 @@ const Footer = () => {
                   <div className="flex justify-end">
                     <button
                       type="button"
-                      className="mr-4 py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700"
+                      className="mr-4 py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition-colors duration-300"
                       onClick={() => setShowModal(false)}
                     >
                       Close
                     </button>
                     <button
                       type="submit"
-                      className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700"
+                      className="py-2 px-4 bg-red-700 text-white rounded hover:bg-red-800 transition-colors duration-300"
                     >
                       Submit
                     </button>
@@ -181,5 +182,18 @@ const Footer = () => {
     </div>
   );
 };
+
+const SocialIcon = ({ to, icon, hoverColor }) => (
+  <Link 
+    to={to} 
+    className={`text-red-700 ${hoverColor} transition-all duration-300 transform hover:scale-110 hover:rotate-6`}
+  >
+    <FontAwesomeIcon 
+      icon={icon} 
+      size="lg" 
+      className="filter hover:drop-shadow-md"
+    />
+  </Link>
+);
 
 export default Footer;
