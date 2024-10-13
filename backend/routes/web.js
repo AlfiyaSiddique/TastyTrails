@@ -20,7 +20,11 @@ router.post('/recipe/add', authenticateToken, RecipeController.addRecipe)
 router.post('/recipe/update', authenticateToken, RecipeController.updateRecipe)
 router.post('/recipe/readall', authenticateToken, RecipeController.getOneUserRecipes)
 router.post('/recipe/delete', authenticateToken, RecipeController.deleteRecipe)
+<<<<<<< HEAD
 // added route to add new comment to database
 router.post("/recipe/addcomment",authenticateToken, RecipeController.addComment)
+=======
+router.post('/feedback', UserController.Sendcontactmail);
+>>>>>>> 6c12731968bf11239ff61b3f2b5986dc90e341dc
 
 export default router;
