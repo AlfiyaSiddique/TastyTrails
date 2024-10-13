@@ -131,7 +131,7 @@ const Footer = () => {
                   <FontAwesomeIcon icon={faGithubSquare} />
                 </Link>
 
-              </div>
+            
               <GoogleTranslate/>
               </span>
 
