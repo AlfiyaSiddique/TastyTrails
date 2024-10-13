@@ -24,14 +24,15 @@ const allowedOrigins = [
 app.use(
     cors({
         origin: function (origin, callback) {
-            // Allow requests with no `origin` (like from Postman or server-side scripts)
-            if (!origin || allowedOrigins.some((o) =>
-                typeof o === "string" ? o === origin : o.test(origin)
-            )) {
+            if (
+                !origin ||
+                allowedOrigins.some((o) =>
+                    typeof o === "string" ? o === origin : o.test(origin)
+                )
+            ) {
                 callback(null, true);
             } else {
-                // Provide a more informative error message if necessary
-                callback(new Error("CORS policy: This origin is not allowed."));
+                callback(new Error("Not allowed by CORS"));
             }
         },
     })
