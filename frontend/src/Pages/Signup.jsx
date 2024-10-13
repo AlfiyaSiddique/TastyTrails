@@ -132,6 +132,8 @@ const Signup = () => {
     if (res.data.success) {
       toast.success("Google Signup Successful");
       localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+      // creating a token named "username" for storing logged in user's name for comment purposes
+      localStorage.setItem("username", JSON.stringify(res.data.user.username));
       navigator(`/user/${res.data.user._id}`, {
         state: { user: res.data.user },
       });
