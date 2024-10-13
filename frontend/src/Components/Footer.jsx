@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInstagramSquare,
@@ -7,8 +7,11 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import { darkMode } from "../store/atom";
 
 const Footer = () => {
+  const mode = useRecoilValue(darkMode);
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState(0);
   const [name, setName] = useState("");
@@ -61,19 +64,19 @@ const Footer = () => {
   };
 
   return (
-    <div className={`${isSticky ? "fixed bottom-0 w-full" : ""} bg-white`}>
+    <div className={`${isSticky ? "fixed bottom-0 w-full" : ""} ${mode === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
       {path !== "/user" && (
         <>
-          <footer className="text-gray-600 body-font">
+          <footer className={`body-font ${mode === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
             <div className="container mx-auto px-5 py-6 flex flex-col sm:flex-row justify-between items-center">
               <span className="flex title-font font-bold items-center text-red-700">
-                <span className="ml-3 text-xl font-[Mrriweather]">TastyTrails</span>
+                <span className="ml-3 text-xl font-[Merriweather]">TastyTrails</span>
               </span>
-              <p className="text-sm text-gray-500 mt-4 sm:mt-0">
+              <p className={`text-sm ${mode === 'dark' ? 'text-gray-400' : 'text-gray-500'} mt-4 sm:mt-0`}>
                 © {new Date().getFullYear()} TastyTrails Developer —
                 <Link
                   to="https://twitter.com/A_l_f_i_y_a"
-                  className="text-gray-600 ml-1"
+                  className={`ml-1 ${mode === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -94,7 +97,7 @@ const Footer = () => {
               {/* Feedback Button */}
               <button
                 onClick={() => setShowModal(true)}
-                className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
+                className={`ml-4 py-2 px-4 border ${mode === 'dark' ? 'border-gray-400 text-gray-300' : 'border-red-700 text-red-700'} rounded hover:bg-red-700 hover:text-white`}
               >
                 Feedback
               </button>
@@ -103,14 +106,14 @@ const Footer = () => {
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-              <div className="bg-white p-6 rounded-lg w-full max-w-lg">
-                <h2 className="text-2xl font-bold mb-4">Feedback</h2>
+              <div className={`p-6 rounded-lg w-full max-w-lg ${mode === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
+                <h2 className={`text-2xl font-bold mb-4 ${mode === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>Feedback</h2>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
-                    <label className="block text-gray-700">Name</label>
+                    <label className={`block ${mode === 'dark' ? 'text-gray-400' : 'text-gray-700'}`}>Name</label>
                     <input
                       type="text"
-                      className="w-full px-4 py-2 border border-gray-300 rounded"
+                      className={`w-full px-4 py-2 border ${mode === 'dark' ? 'border-gray-600 bg-gray-800 text-gray-300' : 'border-gray-300'} rounded`}
                       placeholder="Your Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -119,10 +122,10 @@ const Footer = () => {
                   </div>
 
                   <div>
-                    <label className="block text-gray-700">Email</label>
+                    <label className={`block ${mode === 'dark' ? 'text-gray-400' : 'text-gray-700'}`}>Email</label>
                     <input
                       type="email"
-                      className="w-full px-4 py-2 border border-gray-300 rounded"
+                      className={`w-full px-4 py-2 border ${mode === 'dark' ? 'border-gray-600 bg-gray-800 text-gray-300' : 'border-gray-300'} rounded`}
                       placeholder="Your Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -131,9 +134,9 @@ const Footer = () => {
                   </div>
 
                   <div>
-                    <label className="block text-gray-700">Message</label>
+                    <label className={`block ${mode === 'dark' ? 'text-gray-400' : 'text-gray-700'}`}>Message</label>
                     <textarea
-                      className="w-full px-4 py-2 border border-gray-300 rounded"
+                      className={`w-full px-4 py-2 border ${mode === 'dark' ? 'border-gray-600 bg-gray-800 text-gray-300' : 'border-gray-300'} rounded`}
                       placeholder="Your Message"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
@@ -142,7 +145,7 @@ const Footer = () => {
                   </div>
 
                   <div>
-                    <label className="block text-gray-700">Rate Us</label>
+                    <label className={`block ${mode === 'dark' ? 'text-gray-400' : 'text-gray-700'}`}>Rate Us</label>
                     <div className="flex text-2xl">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <span
@@ -160,14 +163,14 @@ const Footer = () => {
                   <div className="flex justify-end">
                     <button
                       type="button"
-                      className="mr-4 py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700"
+                      className={`mr-4 py-2 px-4 ${mode === 'dark' ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-red-500 text-white hover:bg-red-700'} rounded`}
                       onClick={() => setShowModal(false)}
                     >
                       Close
                     </button>
                     <button
                       type="submit"
-                      className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700"
+                      className={`py-2 px-4 ${mode === 'dark' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-700'} rounded`}
                     >
                       Submit
                     </button>
@@ -179,6 +182,7 @@ const Footer = () => {
         </>
       )}
     </div>
+
   );
 };
 
