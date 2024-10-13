@@ -6,7 +6,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import useGoogleAuth from "../../common/useGoogleAuth"
+
 const Login = () => {
   const navigate = useNavigate(); 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
@@ -36,35 +36,37 @@ const Login = () => {
           localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
           // creating a token named "username" for storing logged in user's name for comment purposes
           localStorage.setItem("username", JSON.stringify(res.data.user.username));
-          navigator(`/user/${res.data.user._id}`, {
+          navigate(`/user/${res.data.user._id}`, {
             state: { user: res.data.user },
           });
         }
       })
       .catch((err) => {
         toast.error(err.response.data.message);
+        
       });
   };
 
+  
   // Reusable function
   const handleLogin = (formData) => {
-  axios
-    .post(`${backendURL}/api/login`, formData)
-    .then((res) => {
-      if (res.data.success) {
-        toast.success("Login Successful");
-        localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
-        navigate(`/user/${res.data.user._id}`, {
-          state: { user: res.data.user },
-        });
-      }
-    })
-    .catch((err) => {
-      toast.error(err.response.data.message);
-    });
+    axios
+      .post(`${backendURL}/api/login`, formData)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("Login Successful");
+          localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+          navigate(`/user/${res.data.user._id}`, {
+            state: { user: res.data.user },
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      
+      });
   };
-  // Using custom Google Auth hook
-  const googleLogin = useGoogleAuth(handleLogin);
+  
 
   return (
     <div>
@@ -126,8 +128,6 @@ const Login = () => {
                   Sign in
                 </button>
               </form>
-                <button onClick={() => googleLogin()} className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ">
-                <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" class="w-8 h-8 mr-2 inline-block"/> Sign in with Google</button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
                   <Link
