@@ -11,7 +11,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import GoogleTranslate from "./GoogleTranslate";
 const Footer = () => {
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState(0);
@@ -135,8 +135,13 @@ const Footer = () => {
                 >
                   <FontAwesomeIcon icon={faGithubSquare} />
                 </Link>
+
+            
               </span>
-              {/* Contact Us / Rate Us Button */}
+                <div className="translate flex ml-4 my-auto">
+                  <GoogleTranslate />
+                </div>
+
               <button
                 onClick={openModal} // Call openModal when feedback button is clicked
                 className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
