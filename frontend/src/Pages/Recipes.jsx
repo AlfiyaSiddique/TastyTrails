@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import axios from "axios";
-import Cards from "../Components/Cards";
+import Cards from "../Components/Cards.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
-import Pagination from "../Components/Pagination";
+import Pagination from "../Components/Pagination.jsx";
 
 const Recipes = ({type}) => {
   const [loading, setLoading] = useState(true);
@@ -32,22 +32,14 @@ const Recipes = ({type}) => {
           },
         });
 
-        const { recipes, pagination: pag } = response.data;
-
-if (pag) {
-          setPagination((prev) => ({
-            ...prev,
-            totalRecipes: pag.totalRecipes,
-            totalPages: pag.totalPages
-          }));
-        }
-        
+        const { recipes, pagination: paginationData } = response.data;     
+          
         setRecipes(recipes);
-        
+     
         setPagination((prev) => ({
           ...prev,
-          totalRecipes: pag.totalRecipes,
-          totalPages: pag.totalPages
+          totalRecipes: paginationData.totalRecipes,
+          totalPages: paginationData.totalPages
         }));
       } catch (err) {
         console.log(err);
@@ -83,7 +75,7 @@ if (pag) {
   };
 
   return (
-    <div className="p-6" id="Recipes">
+    <div className="min-h-screen flex flex-col justify-between p-6" id="Recipes"> {/* Adjusted layout */}
       <div className="relative w-[70%] mx-auto">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <FontAwesomeIcon
@@ -107,34 +99,33 @@ if (pag) {
           Search
         </button>
       </div>
-      {
-        loading ? 
-          (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
-                {Array.from({ length: 6 }).map((item, i) => {
-                    return (
-                        <div key={i} className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm" />
-                    );
-                })}
-            </div>
-          )
-          : 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 my-20">
-          {
-            recipes.map((food) => (
-              <Cards dish={food} key={food._id} />
-            ))
-          }
+  
+      {/* Recipes List or Loading Skeleton */}
+      {loading ? (
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
+          {Array.from({ length: 6 }).map((item, i) => (
+            <div
+              key={i}
+              className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm"
+            />
+          ))}
         </div>
-      }
-
-      
-      {recipes.length === 0 && recipes.length > 0 && (
-        <div className="flex flex-col justify-center items-center">
-          <p className="text-3xl text-gray-400">No such Dish found.</p>
-          <p className="text-md text-gray-400">
-            If you know the Recipe, share it with the community.
-          </p>
+      ) : (
+        <div className="flex-grow my-20"> {/* Takes up remaining space */}
+          {recipes.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {recipes.map((food) => (
+                <Cards dish={food} key={food._id} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center items-center text-center mt-10">
+              <p className="text-3xl text-gray-400">No such Dish found.</p>
+              <p className="text-md text-gray-400">
+                If you know the Recipe, share it with the community.
+              </p>
+            </div>
+          )}
         </div>
       )}
       {/* -------------------Use Pagination component-----------------------------*/}

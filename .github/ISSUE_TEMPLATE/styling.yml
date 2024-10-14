@@ -1,0 +1,54 @@
+name: "🌟 Enhancement"
+description: Enhance any existing feature / functionality which will improve the existing state of the application.
+title: "ENHANCEMENT: "
+labels: ["enhancement", "Needs Triage"]
+body:
+  - type: checkboxes
+    attributes:
+      label: "Is there an existing issue raised for this?"
+      description: "Before reporting, kindly ensure that you dont duplicate an already existing issue."
+      options:
+        - label: "I have searched the existing issues"
+          required: true
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the sections below to properly describe the new improvements you are suggesting. Try to be as much detailed as possible.
+  - type: textarea
+    attributes:
+      label: Describe the improvement
+      description: Describe your idea which you would like to implement on an existing module. Add necessary prototypes or rough sketch or an overview on how you will be proceeding.
+      placeholder: Eg - Improving the UI and making it responsive, Improving the animations etc.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Component
+      description: Which area of the application you are willing to improve? You may specify the URI of the screen.
+      placeholder: Eg - /Profile
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: It should be implemented because
+      description: Give out a detailed explanation along with its use-case
+    validations:
+      required: true
+  - type: dropdown
+    id: assign
+    attributes:
+      label: "Would you like to work on this issue?"
+      options:
+        - "Yes"
+  - type: checkboxes
+    attributes:
+      label: "Terms & Conditions"
+      options:
+        - label: "I agree to follow the Code of Conduct"
+          required: true
+        - label: "I'm a GSSOC'24 Ext contributor"
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your suggestion! Let's see together if it can be implemented.

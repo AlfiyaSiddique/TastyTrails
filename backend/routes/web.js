@@ -19,5 +19,6 @@ router.post('/recipe/add', authenticateToken, RecipeController.addRecipe)
 router.post('/recipe/update', authenticateToken, RecipeController.updateRecipe)
 router.post('/recipe/readall', authenticateToken, RecipeController.getOneUserRecipes)
 router.post('/recipe/delete', authenticateToken, RecipeController.deleteRecipe)
+router.post('/feedback', UserController.Sendcontactmail);
 
 export default router;

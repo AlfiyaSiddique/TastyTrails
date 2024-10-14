@@ -1,15 +1,15 @@
 
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
+import { useNavigate } from "react-router-dom";
+import useGoogleAuth from "../../common/useGoogleAuth"
 const Login = () => {
-  const navigator = useNavigate();
+  const navigate = useNavigate(); 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
-
   const [show, setShow] = useState(false); //Eye EyeSlash Toggle
   const [form, setForm] = useState({
     searchTerm: "",
@@ -23,31 +23,39 @@ const Login = () => {
       return { ...prev, [name]: value };
     });
   };
+  
 
   // Handle Login Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(`${backendURL}/api/login`, form)
-      .then((res) => {
-        if (res.data.success) {
-          toast.success("Login Successful");
-          localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
-          navigator(`/user/${res.data.user._id}`, {
-            state: { user: res.data.user },
-          });
-        }
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
+    handleLogin(form);
   };
+
+  // Reusable function
+  const handleLogin = (formData) => {
+  axios
+    .post(`${backendURL}/api/login`, formData)
+    .then((res) => {
+      if (res.data.success) {
+        toast.success("Login Successful");
+        localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+        navigate(`/user/${res.data.user._id}`, {
+          state: { user: res.data.user },
+        });
+      }
+    })
+    .catch((err) => {
+      toast.error(err.response.data.message);
+    });
+  };
+  // Using custom Google Auth hook
+  const googleLogin = useGoogleAuth(handleLogin);
 
   return (
     <div>
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-full bg-white rounded-lg shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="font-[Merriweather] text-xl font-bold leading-tight tracking-tight text-red-700 md:text-2xl dark:text-white">
                 Login to your account
@@ -64,7 +72,7 @@ const Login = () => {
                     type="text"
                     name="searchTerm"
                     id="searchTerm"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
                     placeholder="name@company.com"
                     required={true}
                     value={form.searchTerm}
@@ -80,11 +88,11 @@ const Login = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type={show? "text": "password"}
+                      type={show ? "text" : "password"}
                       name="password"
                       id="password"
                       placeholder="••••••••"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
                       required={true}
                       value={form.password}
                       onChange={handleChange}
@@ -98,10 +106,13 @@ const Login = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
                 >
                   Sign in
                 </button>
+              </form>
+                <button onClick={() => googleLogin()} className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ">
+                <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" class="w-8 h-8 mr-2 inline-block"/> Sign in with Google</button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
                   <Link
@@ -110,8 +121,7 @@ const Login = () => {
                   >
                     Sign up
                   </Link>
-                </p>
-              </form>
+                </p>      
             </div>
           </div>
         </div>

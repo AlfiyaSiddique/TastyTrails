@@ -1,6 +1,6 @@
 
-import React, { useState } from "react";
-import validate from "../../common/validation";
+import { useState } from "react";
+import validate from "../../common/validation.js";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -146,7 +146,7 @@ const UpdateRecipe = () => {
         .then((res) => {
           if (res.data.success) {
             toast.success(res.data.message);
-            navigator(`/user/${user.id}`, { state: { user } });
+            navigator(`/user/${user._id}`, { state: { user } });
           } else {
             toast.error("Some Error occured please try again later.");
           }
