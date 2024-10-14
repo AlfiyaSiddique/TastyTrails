@@ -1,62 +1,33 @@
-import asyncHandler from "express-async-handler";
-import Message from "../models/Message.js";
-import Chat from "../models/Chat.js";
-import User from "../models/User.js";
+import MessageModel from "../models/messageModel.js";
 
-
-//@description     Get all Messages
-//@route           GET /api/Message/:chatId
-//@access          Protected
-const allMessages = asyncHandler(async (req, res) => {
+export const addMessage = async (req, res) => {
+  const { chatId, senderId, text } = req.body;
+  const message = new MessageModel({
+    chatId,
+    senderId,
+    text,
+  });
   try {
-    const messages = await Message.find({ chat: req.params.chatId })
-      .populate("sender", "name pic email")
-      .populate("chat");
-    res.json(messages);
+    const result = await message.save();
+    res.status(200).json(result);
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
+    res.status(500).json(error);
   }
-});
+};
 
-//@description     Create New Message
-//@route           POST /api/Message/
-//@access          Protected
-const sendMessage = asyncHandler(async (req, res) => {
-  const { content, chatId } = req.body;
-
-  if (!content || !chatId) {
-    console.log("Invalid data passed into request");
-    return res.sendStatus(400);
-  }
-
-  var newMessage = {
-    sender: req.user._id,
-    content: content,
-    chat: chatId,
-  };
-
+export const getMessages = async (req, res) => {
+  const { chatId } = req.params;
   try {
-    var message = await Message.create(newMessage);
-
-    message = await message.populate("sender", "name pic").execPopulate();
-    message = await message.populate("chat").execPopulate();
-    message = await User.populate(message, {
-      path: "chat.users",
-      select: "name pic email",
-    });
-
-    await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
-
-    res.json(message);
+    const result = await MessageModel.find({ chatId });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
+    res.status(500).json(error);
   }
-});
+};
 
 const MessageController={
-allMessages, sendMessage
+  getMessages,
+  addMessage
 }
 
-export default ChatController
+export default MessageController;

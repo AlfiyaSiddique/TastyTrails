@@ -9,6 +9,7 @@ import {
   faBell,
   faBars,
   faTimes,
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
@@ -195,6 +196,18 @@ const Navbar = () => {
                   className="mx-2 text-red-700 text-lg"
                 />
                 <span className="text-black font-semibold">Add Recipe</span>
+              </div>
+              <div
+                onClick={() =>
+                  navigator(`/chat`, { state: { user } })
+                }
+                className="mx-2 cursor-pointer"
+              >
+                <FontAwesomeIcon
+                  icon={faComment}
+                  className="mx-2 text-red-700 text-lg"
+                />
+                <span className="text-black font-semibold">Chats</span>
               </div>
               <div
                 onClick={() => navigator(`/notifications`)}

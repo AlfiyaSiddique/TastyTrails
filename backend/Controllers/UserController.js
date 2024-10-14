@@ -56,6 +56,24 @@ const getAllUserName = async (req, res) => {
 };
 
 /**
+ * @route {GET} /api/user/:id
+ * @description Get details of a user by ID
+ * @access public
+ */
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+/**
  * @route {POST} /api/usernames
  * @description Authenticates an User
  * @access public
@@ -172,7 +190,8 @@ const UserController = {
   Login,
   getAllUserName,
   verifyUserByToken,
-  Sendcontactmail
+  Sendcontactmail,
+  getUserById
 };
 
 export default UserController;
