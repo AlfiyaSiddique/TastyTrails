@@ -93,10 +93,10 @@ const Footer = () => {
     <div className="fixed bottom-0 bg-white  w-full">
       {path !== "/user" && (
         <>
-          <footer className="text-gray-600 body-font">
-            <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
-              <span className="flex title-font font-bold items-center md:justify-start justify-center text-red-700">
-                <span className="ml-3 text-xl font-[Mrriweather]">
+          <footer className="text-gray-600 body-font w-full">
+          <div className="container mx-auto max-w-screen-xl px-2 py-2 flex flex-wrap items-center justify-center">
+              <span className="flex title-font font-bold items-center md:justify-start justify-start text-red-700">
+                <span className="text-2xl font-[Mrriweather]">
                   TastyTrails
                 </span>
               </span>
@@ -111,7 +111,7 @@ const Footer = () => {
                   @A_l_f_i_y_A
                 </Link>
                 <Link to="/contributors" className="ml-4">
-                  <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all">
+                  <button className="inline-flex text-xl items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all">
                     Contributors
                   </button>
                 </Link>
@@ -121,19 +121,19 @@ const Footer = () => {
                   to={"https://www.instagram.com/alfiya.17.siddiq/"}
                   className="text-ref-500 text-red-700"
                 >
-                  <FontAwesomeIcon icon={faInstagramSquare} />
+                  <FontAwesomeIcon icon={faInstagramSquare} className="text-2xl" />
                 </Link>
                 <Link
                   to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
                   className="ml-3 text-red-700"
                 >
-                  <FontAwesomeIcon icon={faLinkedinIn} className="" />
+                  <FontAwesomeIcon icon={faLinkedinIn} className="text-2xl" />
                 </Link>
                 <Link
                   to={"https://github.com/AlfiyaSiddique"}
                   className="ml-3 text-red-700"
                 >
-                  <FontAwesomeIcon icon={faGithubSquare} />
+                  <FontAwesomeIcon icon={faGithubSquare} className="text-2xl" />
                 </Link>
 
             
