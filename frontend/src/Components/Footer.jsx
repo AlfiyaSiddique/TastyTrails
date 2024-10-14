@@ -59,22 +59,22 @@ const Footer = () => {
     try {
       //This is the URL you can use if you are working on local machine if creating error in finding backendURL so use this in fetch request = 'http://localhost:8080/api/feedback
       const response = await fetch(`${backendURL}/api/feedback`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       const result = await response.json();
       if (response.ok) {
-        setSubmitStatus('success');
+        setSubmitStatus("success");
       } else {
-        setSubmitStatus('error');
+        setSubmitStatus("error");
       }
     } catch (error) {
       console.error("Error sending form data:", error);
-      setSubmitStatus('error');
+      setSubmitStatus("error");
     }
   };
 
@@ -109,6 +109,11 @@ const Footer = () => {
                   target="_blank"
                 >
                   @A_l_f_i_y_A
+                </Link>
+                <Link to="/contributors" className="ml-4">
+                  <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all">
+                    Contributors
+                  </button>
                 </Link>
               </p>
               <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
@@ -191,10 +196,11 @@ const Footer = () => {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <span
                               key={star}
-                              className={`cursor-pointer ${rating >= star
-                                ? "text-yellow-400"
-                                : "text-gray-400"
-                                }`}
+                              className={`cursor-pointer ${
+                                rating >= star
+                                  ? "text-yellow-400"
+                                  : "text-gray-400"
+                              }`}
                               onClick={() => handleRating(star)}
                             >
                               {rating >= star ? "★" : "☆"}
@@ -225,7 +231,7 @@ const Footer = () => {
                       </div>
                     </form>
                   </>
-                ) : submitStatus === 'success' ? (
+                ) : submitStatus === "success" ? (
                   <div className="text-center">
                     <FontAwesomeIcon
                       icon={faCheckCircle}
