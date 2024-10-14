@@ -11,7 +11,6 @@ const ChatList = ({ setSelectedChat, data, currentUser }) => {
       try {
         const { data } = await getUser(userId);
         setUserData(data.user);
-        console.log(data.user);
       } catch (error) {
         console.log("Error fetching user data:", error);
       }
@@ -31,14 +30,14 @@ const ChatList = ({ setSelectedChat, data, currentUser }) => {
         {userData && (
           <div
             className="flex items-center p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-200"
-            onClick={() => setSelectedChat(userData)}
+            onClick={() => setSelectedChat(data)} // Pass the chat data
           >
             <img
               src={userData.profile}
               alt="image"
               className="w-12 h-12 rounded-full mr-4" // Adjust size and margin
             />
-            <span className="font-medium text-gray-800">{userData.firstName+" "+userData.lastName}</span>
+            <span className="font-medium text-gray-800">{`${userData.firstName} ${userData.lastName}`}</span>
           </div>
         )}
       </div>

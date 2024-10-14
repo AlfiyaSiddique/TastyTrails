@@ -31,16 +31,19 @@ const ChatApp = () => {
       {/* Chat List Section */}
       <div className="w-1/3 border-r bg-white">
         {chats.map((chat) => (
-          <div key={chat._id}>
-            <ChatList setSelectedChat={setSelectedChat} data={chat} currentUser={user._id} />
-          </div>
+          <ChatList
+            key={chat._id} // Use unique key for each chat
+            setSelectedChat={setSelectedChat}
+            data={chat}
+            currentUser={user._id}
+          />
         ))}
       </div>
 
       {/* Chat Window Section */}
       <div className="w-2/3">
         {selectedChat ? (
-          <ChatWindow chat={selectedChat} currentUser={user._id}/>
+          <ChatWindow chat={selectedChat} currentUser={user._id} />
         ) : (
           <div className="flex items-center justify-center h-full text-gray-500">
             Select a chat to start messaging
