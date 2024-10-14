@@ -121,6 +121,9 @@ const GoogleTranslate = () => {
           border-style: none;
           box-shadow: none;
         }
+          body{
+          position : relative;
+          top : 0 !important}
       `}
       </style>
     </div>

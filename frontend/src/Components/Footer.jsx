@@ -137,8 +137,10 @@ const Footer = () => {
                 </Link>
 
             
-              <GoogleTranslate/>
               </span>
+                <div className="translate flex ml-4 my-auto">
+                  <GoogleTranslate />
+                </div>
 
               <button
                 onClick={openModal} // Call openModal when feedback button is clicked
