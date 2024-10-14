@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '15vh': '15vh', // Add custom height
+      },
+    },
     fontFamily: {
       sans: ['Roboto', 'Merriweather'],
     }
