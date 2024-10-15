@@ -117,4 +117,25 @@ const validate = {
   },
 };
 
+ feedback: (value) => {
+    const minLength = 10;
+    const maxLength = 500;
+    if (value.trim().length < minLength) {
+      return {
+        feedback: true,
+        feedbackError: `Feedback must be at least ${minLength} characters long.`,
+      };
+    } else if (value.trim().length > maxLength) {
+      return {
+        feedback: true,
+        feedbackError: `Feedback must not exceed ${maxLength} characters.`,
+      };
+    } else {
+      return { feedback: false, feedbackError: false };
+    }
+  },
+};
+
+export default validate;
+
 export default validate;
