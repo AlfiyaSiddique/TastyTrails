@@ -138,6 +138,21 @@ const verifyUserByToken =  async (req, res)=>{
  
 }
 
+/**
+ * @route {GET} /api/users
+ * @description Get details of all users
+ * @access public
+ */
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, { username: 1, email: 1, _id: 1 });
+    res.status(200).json({ users, success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 async function Sendcontactmail(req, res) {
   const { name, email, message, rating } = req.body; // Capture rating from the request
   console.log(req.body);
@@ -189,6 +204,7 @@ const UserController = {
   Signup,
   Login,
   getAllUserName,
+    getAllUsers,  // Added new endpoint
   verifyUserByToken,
   Sendcontactmail,
   getUserById

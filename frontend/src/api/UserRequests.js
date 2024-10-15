@@ -15,3 +15,4 @@ API.interceptors.request.use((req) => {
 
 export const getUser = (userId) => API.get(`/user/${userId}`);
 export const getAllUser = ()=> API.get('/usernames')
+export const getAllData=()=>API.get('/users'); // New endpoint to get all user data

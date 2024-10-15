@@ -13,7 +13,7 @@ const ChatInput = ({ onSend }) => {
   };
 
   return (
-    <div className="p-4 bg-white flex items-center border-t">
+    <div className="p-4 my-5 bg-white flex items-center border-t">
 
       <input
         type="text"

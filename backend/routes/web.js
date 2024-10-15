@@ -16,6 +16,8 @@ router.get("/recipes", RecipeController.allRecipe)
 router.get("/chat/:userId",authenticateToken,ChatController.userChats)
 router.get("/chat/find/:firstId/:secondId",authenticateToken,ChatController.findChat)
 router.get("/message/:chatId",authenticateToken,MessageController.getMessages)
+router.get('/users',authenticateToken, UserController.getAllUsers); // New endpoint to get all user data
+
 // Post Requests
 router.post('/signup', UserController.Signup)
 router.post('/login', UserController.Login)

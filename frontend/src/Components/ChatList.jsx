@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import SearchBar from "./SearchBar";
 import { getUser } from "../api/UserRequests";
 
 const ChatList = ({ setSelectedChat, data, currentUser }) => {
@@ -23,9 +22,7 @@ const ChatList = ({ setSelectedChat, data, currentUser }) => {
 
   return (
     <div className="p-4">
-      <SearchBar />
 
-      <h2 className="text-lg font-bold mt-4">Chats</h2>
       <div className="mt-4 space-y-4">
         {userData && (
           <div
