@@ -144,7 +144,7 @@ const Signup = () => {
   }
 };
 
-
+const googleSignup = useGoogleAuth(handleGoogleSignup, true);
 
   return (
  <div>
