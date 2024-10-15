@@ -42,10 +42,27 @@ const Footer = () => {
     setRating(rate);
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (name.length < 2 || name.length > 50) {
+      newErrors.name = "Name must be between 2 and 50 characters";
+    }
+    if (email.length < 5 || email.length > 100) {
+      newErrors.email = "Email must be between 5 and 100 characters";
+    }
+    if (message.length < 10 || message.length > 500) {
+      newErrors.message = "Message must be between 10 and 500 characters";
+    }
+    if (rating === 0) {
+      newErrors.rating = "Rating is required";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !message || rating === 0) {
-      alert("Name, Email, Message, and Rating are mandatory fields!");
+    if (!validateForm()) {
       return;
     }
 
@@ -170,6 +187,7 @@ const Footer = () => {
                           onChange={(e) => setName(e.target.value)}
                           required
                         />
+                        {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
                       </div>
 
                       <div>
@@ -182,6 +200,7 @@ const Footer = () => {
                           onChange={(e) => setEmail(e.target.value)}
                           required
                         />
+                        {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
                       </div>
 
                       <div>
@@ -193,6 +212,7 @@ const Footer = () => {
                           onChange={(e) => setMessage(e.target.value)}
                           required
                         ></textarea>
+                        {errors.message && <p className="text-red-600 text-sm">{errors.message}</p>}
                       </div>
 
                       <div>
@@ -217,6 +237,7 @@ const Footer = () => {
                             Rating is required!
                           </p>
                         )}
+                        {errors.rating && <p className="text-red-600 text-sm">{errors.rating}</p>}
                       </div>
 
                       <div className="flex justify-end">
