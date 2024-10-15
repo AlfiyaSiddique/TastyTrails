@@ -138,4 +138,3 @@ const validate = {
 
 export default validate;
 
-export default validate;
