@@ -27,12 +27,15 @@ const ChatWindow = ({ chat, currentUser }) => {
     };
   }, [chat._id]);
 
+  const cachedUserData = useRef({}); // Cache for user data
+
   // Fetch messages and user data when the chat is selected
 useEffect(() => {
   const fetchUserData = async () => {
-    const userId = chat?.members?.find((id) => id !== currentUser);
+  const userId = chat?.members?.find((id) => id !== currentUser);
 
-    if (!userId) {
+  if (!userId || cachedUserData.current[userId]) {
+    setUserData(cachedUserData.current[userId]);
       console.log("No valid userId found for chat members.");
       return; // Early exit if userId is invalid
     }
@@ -40,6 +43,7 @@ useEffect(() => {
     try {
       const { data } = await getUser(userId);
       if (data.user) {
+        cachedUserData.current[userId] = data.user; // Cache user data
         setUserData(data.user);
       } else {
         console.log("User not found");

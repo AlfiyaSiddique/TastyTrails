@@ -8,7 +8,7 @@ import client from "prom-client"
 dotenv.config();
 
 const app = express();
-app.use(rateLimit(120, 60 * 1000));
+app.use(rateLimit(3000, 60 * 1000));
 const port = process.env.PORT;
 
 // Middleware to parse incoming JSON requests
@@ -17,26 +17,23 @@ app.use(express.urlencoded({ limit: "10mb" }));
 
 // CORS configuration
 const allowedOrigins = [
-        "http://localhost:5173",
-    "https://delightful-daifuku-a9f6ea.netlify.app",
-    /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
+  "http://localhost:5173",
+  "https://delightful-daifuku-a9f6ea.netlify.app",
+  new RegExp("https://deploy-preview-\\d+--delightful-daifuku-a9f6ea\\.netlify\\.app"),
 ];
 
 app.use(
-    cors({
-        origin: function (origin, callback) {
-            // Allow requests with no `origin` (like from Postman or server-side scripts)
-            if (!origin || allowedOrigins.some((o) =>
-                typeof o === "string" ? o === origin : o.test(origin)
-            )) {
-                callback(null, true);
-            } else {
-                // Provide a more informative error message if necessary
-                callback(new Error("CORS policy: This origin is not allowed."));
-            }
-        },
-    })
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.some((o) => (o instanceof RegExp ? o.test(origin) : o === origin))) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS policy: This origin is not allowed."));
+      }
+    },
+  })
 );
+
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
