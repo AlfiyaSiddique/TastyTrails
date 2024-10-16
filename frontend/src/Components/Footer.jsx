@@ -23,7 +23,7 @@ const Footer = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const path = useLocation().pathname;
 
-  // Check if the content is smaller than the screen
+
   useEffect(() => {
     const handleResize = () => {
       const contentHeight = document.documentElement.scrollHeight;
@@ -90,7 +90,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="fixed bottom-0 bg-white  w-full">
+    <div className="fixed bottom-0 bg-white w-full">
       {path !== "/user" && (
         <>
          <footer className="text-gray-600 body-font w-full">
