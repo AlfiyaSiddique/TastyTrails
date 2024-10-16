@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons"; // Import success and error icons
+} from "@fortawesome/free-solid-svg-icons";
 import {
   faInstagramSquare,
   faLinkedinIn,
@@ -140,7 +140,7 @@ const Footer = () => {
       <GoogleTranslate />
     </div>
     <button
-      onClick={openModal} // Call openModal when feedback button is clicked
+      onClick={openModal} 
       className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white mt-4 md:mt-0"
     >
       Feedback
@@ -155,7 +155,7 @@ const Footer = () => {
               <div className="bg-white p-6 rounded-lg w-full max-w-lg">
                 {submitStatus === null ? (
                   <>
-                    {/* Show the form if no status has been set */}
+                    {}
                     <h2 className="text-2xl font-bold mb-4">Feedback</h2>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                       <div>
