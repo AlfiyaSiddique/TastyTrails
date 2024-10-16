@@ -4,7 +4,7 @@ import ChatWindow from "../Components/ChatWindow";
 import { userChats, createChat } from "../api/ChatRequests"; 
 import { useLocation } from "react-router-dom";
 import SearchBar from "../Components/SearchBar";
-import { getAllUser, getAllData } from "../api/UserRequests"; 
+import { getAllUser, getAllData, getUser } from "../api/UserRequests"; // Import getUser
 
 const ChatApp = () => {
   const location = useLocation();
@@ -16,12 +16,27 @@ const ChatApp = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [isNewChat, setIsNewChat] = useState(false);
 
+  // Fetch chats and enhance them with user details
   useEffect(() => {
     const getChats = async () => {
       try {
         const { data } = await userChats(user._id); 
-        setChats(data);
-        setFilteredChats(data); 
+        
+        // Fetch user details for each chat member
+        const enhancedChats = await Promise.all(data.map(async (chat) => {
+          const memberDetails = await Promise.all(chat.members.map(async (memberId) => {
+            const { data: userData } = await getUser(memberId);
+            return userData.user; // Assuming your getUser API response contains user data under 'user'
+          }));
+
+          return {
+            ...chat,
+            memberDetails  // Add memberDetails (usernames, etc.) to the chat
+          };
+        }));
+
+        setChats(enhancedChats);
+        setFilteredChats(enhancedChats); 
       } catch (error) {
         console.log("Error fetching chats:", error);
       }
@@ -48,15 +63,17 @@ const ChatApp = () => {
     }
   }, [isNewChat]);
 
+ // Search logic
   const handleSearch = (searchTerm) => {
     if (isNewChat) {
       setFilteredUsers(allUsers.filter(username => 
         username && username.toLowerCase().includes(searchTerm.toLowerCase())
       ));
     } else {
+      // Search through chat members' usernames
       setFilteredChats(chats.filter(chat =>
-        chat.members.some(member => 
-          member && member.username && member.username.toLowerCase().includes(searchTerm.toLowerCase())
+        chat.memberDetails.some(member => 
+          member.username && member.username.toLowerCase().includes(searchTerm.toLowerCase())
         )
       ));
     }
