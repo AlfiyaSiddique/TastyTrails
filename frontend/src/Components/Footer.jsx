@@ -96,7 +96,7 @@ const Footer = () => {
          <footer className="text-gray-600 body-font w-full">
   <div className="container max-w-screen-xl px-2 py-2 flex flex-wrap items-center justify-center md:justify-start">
     <span className="flex title-font font-bold items-center md:justify-start justify-start text-red-700 mb-4 md:mb-0">
-      <span className="text-2xl font-[Mrriweather]">
+      <span className="text-xl font-[Mrriweather]">
         TastyTrails
       </span>
     </span>
@@ -121,19 +121,19 @@ const Footer = () => {
         to={"https://www.instagram.com/alfiya.17.siddiq/"}
         className="text-red-700"
       >
-        <FontAwesomeIcon icon={faInstagramSquare} className="text-2xl" />
+        <FontAwesomeIcon icon={faInstagramSquare} />
       </Link>
       <Link
         to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
         className="ml-3 text-red-700"
       >
-        <FontAwesomeIcon icon={faLinkedinIn} className="text-2xl" />
+        <FontAwesomeIcon icon={faLinkedinIn}  />
       </Link>
       <Link
         to={"https://github.com/AlfiyaSiddique"}
         className="ml-3 text-red-700"
       >
-        <FontAwesomeIcon icon={faGithubSquare} className="text-2xl" />
+        <FontAwesomeIcon icon={faGithubSquare} />
       </Link>
     </span>
     <div className="translate flex ml-4 my-auto mt-4 md:mt-0 justify-center">
