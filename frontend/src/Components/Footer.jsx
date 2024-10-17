@@ -93,7 +93,7 @@ const Footer = () => {
     <div className="fixed bottom-0 bg-white  w-full">
       {path !== "/user" && (
         <>
-          <footer className="text-gray-600 body-font">
+          <footer className="text-gray-600 body-font ">
             <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
               <span className="flex title-font font-bold items-center md:justify-start justify-center text-red-700">
                 <span className="ml-3 text-xl font-[Mrriweather]">
@@ -104,15 +104,21 @@ const Footer = () => {
                 © {new Date().getFullYear()} TastyTrails Developer —
                 <Link
                   to="https://twitter.com/A_l_f_i_y_a"
-                  className="text-gray-600 ml-1 sm:text-center"
+                  className="text-gray-600 ml-1 sm:text-center px-0"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   @A_l_f_i_y_A
                 </Link>
+
+               {/* added privacy policy */}
+               <Link to="/privacy-policy" className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all mx-3">
+                 Privacy Policy
+               </Link>
+
                 <Link to="/contributors" className="ml-4">
-                  <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all">
-                    Contributors
+                  <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all mx-0">
+                  Contributors
                   </button>
                 </Link>
               </p>
@@ -148,6 +154,7 @@ const Footer = () => {
               >
                 Feedback
               </button>
+
             </div>
           </footer>
 
