@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+
+
 // Recipe Model
 const recipeSchema = new mongoose.Schema({
   user: {
@@ -45,7 +47,8 @@ const recipeSchema = new mongoose.Schema({
   },
   type: {
     type: [String],
-  required: true}
+  required: true
+  }
 });
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
