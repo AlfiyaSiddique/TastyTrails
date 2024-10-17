@@ -106,7 +106,11 @@ const Recipes = ({type}) => {
           {Array.from({ length: 6 }).map((item, i) => (
             <div
               key={i}
-              className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm"
+              className="h-[230px] sm:h-[280px] bg-gradient-to-r from-gray-300 via-gray-400 to-gray-200 animate-skeleton-loading rounded-lg shadow-md"
+              style={{
+                backgroundSize: "200% 100%",
+                animation: "skeleton-loading 1.5s infinite",
+              }}
             />
           ))}
         </div>
