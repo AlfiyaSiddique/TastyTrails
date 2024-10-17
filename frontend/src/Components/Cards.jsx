@@ -36,7 +36,7 @@ const Cards = ({dish}) => {
           <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
             {dish.name}
           </h1>
-          <p className="leading-relaxed mb-3 overflow-hidden text-ellipsis display-[webkit-box] -webkit-box-orient-vertical -webkit-line-clamp-4">
+          <p className="leading-relaxed mb-3 clamped-text">
             {dish.description.slice(0, 174)}
             {dish.description.length>174? "...": null}
           </p>
