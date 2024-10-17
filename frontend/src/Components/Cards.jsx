@@ -6,6 +6,8 @@ import { faArrowRight, faHeart, faShare } from "@fortawesome/free-solid-svg-icon
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+//IMPORT THE APP.CSS
+import "../App.css";
 // Cards Component for Creating Recipe Cards
 const Cards = ({dish}) => {
   const navigator = useNavigate()
