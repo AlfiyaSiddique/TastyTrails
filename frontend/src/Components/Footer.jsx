@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/free-solid-svg-icons"; // Import success and error icons
 import {
   faInstagramSquare,
   faLinkedinIn,
@@ -25,6 +25,7 @@ const Footer = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const path = useLocation().pathname;
 
+   // Check if the content is smaller than the screen
   useEffect(() => {
     const handleResize = () => {
       const contentHeight = document.documentElement.scrollHeight;
@@ -58,6 +59,7 @@ const Footer = () => {
     };
 
     try {
+      //This is the URL you can use if you are working on local machine if creating error in finding backendURL so use this in fetch request = 'http://localhost:8080/api/feedback
       const response = await fetch(`${backendURL}/api/feedback`, {
         method: "POST",
         headers: {
@@ -165,7 +167,7 @@ const Footer = () => {
                 <GoogleTranslate />
               </div>
               <motion.button
-                onClick={openModal}
+                onClick={openModal} // Call openModal when feedback button is clicked
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
