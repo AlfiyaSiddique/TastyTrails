@@ -1,0 +1,96 @@
+import React from 'react';
+
+interface Recipe {
+  title: string;
+  imageUrl: string;
+  url: string;
+}
+
+interface RecipeShareProps {
+  recipe: Recipe;
+}
+
+const RecipeShare: React.FC<RecipeShareProps> = ({ recipe }) => {
+  const shareOnFacebook = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(recipe.url)}`, '_blank');
+  };
+
+  const shareOnTwitter = () => {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(recipe.title)}&url=${encodeURIComponent(recipe.url)}`, '_blank');
+  };
+
+  const shareOnPinterest = () => {
+    window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(recipe.url)}&media=${encodeURIComponent(recipe.imageUrl)}&description=${encodeURIComponent(recipe.title)}`, '_blank');
+  };
+
+  return (
+    <div className="flex space-x-4 mt-4">
+      <button className="bg-blue-600 text-white py-2 px-4 rounded" onClick={shareOnFacebook}>
+        Share on Facebook
+      </button>
+      <button className="bg-blue-400 text-white py-2 px-4 rounded" onClick={shareOnTwitter}>
+        Share on Twitter
+      </button>
+      <button className="bg-red-600 text-white py-2 px-4 rounded" onClick={shareOnPinterest}>
+        Share on Pinterest
+      </button>
+    </div>
+  );
+};
+
+export default RecipeShare;
+
+
+
+import React from 'react';
+import RecipeShare from './RecipeShare';
+
+interface Recipe {
+  title: string;
+  imageUrl: string;
+  url: string;
+}
+
+const RecipeDetail: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">{recipe.title}</h1>
+      <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-auto my-4" />
+      <RecipeShare recipe={recipe} />
+      {/* Other recipe details go here */}
+    </div>
+  );
+};
+
+export default RecipeDetail;
+
+
+
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB
+mongoose.connect('your_mongodb_connection_string', { useNewUrlParser: true, useUnifiedTopology: true });
+
+const ShareSchema = new mongoose.Schema({
+  recipeId: String,
+  platform: String,
+  timestamp: { type: Date, default: Date.now },
+});
+
+const Share = mongoose.model('Share', ShareSchema);
+
+// Endpoint to log shares
+app.post('/api/share', async (req, res) => {
+  const { recipeId, platform } = req.body;
+  const share = new Share({ recipeId, platform });
+  await share.save();
+  res.status(201).json({ message: 'Share recorded!' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
