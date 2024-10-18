@@ -167,6 +167,9 @@ const Footer = () => {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           required
+                          pattern="[a-zA-Z ]+"
+                          oninvalid="this.setCustomValidity('Numbers and Symbols are not allowed')"
+                          oninput="this.setCustomValidity('')"
                         />
                       </div>
 
