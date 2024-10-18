@@ -86,6 +86,7 @@
   }
 }
 
+
 /* ADD THE CLASS OF CLAMPED-TEXT  */
 .clamped-text {
   display: -webkit-box; 
@@ -94,5 +95,10 @@
   overflow: hidden; /* Hide any overflowed content */
   text-overflow: ellipsis; /* Add ellipsis (...) for overflow */
 }
+
+
+
+
+
 
 

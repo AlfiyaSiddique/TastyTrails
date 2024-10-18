@@ -14,9 +14,11 @@ const Cards = ({dish}) => {
 
   // Checks if user is authenticated or not
   const handleClick = async()=>{
-    const token = await JSON.parse(localStorage.getItem("tastytoken"))
+    const token = await JSON.parse(localStorage.getItem("tastytoken"));
     if(token !== null){
-      navigator(`/recipe/${dish._id}`, {state: {dish}})
+      // here passing logged in username as well for comment use
+      navigator(`/recipe/${dish._id}`, 
+        {state: {dish}})
     }else{
       toast.info("Please Login First")
       navigator("/login")
