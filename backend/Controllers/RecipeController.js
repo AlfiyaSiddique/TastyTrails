@@ -20,6 +20,7 @@ const g_email=process.env.GITHUB_EMAIL;
 const addRecipe = async (req, res) => {
   try {
     const { name, description, ingredients, steps, type, image, imagename, user, author } = req.body;
+ 
     const lastDocument = await Recipe.findOne().sort({ _id: -1 }); 
     const unique = lastDocument ? lastDocument._id.toString().slice(-4) : "0000";
     
@@ -114,40 +115,126 @@ const allRecipe = async (req, res) => {
  * @description Uploads Image to a github repo and returns the downloadable link
  * @access private
  */
-const imageToGithub = async (fileImage, name, unique) => {
-  const owner = g_owner; 
-  const repo = g_repo; 
-  const branch = g_branch; 
+// const imageToGithub = async (fileImage, name, unique) => {
+//   const owner = process.env.OWNER; 
+//   const repo =process.env.REPO; 
+//   const branch =process.env.BRANCH; 
+// console.log(owner,repo,branch)
+//   const base64Content = fileImage.split(';base64,').pop(); // Extract base64 content
+//   const fileContent = Buffer.from(base64Content, 'base64').toString('base64'); // Re-encode to base64
+//   const path = `TastyTrails/Recipe/${unique}${name}`; 
+//   const message = `Add ${unique} ${name} via API`; // Commit message
+//   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+// console.log(url)
+//   try {
+//     // Step 1: Check if the file already exists
+//     let fileExists = false;
+   
+//     try {
+//       const response = await axios.get(url, {
+//         headers: {
+//           Authorization: `TOKEN ${process.env.TOKEN}`,
+//           'X-GitHub-Api-Version': '2022-11-28',
+//         },
+//       });
+//       console.log(response)
+//       if (response.status === 200) {
+//         fileExists = true;
+//       }
+//     } catch (error) {
+//       // If file does not exist (404), proceed with creating it
+//       if (error.response && error.response.status === 404) {
+//         fileExists = false;
+//       } else {
+//         throw error;
+//       }
+//     }
 
-  const base64Content = fileImage.split(';base64,').pop(); // Extract base64 content
-  const fileContent = Buffer.from(base64Content, 'base64').toString('base64'); // Re-encode to base64
-  const path = `TastyTrails/Recipe/${unique}${name}`; 
-  const message = `Add ${unique} ${name} via API`; // Commit message
+//     // Step 2: Upload or update the file based on existence
+//     const requestPayload = {
+//       message,
+//       content: fileContent,
+//       branch,
+//     };
+
+//     if (fileExists) {
+//       // If file exists, get the sha and update it
+//       const sha = (await axios.get(url, {
+//         headers: {
+//           Authorization: `TOKEN ${process.env.TOKEN}`,
+//           'X-GitHub-Api-Version': '2022-11-28',
+//         },
+//       })).data.sha;
+
+//       requestPayload.sha = sha; // Required for updates
+//     }
+
+//     // Step 3: Upload or update the file
+//     const response = await axios.put(url, requestPayload, {
+//       headers: {
+//         Authorization: `TOKEN ${process.env.TOKEN}`,
+//         'X-GitHub-Api-Version': '2022-11-28',
+//       },
+//     });
+
+//     if (response.status === 201 || response.status === 200) {
+//       return response.data.content.download_url; // Return the URL of the uploaded image
+//     } else {
+//       console.error('Failed to upload image:', response.status, response.statusText);
+//       return null;
+//     }
+
+//   } catch (error) {
+//     console.error('Error uploading image:', error.response ? error.response.data : error.message);
+//     return null;
+//   }
+// };
+
+const imageToGithub = async (fileImage, name, unique) => {
+  const owner = process.env.OWNER; 
+  const repo = process.env.REPO; 
+  const branch = process.env.BRANCH; 
+
+  // Validate environment variables
+  if (!owner || !repo || !branch || !process.env.TOKEN) {
+    console.error('Missing required environment variables');
+    return null;
+  }
+
+  console.log('Config:', { owner, repo, branch }); // Debug log
+
+  const base64Content = fileImage.split(';base64,').pop();
+  const fileContent = Buffer.from(base64Content, 'base64').toString('base64');
+  
+  // Use the correct repository structure
+  const path = `images/${unique}${name}`; // Make sure this directory exists in your repo
+  const message = `Add ${unique} ${name} via API`;
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
+  console.log('Request URL:', url); // Debug log
+
   try {
-    // Step 1: Check if the file already exists
+    // Correct GitHub token format
+    const headers = {
+      Authorization: `token ${process.env.TOKEN}`, // Changed from Bearer to token
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+    };
+
+    // Check if file exists
     let fileExists = false;
     try {
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `TOKEN ${process.env.TOKEN}`,
-          'X-GitHub-Api-Version': '2022-11-28',
-        },
-      });
-      if (response.status === 200) {
-        fileExists = true;
-      }
+      const response = await axios.get(url, { headers });
+      fileExists = response.status === 200;
+      console.log('File exists check:', fileExists); // Debug log
     } catch (error) {
-      // If file does not exist (404), proceed with creating it
-      if (error.response && error.response.status === 404) {
-        fileExists = false;
-      } else {
+      if (error.response && error.response.status !== 404) {
+        console.error('Error checking file existence:', error.response.data);
         throw error;
       }
     }
 
-    // Step 2: Upload or update the file based on existence
+    // Prepare request payload
     const requestPayload = {
       message,
       content: fileContent,
@@ -155,39 +242,31 @@ const imageToGithub = async (fileImage, name, unique) => {
     };
 
     if (fileExists) {
-      // If file exists, get the sha and update it
-      const sha = (await axios.get(url, {
-        headers: {
-          Authorization: `TOKEN ${process.env.TOKEN}`,
-          'X-GitHub-Api-Version': '2022-11-28',
-        },
-      })).data.sha;
-
-      requestPayload.sha = sha; // Required for updates
+      const existingFile = await axios.get(url, { headers });
+      requestPayload.sha = existingFile.data.sha;
     }
 
-    // Step 3: Upload or update the file
-    const response = await axios.put(url, requestPayload, {
-      headers: {
-        Authorization: `TOKEN ${process.env.TOKEN}`,
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    });
+    // Upload or update file
+    console.log('Sending PUT request...'); // Debug log
+    const response = await axios.put(url, requestPayload, { headers });
 
     if (response.status === 201 || response.status === 200) {
-      return response.data.content.download_url; // Return the URL of the uploaded image
+      console.log('Upload successful:', response.data.content.download_url);
+      return response.data.content.download_url;
     } else {
-      console.error('Failed to upload image:', response.status, response.statusText);
+      console.error('Upload failed:', response.status, response.statusText);
       return null;
     }
 
   } catch (error) {
-    console.error('Error uploading image:', error.response ? error.response.data : error.message);
+    console.error('Upload error details:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
     return null;
   }
 };
-
-
 /**
  * @POST /api/recipes/readall
  * @description Returns recipe created by an User
@@ -363,7 +442,7 @@ const getComments = async (req, res) => {
     }
 
     // Fetch all comments for this recipe
-    const comments = await Comment.find({ recipe: recipeId }).select('username content date');
+    const comments = await Comment.find({ recipe: recipeId }).select('username content date').sort({ date: -1 });
     console.log(comments);
     return res.status(200).json({ success: true, comments });
   } catch (error) {
