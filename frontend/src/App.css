@@ -86,6 +86,22 @@
   }
 }
 
+.navbar{
+  background-color: #fed4d4;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.text-\[4rem\] {
+  font-size: 4.2rem !important;
+}
+
+.text-left {
+  text-align: justify !important;
+}
+
+.leading-relaxed {
+  text-align: justify;
+}
 
 /* ADD THE CLASS OF CLAMPED-TEXT  */
 .clamped-text {
