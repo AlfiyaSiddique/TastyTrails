@@ -90,7 +90,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="fixed bottom-0 bg-white w-full">
+    <div className={`w-full ${path !== "/user" ? "relative" : "fixed bottom-0"}`}>
       {path !== "/user" && (
         <>
          <footer className="text-gray-600 body-font w-full">
