@@ -18,7 +18,17 @@ const Recipes = ({type}) => {
     totalPages: 1
   });
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const limit = 10;
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500); // 500ms delay
+
+    // Cleanup the timeout if searchTerm changes before the delay
+    return () => { clearTimeout(handler)};
+  }, [searchTerm]);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -28,7 +38,7 @@ const Recipes = ({type}) => {
             page: pagination.currentPage,
             limit,
             type,
-            search: searchTerm,
+            search: debouncedSearchTerm,
           },
         });
 
@@ -49,7 +59,7 @@ const Recipes = ({type}) => {
     };
 
     fetchRecipes();
-  }, [pagination.currentPage, type, searchTerm]); 
+  }, [pagination.currentPage, type, debouncedSearchTerm]); 
 
   const handleSearch = (e) => {
     const value = e.target.value;

@@ -56,7 +56,7 @@ const GoogleTranslate = () => {
         .goog-te-combo {
           display: inline-block;
           background-color: white; /* White background */
-          border: 2px solid #c01c1c; /* Red border */
+          border: 1px solid #c01c1c; /* Red border */
           border-radius: 0.5rem; /* Slightly more rounded */
           padding: 0.5rem 1rem; /* Tailwind: p-2 */
           font-size: 0.875rem; /* Tailwind: text-sm */
@@ -124,6 +124,7 @@ const GoogleTranslate = () => {
           body{
           position : relative;
           top : 0 !important}
+          
       `}
       </style>
     </div>
