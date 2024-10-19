@@ -1,8 +1,7 @@
 * {
   font-family: 'Roboto', sans-serif;
 }
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
+
 #root {
   max-width: 1366px;
   margin: 0 auto;
