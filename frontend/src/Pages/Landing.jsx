@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
@@ -7,15 +6,36 @@ import Cards from "../Components/Cards.jsx";
 import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+/* importing React Slider*/
+import Slider from 'react-slick'
 
 const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
   const [loading, setLoading] = useState(true);
    const backendURL = import.meta.env.VITE_BACKEND_URL;
-   
-
+   /*Slider Settings*/ 
+const sliderSettings = {
+  dots:true,
+  infinite:true,
+  speed:true,
+  slidesToShow:true, // number of slides to show in larger screens
+  slidesToScroll:true,
+  responsive:[
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+      },
+    },
+  ]
+}
   useEffect(()=>{
     let token = localStorage.getItem("tastytoken");
    if(token){
@@ -147,6 +167,8 @@ const Landing = () => {
       </section>
 
       {/* -------------------------- Best Dishes Section ----------------------  */}
+     
+
       <section id="Trending" className="py-4 my-20 mx-8">
         <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
           {/* eslint-disable-next-line react/no-unescaped-entities */}
@@ -156,7 +178,7 @@ const Landing = () => {
         {
           loading ? 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 py-4">
-              {Array.from({ length: 6 }).map((item, i) => {
+              {Array.from({ length: 3 }).map((item, i) => {
                   return (
                       <div key={i} className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm" />
                   );
@@ -164,14 +186,18 @@ const Landing = () => {
           </div>
           : 
           <div className="grid grid-cols-1 md:grid-cols-3">
+            {/*integrate Slider Here*/ }
+            <Slider {...sliderSettings}>
             { 
               best.map((food)=>{
                 return <Cards dish={food} key={food._id}/>
               })
             }
+            </Slider>
         </div>
         }
       </section>
+
 
       {/* -------------------------- About Section ----------------------  */}
       <section
