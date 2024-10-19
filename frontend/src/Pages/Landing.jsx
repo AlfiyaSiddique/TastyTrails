@@ -6,14 +6,36 @@ import Cards from "../Components/Cards.jsx";
 import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+/*import React Slick */
+import Slider from 'react-slick'
 
 const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
   const [loading, setLoading] = useState(true);
    const backendURL = import.meta.env.VITE_BACKEND_URL;
-   
+   /*Slider Settings*/ 
+const sliderSettings = {
+  dots:true,
+  infinite:true,
+  speed:true,
+  slidesToShow:true, // number of slides to show in larger screens
+  slidesToScroll:true,
+  responsive:[
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+      },
+    },
+  ]
+}
   useEffect(()=>{
     let token = localStorage.getItem("tastytoken");
    if(token){
@@ -164,12 +186,14 @@ const Landing = () => {
           </div>
           : 
           <div className="grid grid-cols-1 md:grid-cols-3">
-            
+            {/*Adding Slider */}
+            <Slider {...sliderSettings}>
             { 
               best.map((food)=>{
                 return <Cards dish={food} key={food._id}/>
               })
             }
+            </Slider>
         </div>
         }
       </section>
