@@ -37,6 +37,8 @@ app.use(
     })
 );
 
+// app.use(cors({origin:"http://localhost:5173"})) // for local use
+
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
 collectDefaultMetrics({ register: client.register });
