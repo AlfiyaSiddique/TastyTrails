@@ -6,8 +6,7 @@ import Cards from "../Components/Cards.jsx";
 import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-/* importing React Slider*/
-import Slider from 'react-slick'
+
 
 const Landing = () => {
   const navigator = useNavigate();
@@ -157,7 +156,7 @@ const Landing = () => {
         {
           loading ? 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 py-4">
-              {Array.from({ length: 3 }).map((item, i) => {
+              {Array.from({ length: 6 }).map((item, i) => {
                   return (
                       <div key={i} className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm" />
                   );
@@ -165,13 +164,12 @@ const Landing = () => {
           </div>
           : 
           <div className="grid grid-cols-1 md:grid-cols-3">
-           
+            
             { 
               best.map((food)=>{
                 return <Cards dish={food} key={food._id}/>
               })
             }
-           
         </div>
         }
       </section>
