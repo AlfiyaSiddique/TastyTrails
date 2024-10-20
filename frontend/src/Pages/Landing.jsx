@@ -1,10 +1,10 @@
 
 import { useEffect, useState } from "react";
-import Foods from "../assets/Images/ArrayOfFoods.png";
-import Search from "../assets/Images/Seach Recipe.png";
-import Cooking from "../assets/Images/Cooking.png";
+import Foods from "../assets/Images/ArrayOfFoods.webp";
+import Search from "../assets/Images/Seach Recipe.webp";
+import Cooking from "../assets/Images/Cooking.webp";
 import Cards from "../Components/Cards.jsx";
-import massa from "../assets/Images/Massaman.png";
+import massa from "../assets/Images/Massaman.webp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
