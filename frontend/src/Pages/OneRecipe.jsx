@@ -1,11 +1,67 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import { useEffect } from "react";
+import React,{ useState } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 // Displays single Recipe
 const OneRecipe = () => {
+    
+    const backendURL = import.meta.env.VITE_BACKEND_URL;  
+    const token = JSON.parse(localStorage.getItem("tastytoken"));
+
     const recipe = useLocation().state.dish;
-    const date = new Date(recipe.date)
+    const date = new Date(recipe.date);
+
+    // States for handling comments and input
+    const [commentInput, setCommentInput] = useState("");
+    const [comments, setComments] = useState([]);
+
+    // To fetch earlier posted comments from database
+    useEffect(() => {
+      const fetchComments = async () => {
+        
+        try {
+          const response = await axios.get(`${backendURL}/api/recipe/getcomments/${recipe._id}`);
+          setComments(response.data.comments);
+        } catch (error) {
+          console.error("Error fetching comments:", error);
+        }
+      };
+    
+      fetchComments();
+    }, [recipe._id]);
+
+
+    
+
+    // Function to handle posting a comment
+    const handlePostComment = async() => {
+ 
+      // getting username from token named "username" created during login
+      const username = JSON.parse(localStorage.getItem("username"));
+      if (commentInput.trim()) {
+        try {
+          await axios.post(`${backendURL}/api/recipe/addcomment`, {
+            recipeId: recipe._id,
+            username: username,  // Assuming the user is already logged in
+            content: commentInput,
+          },
+          {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+          setComments([...comments, { username: username, content: commentInput, date: new Date() }]);
+          setCommentInput("");
+        } catch (error) {
+          console.error("Error posting comment:", error);
+        }
+      }
+    };
+
 
   return (
     <div className="w-[80vw] m-auto  my-12">
@@ -67,10 +123,50 @@ const OneRecipe = () => {
                 {recipe.steps.map((item, index)=>{
                   return <li className="py-1" key={index}>{item}</li>
                 })}
-             </ol>
+            </ol>
           </div>
         </div>
       </form>
+      
+      {/* Comment Section */}
+      <div className="my-8">
+        <h2 className="text-xl font-bold text-red-700">Comments</h2>
+        <div className="my-4">
+          <textarea
+            className="w-full border border-gray-300 p-2 rounded-md"
+            placeholder="Write a comment..."
+            value={commentInput}
+            onChange={(e) => setCommentInput(e.target.value)}
+          />
+          <button
+            className="bg-red-700 text-white px-4 py-2 mt-2 rounded-md"
+            onClick={handlePostComment}
+            type="button"
+          >
+            Post
+          </button>
+        </div>
+
+        {/* Displaying Comments */}
+        <div className="mt-4">
+          {comments && comments.length > 0 ? (
+            comments.map((comment, index) => (
+              <div key={index} className="border border-gray-300 p-4 rounded-md mb-2">
+                <h3 className="font-semibold">{comment.username}</h3>
+                <p>{comment.content}</p>
+                <small className="text-gray-500">
+                  {new Date(comment.date).getFullYear()}-
+                  {new Date(comment.date).getMonth() + 1}-
+                  {new Date(comment.date).getDate()}
+                </small>   
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">No comments yet.</p>
+          )}
+        </div>
+
+      </div>
     </div>
   );
 };

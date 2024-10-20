@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons"; // Import success and error icons
+} from "@fortawesome/free-solid-svg-icons";
 import {
   faInstagramSquare,
   faLinkedinIn,
@@ -23,7 +23,7 @@ const Footer = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const path = useLocation().pathname;
 
-  // Check if the content is smaller than the screen
+
   useEffect(() => {
     const handleResize = () => {
       const contentHeight = document.documentElement.scrollHeight;
@@ -90,10 +90,10 @@ const Footer = () => {
   };
 
   return (
-    <div className="fixed bottom-0 bg-white  w-full">
+    <div className={`w-full ${path !== "/user" ? "relative" : "fixed bottom-0"}`}>
       {path !== "/user" && (
         <>
-          <footer className="text-gray-600 body-font ">
+          <footer className="text-gray-600 body-font w-full">
             <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
               <span className="flex title-font font-bold items-center md:justify-start justify-center text-red-700">
                 <span className="ml-3 text-xl font-[Mrriweather]">
@@ -158,13 +158,14 @@ const Footer = () => {
             </div>
           </footer>
 
+
           {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
               <div className="bg-white p-6 rounded-lg w-full max-w-lg">
                 {submitStatus === null ? (
                   <>
-                    {/* Show the form if no status has been set */}
+                    {}
                     <h2 className="text-2xl font-bold mb-4">Feedback</h2>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                       <div>
@@ -176,6 +177,9 @@ const Footer = () => {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           required
+                          pattern="[a-zA-Z ]+"
+                          oninvalid="this.setCustomValidity('Numbers and Symbols are not allowed')"
+                          oninput="this.setCustomValidity('')"
                         />
                       </div>
 
