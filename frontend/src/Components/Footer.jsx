@@ -93,60 +93,70 @@ const Footer = () => {
     <div className={`w-full ${path !== "/user" ? "relative" : "fixed bottom-0"}`}>
       {path !== "/user" && (
         <>
-         <footer className="text-gray-600 body-font w-full">
-  <div className="container max-w-screen-xl px-2 py-2 flex flex-wrap items-center justify-center md:justify-start">
-    <span className="flex title-font font-bold items-center md:justify-start justify-start text-red-700 mb-4 md:mb-0">
-      <span className="text-xl font-[Mrriweather]">
-        TastyTrails
-      </span>
-    </span>
-    <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 text-center">
-      © {new Date().getFullYear()} TastyTrails Developer — 
-      <Link
-        to="https://twitter.com/A_l_f_i_y_a"
-        className="text-gray-600 ml-1"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        @A_l_f_i_y_A
-      </Link>
-      <Link to="/contributors" className="ml-4">
-        <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all">
-          Contributors
-        </button>
-      </Link>
-    </p>
-    <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center">
-      <Link
-        to={"https://www.instagram.com/alfiya.17.siddiq/"}
-        className="text-red-700"
-      >
-        <FontAwesomeIcon icon={faInstagramSquare} />
-      </Link>
-      <Link
-        to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
-        className="ml-3 text-red-700"
-      >
-        <FontAwesomeIcon icon={faLinkedinIn}  />
-      </Link>
-      <Link
-        to={"https://github.com/AlfiyaSiddique"}
-        className="ml-3 text-red-700"
-      >
-        <FontAwesomeIcon icon={faGithubSquare} />
-      </Link>
-    </span>
-    <div className="translate flex ml-4 my-auto mt-4 md:mt-0 justify-center">
-      <GoogleTranslate />
-    </div>
-    <button
-      onClick={openModal} 
-      className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white mt-4 md:mt-0"
-    >
-      Feedback
-    </button>
-  </div>
-</footer>
+          <footer className="text-gray-600 body-font w-full">
+            <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
+              <span className="flex title-font font-bold items-center md:justify-start justify-center text-red-700">
+                <span className="ml-3 text-xl font-[Mrriweather]">
+                  TastyTrails
+                </span>
+              </span>
+              <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 sm:text-center">
+                © {new Date().getFullYear()} TastyTrails Developer —
+                <Link
+                  to="https://twitter.com/A_l_f_i_y_a"
+                  className="text-gray-600 ml-1 sm:text-center px-0"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  @A_l_f_i_y_A
+                </Link>
+
+               {/* added privacy policy */}
+               <Link to="/privacy-policy" className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all mx-3">
+                 Privacy Policy
+               </Link>
+
+                <Link to="/contributors" className="ml-4">
+                  <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all mx-0">
+                  Contributors
+                  </button>
+                </Link>
+              </p>
+              <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                <Link
+                  to={"https://www.instagram.com/alfiya.17.siddiq/"}
+                  className="text-ref-500 text-red-700"
+                >
+                  <FontAwesomeIcon icon={faInstagramSquare} />
+                </Link>
+                <Link
+                  to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
+                  className="ml-3 text-red-700"
+                >
+                  <FontAwesomeIcon icon={faLinkedinIn} className="" />
+                </Link>
+                <Link
+                  to={"https://github.com/AlfiyaSiddique"}
+                  className="ml-3 text-red-700"
+                >
+                  <FontAwesomeIcon icon={faGithubSquare} />
+                </Link>
+
+            
+              </span>
+                <div className="translate flex ml-4 my-auto">
+                  <GoogleTranslate />
+                </div>
+
+              <button
+                onClick={openModal} // Call openModal when feedback button is clicked
+                className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
+              >
+                Feedback
+              </button>
+
+            </div>
+          </footer>
 
 
           {/* Modal */}

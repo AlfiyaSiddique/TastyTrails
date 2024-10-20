@@ -132,7 +132,7 @@ const Navbar = () => {
           {/* Links for larger screens */}
           <nav
             className={
-              " md:ml-auto md:mr-auto flex flex-col md:flex-row md:flex items-center text-base justify-center"
+              "hidden md:flex md:flex-row md:ml-auto md:mr-auto items-center text-base justify-center"
             }
           >
             <NavLink

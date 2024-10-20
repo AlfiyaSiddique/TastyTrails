@@ -17,6 +17,7 @@ import AddRecipe from "./Pages/AddRecipe.jsx";
 import OneRecipe from "./Pages/OneRecipe.jsx";
 import UpdateRecipe from "./Pages/UpdateRecipe.jsx";
 import Contributors from "./Pages/Contributors.jsx"; // Import the Contributors component
+import PrivacyPolicy from "./Components/PrivacyPolicy.jsx";
 import NotFound from "./Pages/NotFound.jsx";
 
 function App() {
@@ -80,6 +81,8 @@ function App() {
           <Route path="/contributors" element={<Contributors />} />
           <Route path="*" element={<NotFound/>}/>
           {/* Add Contributors route */}
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          {/* Added Privacy-policy route */}
         </Routes>
         <Footer />
       </BrowserRouter>
