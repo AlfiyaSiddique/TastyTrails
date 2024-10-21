@@ -377,7 +377,31 @@ const getComments = async (req, res) => {
   }
 };
 
+const deleteComment = async (req,res) => {
+  try {
+    // Extract comment ID from the request parameters
+    const { commentId } = req.params;
+// console.log(commentId)
+    // Find the comment by ID and delete it
+    const deletedComment = await Comment.findByIdAndDelete(commentId);
 
+    if (!deletedComment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // Return success response
+    res.status(200).json({
+      message: "Comment deleted successfully",
+      deletedComment, // Optional: You can return the deleted comment data if needed
+    });
+  } catch (error) {
+    // Handle any errors that occur during the process
+    res.status(500).json({
+      message: "An error occurred while deleting the comment",
+      error: error.message,
+    });
+  }
+}
 
 const RecipeController = {
   addRecipe,
@@ -386,7 +410,8 @@ const RecipeController = {
   updateRecipe,
   deleteRecipe,
   addComment,
-  getComments
+  getComments,
+  deleteComment
 }
 
 export default RecipeController
