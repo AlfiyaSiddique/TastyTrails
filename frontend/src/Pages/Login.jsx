@@ -6,8 +6,12 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+
 import useGoogleAuth from "../../common/useGoogleAuth";
 import image from '../../public/newFoodSignup.jpeg'
+
+
+
 const Login = () => {
   const navigate = useNavigate(); 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
@@ -71,6 +75,7 @@ const Login = () => {
   const googleLogin = useGoogleAuth(handleLogin);
 
   return (
+    <>
     <div className="w-full h-screen flex justify-center items-center px-4">
   <div className="content w-full sm:w-[90vw] md:w-[75vw] lg:w-[70vw] xl:w-[65vw] h-full sm:h-[80vh] md:h-[70vh] lg:h-[60vh] xl:h-[55vh] rounded-md flex flex-col md:flex-row justify-evenly items-center">
     {/* Left Section */}
@@ -81,7 +86,7 @@ const Login = () => {
 
       <div className="content flex flex-col md:flex-row items-center md:items-start mt-5">
         <div className="img w-full md:w-[25vw] lg:w-[20vw] h-[30vh] md:h-[35vh] lg:h-[30vh] mt-4 md:mt-0">
-          <img className="h-[100] w-full rounded-lg object-cover" src={image} alt="Dish illustration" />
+          <img className="h-full w-full rounded-lg object-cover" src={image} alt="Dish illustration" />
         </div>
         <div className="innerContent mt-4 md:mt-0 md:ml-4">
           <ul className="font-bold text-xl sm:text-2xl md:text-2xl ml-0 md:ml-6 px-5">
@@ -95,7 +100,7 @@ const Login = () => {
 
     {/* Right Section (Login Form) */}
     <div className="loginForm w-full md:w-[40%] lg:w-[30%] h-[60vh] sm:h-[55vh] flex justify-center md:justify-evenly items-center mt-8 md:mt-0">
-      <div className="innerdiv w-[90%] sm:w-[75%] md:w-[90%] lg:w-[100%] h-[100]  rounded-xl shadow-xl py-5 px-6 bg-white shadow-[#rgba(0, 0, 0, 0.35)] ">
+      <div className="innerdiv w-[90%] sm:w-[75%] md:w-[90%] lg:w-[100%] h-[100] rounded-xl shadow-xl py-5 px-6 bg-white border-2 border-solid border-black">
         <h2 className="font-semibold text-lg sm:text-xl md:text-2xl text-center">Login</h2>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div className="form-group">
@@ -165,6 +170,7 @@ const Login = () => {
     </div>
   </div>
 </div>
+</>
   );
 };
 
