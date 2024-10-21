@@ -63,16 +63,14 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
             ((postURL));
           // toast.info("Link copied to clipboard")
           setUrl(postURL)
-          console.log(url)
+          // console.log(url)
           setShareOption(true)
         }
         else {
-          console.log(updateShareCount.message)
           toast.info(updateShareCount.message || "Something went wrong")
         }
       }
     } catch (error) {
-      console.log(error)
       toast.info("Something went wrong")
     }
   }

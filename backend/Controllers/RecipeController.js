@@ -407,7 +407,7 @@ const updateShareCount = async (req, res) => {
       return res.status(500).json({ success: false, message: "Internal Server error" })
     return res.status(200).json({ success: true, updateStatus })
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 
@@ -436,7 +436,7 @@ const getRecipeById = async (req, res) => {
     }
     return res.status(200).json({ success: true, dish: recipe })
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     return res.status(500).json({ success: false, message: "Internal Server error" })
   }
 }
