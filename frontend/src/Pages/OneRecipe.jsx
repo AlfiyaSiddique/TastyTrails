@@ -42,7 +42,7 @@ const OneRecipe = () => {
           navigate('*')
         })
     }
-    newDate(new Date(recipe.date))
+   
   }, [])
 
 
@@ -63,7 +63,7 @@ const OneRecipe = () => {
         console.error("Error fetching comments:", error);
       }
     };
-
+    newDate(new Date(recipe.date))
     fetchComments();
   }, [recipe]);
 
