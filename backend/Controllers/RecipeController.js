@@ -364,7 +364,6 @@ const getComments = async (req, res) => {
 
     // Fetch all comments for this recipe
     const comments = await Comment.find({ recipe: recipeId }).select('username content date').sort({ date: -1 });
-    
     return res.status(200).json({ success: true, comments });
   } catch (error) {
     console.log(error);
