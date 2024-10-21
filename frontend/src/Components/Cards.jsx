@@ -1,20 +1,23 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faHeart, faShare } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 //IMPORT THE APP.CSS
 import "../App.css";
 import axios from "axios";
+import ShareComponent from "./ShareComponent";
 // Cards Component for Creating Recipe Cards
 const Cards = ({ dish, setRecipes, recipes, index }) => {
   const navigate = useNavigate()
   const shareButton = useRef(null)
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const recipeId = dish._id
+  const [shareOption, setShareOption] = useState(false)
+  const [url, setUrl] = useState('')
   // Checks if user is authenticated or not
   const handleClick = async () => {
     const token = await JSON.parse(localStorage.getItem("tastytoken"));
@@ -58,7 +61,10 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
           setRecipes(updatedRecipes);
           navigator.clipboard.writeText
             ((postURL));
-          toast.info("Link copied to clipboard")
+          // toast.info("Link copied to clipboard")
+          setUrl(postURL)
+          console.log(url)
+          setShareOption(true)
         }
         else {
           console.log(updateShareCount.message)
@@ -70,9 +76,10 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
       toast.info("Something went wrong")
     }
   }
-  
+
   return (
     <div className="p-4 cursor-pointer" >
+      {shareOption && <ShareComponent url={url} setShareOption={setShareOption} shareOption={shareOption} />}
       <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden" onClick={handleClick}>
         <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"

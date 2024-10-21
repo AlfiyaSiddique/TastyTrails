@@ -15,7 +15,7 @@ const OneRecipe = () => {
   const [recipe, setRecipe] = useState({});
   const location = useLocation();
   const navigate = useNavigate()
-  const [date,newDate]=useState('')
+  const [date, newDate] = useState('')
   useEffect(() => {
     // Moved to top level
     // Check if the recipe exists in the state passed via useLocation
@@ -57,6 +57,7 @@ const OneRecipe = () => {
 
       try {
         const response = await axios.get(`${backendURL}/api/recipe/getcomments/${recipe._id}`);
+        console.log(recipe._id)
         setComments(response.data.comments);
       } catch (error) {
         console.error("Error fetching comments:", error);
@@ -64,7 +65,7 @@ const OneRecipe = () => {
     };
 
     fetchComments();
-  }, [recipe?._id]);
+  }, [recipe]);
 
 
 
@@ -97,13 +98,8 @@ const OneRecipe = () => {
   };
   if (loading || (!recipe)) {
     return (
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
-        {Array.from({ length: 6 }).map((item, i) => (
-          <div
-            key={i}
-            className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm"
-          />
-        ))}
+      <div className="w-screen h-screen flex justify-center items-center">
+        <div className="rounded-full w-16 h-16 border-4 border-t-transparent border-white animate-spin"></div>
       </div>
     )
   }
