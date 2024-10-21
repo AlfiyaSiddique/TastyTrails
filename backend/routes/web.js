@@ -8,7 +8,7 @@ const router = Router();
 
 // Get Requests
 router.get('/usernames', UserController.getAllUserName)
-router.get('/token', authenticateToken ,UserController.verifyUserByToken)
+router.get('/token', authenticateToken, UserController.verifyUserByToken)
 router.get("/recipes", RecipeController.allRecipe)
 // added route to get previous comments
 router.get('/recipe/getcomments/:recipeId', RecipeController.getComments)
@@ -21,7 +21,8 @@ router.post('/recipe/update', authenticateToken, RecipeController.updateRecipe)
 router.post('/recipe/readall', authenticateToken, RecipeController.getOneUserRecipes)
 router.post('/recipe/delete', authenticateToken, RecipeController.deleteRecipe)
 // added route to add new comment to database
-router.post("/recipe/addcomment",authenticateToken, RecipeController.addComment)
+router.post("/recipe/addcomment", authenticateToken, RecipeController.addComment)
 router.post('/feedback', UserController.Sendcontactmail);
-
+router.patch('/recipe/share/:recipeId', authenticateToken, RecipeController.updateShareCount)
+router.get('/recipe/:recipeId', RecipeController.getRecipeById)
 export default router;
