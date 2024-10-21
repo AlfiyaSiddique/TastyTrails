@@ -70,7 +70,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`z-50 relative ${isSticky ? "fixed top-0 left-0 w-full bg-white shadow-md" : ""
+      className={`z-50 relative navbar${isSticky ? "fixed top-0 left-0 w-full bg-white shadow-md" : ""
         }`}
     >
       <header className="text-gray-600 body-font">
@@ -132,7 +132,7 @@ const Navbar = () => {
           {/* Links for larger screens */}
           <nav
             className={
-              " md:ml-auto md:mr-auto flex flex-col md:flex-row md:flex items-center text-base justify-center"
+              "hidden md:flex md:flex-row md:ml-auto md:mr-auto items-center text-base justify-center"
             }
           >
             <NavLink
