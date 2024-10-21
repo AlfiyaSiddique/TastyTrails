@@ -22,6 +22,7 @@ router.post('/recipe/readall', authenticateToken, RecipeController.getOneUserRec
 router.post('/recipe/delete', authenticateToken, RecipeController.deleteRecipe)
 // added route to add new comment to database
 router.post("/recipe/addcomment",authenticateToken, RecipeController.addComment)
+router.delete("/recipe/deletecomment/:commentId",authenticateToken,RecipeController.deleteComment)
 router.post('/feedback', UserController.Sendcontactmail);
 
 export default router;

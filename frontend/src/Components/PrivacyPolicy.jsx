@@ -1,8 +1,7 @@
-// src/components/PrivacyPolicy.jsx
 
 import React from 'react';
 
-const PrivacyPolicy = () => {
+const  PrivacyPolicy= () => {
   return (
     <div className="max-w-4xl mx-auto p-6 overflow-auto h-full">
       <p className='text-xl mb-2 font-bold text-gray-500'>Legal Terms</p>
