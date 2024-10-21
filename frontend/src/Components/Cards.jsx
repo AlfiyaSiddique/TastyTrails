@@ -9,15 +9,12 @@ import { toast } from "react-toastify";
 //IMPORT THE APP.CSS
 import "../App.css";
 import axios from "axios";
-import ShareComponent from "./ShareComponent";
 // Cards Component for Creating Recipe Cards
 const Cards = ({ dish, setRecipes, recipes, index }) => {
   const navigate = useNavigate()
   const shareButton = useRef(null)
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const recipeId = dish._id
-  const [shareOption, setShareOption] = useState(false)
-  const [url, setUrl] = useState('')
   // Checks if user is authenticated or not
   const handleClick = async () => {
     const token = await JSON.parse(localStorage.getItem("tastytoken"));
@@ -41,7 +38,6 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
         navigate("/login")
       }
       if (token !== null) {
-        // console.log(token)
         const updateShareCount = await axios.patch(`${backendURL}/api/recipe/share/${recipeId}`, {}, {
           headers: {
             "Authorization": `Bearer ${token}`
@@ -57,14 +53,11 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
             share: updatedRecipes[index].share + 1  // Increase the share value
           };
 
-          // Set the new recipes array with the updated value
           setRecipes(updatedRecipes);
           navigator.clipboard.writeText
             ((postURL));
-          // toast.info("Link copied to clipboard")
-          setUrl(postURL)
-          // console.log(url)
-          setShareOption(true)
+          toast.info(`Link has been copied to clipboard`)
+          toast.info(postURL)
         }
         else {
           toast.info(updateShareCount.message || "Something went wrong")
@@ -77,7 +70,6 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
 
   return (
     <div className="p-4 cursor-pointer" >
-      {shareOption && <ShareComponent url={url} setShareOption={setShareOption} shareOption={shareOption} />}
       <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden" onClick={handleClick}>
         <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
