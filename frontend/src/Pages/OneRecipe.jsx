@@ -1,68 +1,112 @@
 // eslint-disable-next-line no-unused-vars
 import { useEffect } from "react";
-import React,{ useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 // Displays single Recipe
 const OneRecipe = () => {
-    
-    const backendURL = import.meta.env.VITE_BACKEND_URL;  
-    const token = JSON.parse(localStorage.getItem("tastytoken"));
 
-    const recipe = useLocation().state.dish;
-    const date = new Date(recipe.date);
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const token = JSON.parse(localStorage.getItem("tastytoken"));
+  const recipeId = useParams().id
+  const [loading, setLoading] = useState(true)
+  const [recipe, setRecipe] = useState({});
+  const location = useLocation();
+  const navigate = useNavigate()
+  const [date,newDate]=useState('')
+  useEffect(() => {
+    // Moved to top level
+    // Check if the recipe exists in the state passed via useLocation
+    if (location.state && location.state.dish) {
+      setRecipe(location.state.dish);
+      setLoading(false);
+    }
+    else {
+      axios.get(`${backendURL}/api/recipe/${recipeId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            // console.log(res.data.dish)
+            setRecipe(res.data.dish)
+            setLoading(false)
+          }
+          else {
+            toast.info(res.message || "Something went wrong")
+            navigate('*')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          toast.info("Internal server error")
+          navigate('*')
+        })
+    }
+    newDate(new Date(recipe.date))
+  }, [])
 
-    // States for handling comments and input
-    const [commentInput, setCommentInput] = useState("");
-    const [comments, setComments] = useState([]);
 
-    // To fetch earlier posted comments from database
-    useEffect(() => {
-      const fetchComments = async () => {
-        
-        try {
-          const response = await axios.get(`${backendURL}/api/recipe/getcomments/${recipe._id}`);
-          setComments(response.data.comments);
-        } catch (error) {
-          console.error("Error fetching comments:", error);
-        }
-      };
-    
-      fetchComments();
-    }, [recipe._id]);
+  // States for handling comments and input
+  const [commentInput, setCommentInput] = useState("");
+  const [comments, setComments] = useState([]);
+
+  // To fetch earlier posted comments from database
+
+  useEffect(() => {
+    const fetchComments = async () => {
+
+      try {
+        const response = await axios.get(`${backendURL}/api/recipe/getcomments/${recipe._id}`);
+        setComments(response.data.comments);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [recipe?._id]);
 
 
-    
 
-    // Function to handle posting a comment
-    const handlePostComment = async() => {
- 
-      // getting username from token named "username" created during login
-      const username = JSON.parse(localStorage.getItem("username"));
-      if (commentInput.trim()) {
-        try {
-          await axios.post(`${backendURL}/api/recipe/addcomment`, {
-            recipeId: recipe._id,
-            username: username,  // Assuming the user is already logged in
-            content: commentInput,
-          },
+
+  // Function to handle posting a comment
+  const handlePostComment = async () => {
+
+    // getting username from token named "username" created during login
+    const username = JSON.parse(localStorage.getItem("username"));
+    if (commentInput.trim()) {
+      try {
+        await axios.post(`${backendURL}/api/recipe/addcomment`, {
+          recipeId: recipe._id,
+          username: username,  // Assuming the user is already logged in
+          content: commentInput,
+        },
           {
             headers: {
-                Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
 
-          setComments([...comments, { username: username, content: commentInput, date: new Date() }]);
-          setCommentInput("");
-        } catch (error) {
-          console.error("Error posting comment:", error);
-        }
+        setComments([...comments, { username: username, content: commentInput, date: new Date() }]);
+        setCommentInput("");
+      } catch (error) {
+        console.error("Error posting comment:", error);
       }
-    };
-
-
+    }
+  };
+  if (loading || (!recipe)) {
+    return (
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
+        {Array.from({ length: 6 }).map((item, i) => (
+          <div
+            key={i}
+            className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm"
+          />
+        ))}
+      </div>
+    )
+  }
   return (
     <div className="w-[80vw] m-auto  my-12">
       <h1 className="text-3xl font-extrabold text-red-700 my-8 text-center">{recipe.name}</h1>
@@ -92,7 +136,7 @@ const OneRecipe = () => {
               <div
                 className="flex md:justify-between text-md font-bold text-center mx-4"
               >
-              <span className="text-red-700 mx-2">Date:</span>{`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`}
+                <span className="text-red-700 mx-2">Date:</span>{`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`}
               </div>
             </div>
             {recipe.author && <span className=" mx-4 text-md font-bold"><span className="text-red-700">Author:</span>{recipe.author}</span>}
@@ -106,12 +150,12 @@ const OneRecipe = () => {
             >
               List of Ingredients
             </div>
-             <ul className="list-disc list-inside">
+            <ul className="list-disc list-inside">
 
-                {recipe.ingredients.map((item, index)=>{
-                  return <li className="py-1" key={index}>{item}</li>
-                })}
-             </ul>
+              {recipe.ingredients.map((item, index) => {
+                return <li className="py-1" key={index}>{item}</li>
+              })}
+            </ul>
           </div>
           <div className="px-4 mt-5 md:mt-0">
             <div
@@ -120,14 +164,14 @@ const OneRecipe = () => {
               Steps
             </div>
             <ol className="list-inside list-decimal">
-                {recipe.steps.map((item, index)=>{
-                  return <li className="py-1" key={index}>{item}</li>
-                })}
+              {recipe.steps.map((item, index) => {
+                return <li className="py-1" key={index}>{item}</li>
+              })}
             </ol>
           </div>
         </div>
       </form>
-      
+
       {/* Comment Section */}
       <div className="my-8">
         <h2 className="text-xl font-bold text-red-700">Comments</h2>
@@ -158,7 +202,7 @@ const OneRecipe = () => {
                   {new Date(comment.date).getFullYear()}-
                   {new Date(comment.date).getMonth() + 1}-
                   {new Date(comment.date).getDate()}
-                </small>   
+                </small>
               </div>
             ))
           ) : (

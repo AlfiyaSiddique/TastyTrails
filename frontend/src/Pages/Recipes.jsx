@@ -8,7 +8,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
 import Pagination from "../Components/Pagination.jsx";
 
-const Recipes = ({type}) => {
+const Recipes = ({ type }) => {
   const [loading, setLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
   const backendURL = import.meta.env.VITE_BACKEND_URL;
@@ -27,7 +27,7 @@ const Recipes = ({type}) => {
     }, 500); // 500ms delay
 
     // Cleanup the timeout if searchTerm changes before the delay
-    return () => { clearTimeout(handler)};
+    return () => { clearTimeout(handler) };
   }, [searchTerm]);
 
   useEffect(() => {
@@ -42,10 +42,10 @@ const Recipes = ({type}) => {
           },
         });
 
-        const { recipes, pagination: paginationData } = response.data;     
-          
+        const { recipes, pagination: paginationData } = response.data;
+
         setRecipes(recipes);
-     
+
         setPagination((prev) => ({
           ...prev,
           totalRecipes: paginationData.totalRecipes,
@@ -53,13 +53,13 @@ const Recipes = ({type}) => {
         }));
       } catch (err) {
         console.log(err);
-      }finally{
+      } finally {
         setLoading(false);
       }
     };
 
     fetchRecipes();
-  }, [pagination.currentPage, type, debouncedSearchTerm]); 
+  }, [pagination.currentPage, type, debouncedSearchTerm]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -109,7 +109,7 @@ const Recipes = ({type}) => {
           Search
         </button>
       </div>
-  
+
       {/* Recipes List or Loading Skeleton */}
       {loading ? (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
@@ -124,8 +124,8 @@ const Recipes = ({type}) => {
         <div className="flex-grow my-20"> {/* Takes up remaining space */}
           {recipes.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {recipes.map((food) => (
-                <Cards dish={food} key={food._id} />
+              {recipes.map((food, index) => (
+                <Cards dish={food} key={food._id} setRecipes={setRecipes} recipes={recipes} index={index} />
               ))}
             </div>
           ) : (
