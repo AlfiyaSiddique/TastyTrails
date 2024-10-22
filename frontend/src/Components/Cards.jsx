@@ -56,7 +56,8 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
           setRecipes(updatedRecipes);
           navigator.clipboard.writeText
             ((postURL));
-          toast.info(`Link has been copied to clipboard`)
+          toast.success("Copied!")
+          
         }
         else {
           toast.info(updateShareCount.message || "Something went wrong")
