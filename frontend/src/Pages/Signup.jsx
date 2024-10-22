@@ -7,7 +7,7 @@ import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
 import useGoogleAuth from "../../common/useGoogleAuth"
-import image from "../../public/image-login.jpg"
+import image from "../../public/registerimage.jpg"
 
 const Signup = () => {
   const navigator = useNavigate();
@@ -156,15 +156,15 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
             Join the Community of Over{" "}
             <span className="text-red-500">1 million+ people</span>
           </h2>
-          <div className="image w-full mt-6">
+          <div className="image  w-full  mt-6">
             <img
-              className="w-full h-[25vh] md:h-[35vh] rounded-lg shadow-md object-cover"
+              className="w-full rounded-full md:h-[65vh]  shadow-md "
               src={image}
               alt="Community"
             />
           </div>
           <h3 className="font-extrabold text-2xl sm:text-3xl md:text-3xl mt-8 text-center">
-            <span className="text-[36px] sm:text-[52px]">#1</span> Food Review{" "}
+            <span className="">#1</span> Food Review{" "}
             <span className="text-red-500">Explore</span> Site
           </h3>
         </div>
@@ -334,13 +334,13 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full  md:w-[18vw] h-[5vh] mx-auto mt-6 bg-red-700 text-white rounded-md hover:bg-red-600 transition hover:border-white hover:border-solid hover:border-2"
+              className="w-full ml-16  md:w-[18vw] h-[5vh] mx-auto mt-6 bg-red-700 text-white rounded-md hover:bg-red-600 transition hover:border-white hover:border-solid hover:border-2"
             >
               Sign up
             </button>
   
             {/* Login Link */}
-            <p className="text-black text-center mt-4 text-[12px]">
+            <p className="text-black text-center mt-4 text-[18px]">
               Already have an account?{" "}
               <Link
                 to="/Login"
