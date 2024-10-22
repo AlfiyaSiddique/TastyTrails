@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,9 +5,9 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import useGoogleAuth from "../../common/useGoogleAuth"
+import useGoogleAuth from "../../common/useGoogleAuth";
 const Login = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [show, setShow] = useState(false); //Eye EyeSlash Toggle
   const [form, setForm] = useState({
@@ -23,7 +22,6 @@ const Login = () => {
       return { ...prev, [name]: value };
     });
   };
-  
 
   // Handle Login Submit
   const handleSubmit = (e) => {
@@ -35,7 +33,10 @@ const Login = () => {
           toast.success("Login Successful");
           localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
           // creating a token named "username" for storing logged in user's name for comment purposes
-          localStorage.setItem("username", JSON.stringify(res.data.user.username));
+          localStorage.setItem(
+            "username",
+            JSON.stringify(res.data.user.username)
+          );
           navigate(`/user/${res.data.user._id}`, {
             state: { user: res.data.user },
           });
@@ -43,11 +44,9 @@ const Login = () => {
       })
       .catch((err) => {
         toast.error(err.response.data.message);
-        
       });
   };
 
-  
   // Reusable function
   const handleLogin = (formData) => {
     axios
@@ -63,7 +62,6 @@ const Login = () => {
       })
       .catch((err) => {
         toast.error(err.response.data.message);
-      
       });
   };
   // Using custom Google Auth hook
@@ -129,17 +127,33 @@ const Login = () => {
                   Sign in
                 </button>
               </form>
-                <button onClick={() => googleLogin()} className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ">
-                <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" className="w-8 h-8 mr-2 inline-block"/> Sign in with Google</button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Don’t have an account yet?{" "}
-                  <Link
-                    to="/signup"
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:text-red-700"
-                  >
-                    Sign up
-                  </Link>
-                </p>      
+              <button
+                onClick={() => googleLogin()}
+                className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
+              >
+                <img
+                  src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000"
+                  className="w-8 h-8 mr-2 inline-block"
+                />{" "}
+                Sign in with Google
+              </button>
+              <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
+                <Link
+                  to="/forgot_password"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:text-red-700"
+                >
+                  Forgot Password?{" "}
+                </Link>
+              </p>
+              <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
+                Don’t have an account yet?{" "}
+                <Link
+                  to="/signup"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:text-red-700"
+                >
+                  Sign up
+                </Link>
+              </p>
             </div>
           </div>
         </div>

@@ -5,23 +5,30 @@ import authenticateToken from "../middleware/auth.js";
 
 const router = Router();
 
-
 // Get Requests
-router.get('/usernames', UserController.getAllUserName)
-router.get('/token', authenticateToken ,UserController.verifyUserByToken)
-router.get("/recipes", RecipeController.allRecipe)
+router.get("/usernames", UserController.getAllUserName);
+router.get("/token", authenticateToken, UserController.verifyUserByToken);
+router.get("/recipes", RecipeController.allRecipe);
 // added route to get previous comments
-router.get('/recipe/getcomments/:recipeId', RecipeController.getComments)
-
+router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
 // Post Requests
-router.post('/signup', UserController.Signup)
-router.post('/login', UserController.Login)
-router.post('/recipe/add', authenticateToken, RecipeController.addRecipe)
-router.post('/recipe/update', authenticateToken, RecipeController.updateRecipe)
-router.post('/recipe/readall', authenticateToken, RecipeController.getOneUserRecipes)
-router.post('/recipe/delete', authenticateToken, RecipeController.deleteRecipe)
+router.post("/signup", UserController.Signup);
+router.post("/login", UserController.Login);
+router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);
+router.post("/recipe/update", authenticateToken, RecipeController.updateRecipe);
+router.post(
+  "/recipe/readall",
+  authenticateToken,
+  RecipeController.getOneUserRecipes
+);
+router.post("/recipe/delete", authenticateToken, RecipeController.deleteRecipe);
 // added route to add new comment to database
-router.post("/recipe/addcomment",authenticateToken, RecipeController.addComment)
-router.post('/feedback', UserController.Sendcontactmail);
-
+router.post(
+  "/recipe/addcomment",
+  authenticateToken,
+  RecipeController.addComment
+);
+router.post("/feedback", UserController.Sendcontactmail);
+router.post("/forgot_password", UserController.forgotPassword);
+router.post("/reset_password/:token", UserController.resetPassword);
 export default router;
