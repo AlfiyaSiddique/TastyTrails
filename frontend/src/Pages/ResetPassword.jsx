@@ -7,31 +7,17 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const ResetPassword = () => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const { token } = useParams();
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
-    // Signup Form Data
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
     password: "",
     cpassword: "",
   });
 
   const [error, setError] = useState({
-    // Inline validation Statements
-    firstName: false,
-    firstNameError: false,
-    lastName: false,
-    lastNameError: false,
-    username: false,
-    usernameError: false,
-    email: false,
-    emailError: false,
     password: false,
     passwordError: false,
     cpassword: false,
@@ -44,12 +30,10 @@ const ResetPassword = () => {
     let message = {};
 
     // Trim trailing spaces for username
-    const trimmedValue = name === "username" ? value.trim() : value;
+    const trimmedValue = value.trim();
 
     if (name === "cpassword") {
       message = validate.cpasssword(trimmedValue, form.password);
-    } else if (name === "username") {
-      message = await validate.username(trimmedValue);
     } else {
       message = validate[name](trimmedValue);
     }
@@ -64,28 +48,22 @@ const ResetPassword = () => {
   };
 
   const handleSubmit = async (e) => {
-    // Handle Signup Submit
     e.preventDefault();
-    // let submitable = true;
+    if (error.password || error.cpassword) return;
 
-    // Object.values(error).forEach((val) => {
-    //   if (val) {
-    //     submitable = false;
-    //     return;
-    //   }
-    // });
-    axios
-      .post(`${backendURL}/reset_password/` + token, {
-        password,
-      })
-      .then((response) => {
-        if (response.data.success) {
-          navigator("/login");
+    try {
+      const response = await axios.post(
+        `${backendURL}/reset_password/${token}`,
+        {
+          password: form.password,
         }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      );
+      if (response.data.success) {
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -168,7 +146,7 @@ const ResetPassword = () => {
                   type="submit"
                   className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pt-gray-900 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  Sign Up
+                  Reset Password
                 </button>
               </form>
               <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">

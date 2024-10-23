@@ -211,9 +211,19 @@ const forgotPassword = async function (req, res) {
 
 const resetPassword = async function (req, res) {
   const { token } = req.params;
+  console.log(token);
   const { password } = req.body;
   try {
-  } catch (error) {}
+    const decoded = jwt.verify(token, process.env.SECRET);
+    const id = decoded.id;
+    const hashPassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate({ _id: id }, { password: hashPassword });
+    return res
+      .status(200)
+      .json({ success: true, message: "Password reset succesfully" });
+  } catch (error) {
+    return res.status(400).json({ success: false, message: "Invalid token" });
+  }
 };
 
 const UserController = {
