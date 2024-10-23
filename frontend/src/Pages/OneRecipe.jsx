@@ -56,7 +56,6 @@ const OneRecipe = () => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(`${backendURL}/api/recipe/getcomments/${recipe._id}`);
-        console.log(recipe._id)
         setComments(response.data.comments);
       } catch (error) {
         console.error("Error fetching comments:", error);
