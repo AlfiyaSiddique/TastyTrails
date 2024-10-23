@@ -458,11 +458,13 @@ const removeRecipeLike = async (req, res) => {
   try {
     const { recipeId, userId } = req.body;
 
+    // Find the user by their ID
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Find the recipe by its ID
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
@@ -470,19 +472,31 @@ const removeRecipeLike = async (req, res) => {
 
     // If the user has liked the recipe, remove the like
     if (user.likedRecipes.includes(recipeId)) {
-      user.likedRecipes = user.likedRecipes.filter((id) => id !== recipeId);
-      recipe.likes -= 1; // Decrement the like count
+      // Remove the recipeId from the likedRecipes array
+      user.likedRecipes = user.likedRecipes.filter(
+        (id) => id.toString() !== recipeId.toString()
+      );
+
+      // Decrement the like count
+      recipe.likes = Math.max(recipe.likes - 1, 0); // Ensure likes don't go negative
+
+      // Save both the user and the recipe
       await user.save();
       await recipe.save();
-    }
 
-    res.status(200).json({
-      success: true,
-      message: "Recipe unliked",
-      totalLikes: recipe.likes,
-    });
+      return res.status(200).json({
+        success: true,
+        message: "Recipe unliked",
+        totalLikes: recipe.likes,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Recipe is not liked by the user" });
+    }
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -497,7 +511,6 @@ const getLikedRecipe = async (req, res) => {
     const likedRecipes = await Recipe.find({
       _id: { $in: likedRecipeIds },
     });
-    console.log(likedRecipes);
     return res.status(200).json({ success: true, likedRecipes });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server error" });
