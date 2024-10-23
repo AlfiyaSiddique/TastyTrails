@@ -7,7 +7,7 @@ import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
 import useGoogleAuth from "../../common/useGoogleAuth"
-import image from "../../public/registerimage.jpg"
+import image from "../../public/newFoodSignup.jpeg"
 
 const Signup = () => {
   const navigator = useNavigate();
@@ -147,206 +147,94 @@ const Signup = () => {
 const googleSignup = useGoogleAuth(handleGoogleSignup, true);
 
   return (
-    <div className="Container h-[100vh] w-[90vw] bg-white flex justify-center items-center mx-auto px-4 sm:px-8 md:px-12">
-    <div className="InnerDiv h-[90vh] w-full md:w-[75vw] mb-8 flex flex-col md:flex-row justify-between items-center">
+ <div className="w-full h-screen flex justify-center items-center px-4">
+    <div className="content w-full sm:w-[90vw] md:w-[75vw] lg:w-[70vw] xl:w-[65vw] h-full sm:h-[80vh] md:h-[70vh] lg:h-[60vh] xl:h-[55vh] rounded-md flex flex-col md:flex-row justify-evenly items-center">
       {/* Left Section */}
-      <div className="left w-full md:w-[45%] lg:w-[35vw] mb-8 md:mb-0">
-        <div className="content w-full">
-          <h2 className="font-extrabold text-2xl sm:text-3xl md:text-4xl text-center md:text-left">
-            Join the Community of Over{" "}
-            <span className="text-red-500">1 million+ people</span>
-          </h2>
-          <div className="image  w-full  mt-6">
-            <img
-              className="w-full rounded-full md:h-[65vh]  shadow-md "
-              src={image}
-              alt="Community"
-            />
+      <div className="illustrations w-full md:w-[50%] lg:w-[40%] h-[40vh] sm:h-[50vh] lg:h-[45vh] flex flex-col items-center md:items-start">
+        <h1 className="font-extrabold text-2xl sm:text-3xl md:text-4xl text-center md:text-left">
+          Explore Dishes Across the globe like <span className="text-red-400">never before...</span>
+        </h1>
+  
+        <div className="content flex flex-col md:flex-row items-center md:items-start mt-5">
+          <div className="img w-full md:w-[25vw] lg:w-[20vw] h-[30vh] md:h-[35vh] lg:h-[30vh] mt-4 md:mt-0">
+            <img className="h-full w-full rounded-lg object-cover" src={image} alt="Dish illustration" />
           </div>
-          <h3 className="font-extrabold text-2xl sm:text-3xl md:text-3xl mt-8 text-center">
-            <span className="">#1</span> Food Review{" "}
-            <span className="text-red-500">Explore</span> Site
-          </h3>
+          <div className="innerContent mt-4 md:mt-0 md:ml-4">
+            <ul className="font-bold text-xl sm:text-2xl md:text-2xl ml-0 md:ml-6 px-5">
+              <li className="text-yellow-500 py-1">Review</li>
+              <li className="text-red-500 py-1">Share</li>
+              <li className="py-1">Comments</li>
+            </ul>
+
+          </div>
         </div>
       </div>
   
-      {/* Right Section (Form) */}
-      <div className="right w-full md:w-[50%] lg:w-[30vw] flex justify-center">
-        <div className="form w-full md:w-[80%] lg:w-[100%] h-auto p-6  shadow-md rounded-xl ">
-          <h1 className="text-black text-xl text-center mb-6">Register</h1>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* First and Last Name */}
-            <div className="name flex flex-col md:flex-row justify-between">
-              <div className="first w-full md:w-[48%] mb-4 md:mb-0">
-                <label
-                  htmlFor="firstName"
-                  className="block text-sm font-medium text-black"
-                >
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
-                  placeholder="Ex. John"
-                  value={form.firstName}
-                  onChange={handleChange}
-                  required
-                />
-                {error.firstName && (
-                  <p className="text-red-500 text-sm">{error.firstNameError}</p>
-                )}
-              </div>
-  
-              <div className="second w-full md:w-[48%]">
-                <label
-                  htmlFor="lastName"
-                  className="block text-sm font-medium text-black"
-                >
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
-                  placeholder="Ex. Doe"
-                  value={form.lastName}
-                  onChange={handleChange}
-                  required
-                />
-                {error.lastName && (
-                  <p className="text-red-500 text-sm">{error.lastNameError}</p>
-                )}
-              </div>
-            </div>
-  
-            {/* Username */}
-            <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-black"
-              >
-                Username
-              </label>
+      {/* Right Section (Login Form) */}
+      <div className="loginForm w-full md:w-[40%] lg:w-[30%] h-[60vh] sm:h-[55vh] flex justify-center md:justify-evenly items-center mt-8 md:mt-0">
+        <div className="innerdiv w-[90%] sm:w-[75%] md:w-[90%] lg:w-[100%] h-[100] rounded-xl shadow-xl py-5 px-6 bg-white ">
+          <h2 className="font-semibold text-lg sm:text-xl md:text-2xl text-center">Login</h2>
+          <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+            <div className="form-group">
+              <label htmlFor="email" className="font-semibold text-sm">Email</label>
               <input
                 type="text"
-                id="username"
-                name="username"
-                className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
-                placeholder="Ex. jhonedoe12"
-                value={form.username}
+                name="searchTerm"
+                id="searchTerm"
+                placeholder="name@company.com"
+                required={true}
+                value={form.searchTerm}
                 onChange={handleChange}
-                required
+                className="w-full h-[6vh] pl-3 rounded-md bg-white border-2 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
-              {error.username && (
-                <p className="text-red-500 text-sm">{error.usernameError}</p>
-              )}
             </div>
   
-            {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-black"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
-                placeholder="abc@gmail.com"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
-              {error.email && (
-                <p className="text-red-500 text-sm">{error.emailError}</p>
-              )}
-            </div>
-  
-            {/* Password */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-black"
-              >
-                Password
-              </label>
+            <div className="form-group">
+              <label htmlFor="password" className="font-semibold text-sm">Password</label>
               <div className="relative">
                 <input
                   type={show ? "text" : "password"}
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                  className="w-full h-[6vh] pl-3 rounded-md bg-white border-2 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  required={true}
                   value={form.password}
                   onChange={handleChange}
-                  required
                 />
                 <FontAwesomeIcon
                   icon={show ? faEye : faEyeSlash}
                   onClick={() => setShow(!show)}
-                  className="absolute top-0 right-3 m-3 cursor-pointer"
+                  className="absolute top-0 right-0 m-3 cursor-pointer"
                 />
+                <p className="text-[12px] mt-2 cursor-pointer text-blue-500">Forgot Password?</p>
               </div>
-              {error.password && (
-                <div className="text-red-500 text-sm mt-2">
-                  <ul className="list-disc list-inside">
-                    <li>Minimum 8 characters</li>
-                    <li>At least 1 uppercase letter</li>
-                    <li>At least 1 lowercase letter</li>
-                    <li>At least 1 number</li>
-                    <li>At least 1 symbol</li>
-                  </ul>
-                </div>
-              )}
             </div>
   
-            {/* Confirm Password */}
-            <div>
-              <label
-                htmlFor="cpassword"
-                className="block text-sm font-medium text-black"
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                name="cpassword"
-                id="cpassword"
-                placeholder="••••••••"
-                className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
-                value={form.cpassword}
-                onChange={handleChange}
-                required
-              />
-              {error.cpassword && (
-                <p className="text-red-500 text-sm mt-0 mb-2">
-                  {error.cpasswordError}
-                </p>
-              )}
-            </div>
-  
-            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full ml-16  md:w-[18vw] h-[5vh] mx-auto mt-6 bg-red-700 text-white rounded-md hover:bg-red-600 transition hover:border-white hover:border-solid hover:border-2"
+              className="w-full p-3 bg-red-700 text-white rounded-md hover:bg-red-600 transition hover:border-white hover:border-solid hover:border-2"
             >
-              Sign up
+              Sign in
             </button>
   
-            {/* Login Link */}
-            <p className="text-black text-center mt-4 text-[18px]">
-              Already have an account?{" "}
+            <p className="text-center">or continue with</p>
+  
+            <button
+              type="button"
+              onClick={() => googleLogin()}
+              className="w-full p-3 bg-red-700 hover:bg-red-500 text-white rounded-md transition hover:border-white hover:border-solid hover:border-2"
+            >
+              Sign in with Google
+            </button>
+  
+            <p className="text-[12px] text-center">
+              New to TastyTrails?{" "}
               <Link
-                to="/Login"
-                className="text-blue-400 hover:text-blue-500 pl-2"
+                to="/signup"
+                className="font-medium text-blue-500 hover:underline dark:text-primary-500 hover:text-red-700"
               >
-                Login
+                Register for free
               </Link>
             </p>
           </form>
@@ -354,7 +242,6 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
       </div>
     </div>
   </div>
- 
   );
 };
 
