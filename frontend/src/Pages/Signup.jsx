@@ -158,7 +158,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
           </h2>
           <div className="image  w-full  mt-6">
             <img
-              className="w-full rounded-full md:h-[65vh]  shadow-md "
+              className="w-full rounded-full md:h-[45vh]  shadow-md "
               src={image}
               alt="Community"
             />
