@@ -69,7 +69,9 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`z-50 relative navbar ${isSticky ? "fixed top-0 left-0 w-full bg-white shadow-md" : ""}`}
+      className={`z-50 relative navbar ${
+        isSticky ? "fixed top-0 left-0 w-full bg-white shadow-md" : ""
+      }`}
     >
       <header className="text-gray-600 body-font">
         <div className="container mx-auto flex items-center justify-between p-5">
@@ -82,8 +84,9 @@ const Navbar = () => {
 
           {/* Slide-in Menu and Overlay */}
           <div
-            className={`fixed inset-0 z-40 transition-all duration-300 transform ${menuOpen ? "translate-x-0" : "-translate-x-full"
-              } flex flex-col top-0 left-0 bg-white w-[250px] h-full p-5`}
+            className={`fixed inset-0 z-40 transition-all duration-300 transform ${
+              menuOpen ? "translate-x-0" : "-translate-x-full"
+            } flex flex-col top-0 left-0 bg-white w-[250px] h-full p-5`}
           >
             {/* Close button inside the menu */}
             <div className="flex justify-end">
@@ -97,7 +100,9 @@ const Navbar = () => {
               <NavLink
                 to="/recipes"
                 className={({ isActive }) =>
-                  `hover:text-red-700 font-semibold ${isActive ? 'text-red-700' : 'text-black'}`
+                  `hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
                 }
                 onClick={handleLinkClick}
               >
@@ -106,7 +111,9 @@ const Navbar = () => {
               <NavLink
                 to="/mainmeals"
                 className={({ isActive }) =>
-                  `hover:text-red-700 font-semibold ${isActive ? 'text-red-700' : 'text-black'}`
+                  `hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
                 }
                 onClick={handleLinkClick}
               >
@@ -115,7 +122,9 @@ const Navbar = () => {
               <NavLink
                 to="/smallbites"
                 className={({ isActive }) =>
-                  `hover:text-red-700 font-semibold ${isActive ? 'text-red-700' : 'text-black'}`
+                  `hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
                 }
                 onClick={handleLinkClick}
               >
@@ -124,11 +133,24 @@ const Navbar = () => {
               <NavLink
                 to="/healthy"
                 className={({ isActive }) =>
-                  `hover:text-red-700 font-semibold ${isActive ? 'text-red-700' : 'text-black'}`
+                  `hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
                 }
                 onClick={handleLinkClick}
               >
                 Healthy
+              </NavLink>
+              <NavLink
+                to="/recipe-suggestions"
+                className={({ isActive }) =>
+                  `mr-5 hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
+                }
+                onClick={handleLinkClick}
+              >
+                Recipe bot
               </NavLink>
             </nav>
           </div>
@@ -159,7 +181,9 @@ const Navbar = () => {
             <NavLink
               to="/recipes"
               className={({ isActive }) =>
-                `mr-5 hover:text-red-700 font-semibold ${isActive ? 'text-red-700' : 'text-black'}`
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
               }
             >
               Recipes
@@ -167,7 +191,9 @@ const Navbar = () => {
             <NavLink
               to="/mainmeals"
               className={({ isActive }) =>
-                `mr-5 hover:text-red-700 font-semibold ${isActive ? 'text-red-700' : 'text-black'}`
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
               }
             >
               Main Meals
@@ -175,7 +201,9 @@ const Navbar = () => {
             <NavLink
               to="/smallbites"
               className={({ isActive }) =>
-                `mr-5 hover:text-red-700 font-semibold ${isActive ? 'text-red-700' : 'text-black'}`
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
               }
             >
               Small Bites
@@ -183,10 +211,23 @@ const Navbar = () => {
             <NavLink
               to="/healthy"
               className={({ isActive }) =>
-                `mr-5 hover:text-red-700 font-semibold ${isActive ? 'text-red-700' : 'text-black'}`
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
               }
             >
               Healthy
+            </NavLink>
+            <NavLink
+              to="/recipe-suggestions"
+              className={({ isActive }) =>
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
+              }
+              onClick={handleLinkClick}
+            >
+              Recipe bot
             </NavLink>
           </nav>
 
