@@ -7,6 +7,7 @@ import Cards from "../Components/Cards.jsx";
 import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
 
 
 const Landing = () => {
@@ -149,28 +150,22 @@ const Landing = () => {
       {/* -------------------------- Best Dishes Section ----------------------  */}
       <section id="Trending" className="py-4 my-20 mx-8">
         <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          Worlds's Best Dishes
+           World's Best Dishes
         </h1>
         {/* integrated a loading skeleton for landing page */}
-        {
-          loading ? 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 py-4">
-              {Array.from({ length: 6 }).map((item, i) => {
-                  return (
-                      <div key={i} className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm" />
-                  );
-              })}
-          </div>
-          : 
-          <div className="grid grid-cols-1 md:grid-cols-3">
-            { 
-              best.map((food)=>{
-                return <Cards dish={food} key={food._id}/>
-              })
-            }
-        </div>
-        }
+          {loading ? (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 py-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <RecipeCardSkeleton key={i} />
+              ))}
+            </div>
+            ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {best.map((food) => (
+                <Cards dish={food} key={food._id} />
+              ))}
+            </div>
+        )}
       </section>
 
       {/* -------------------------- About Section ----------------------  */}

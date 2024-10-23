@@ -6,6 +6,8 @@ import { faArrowRight, faHeart, faShare } from "@fortawesome/free-solid-svg-icon
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+//IMPORT THE APP.CSS
+import "../App.css";
 // Cards Component for Creating Recipe Cards
 const Cards = ({dish}) => {
   const navigator = useNavigate()
@@ -38,7 +40,7 @@ const Cards = ({dish}) => {
           <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
             {dish.name}
           </h1>
-          <p className="leading-relaxed mb-3">
+          <p className="leading-relaxed mb-3 clamped-text">
             {dish.description.slice(0, 174)}
             {dish.description.length>174? "...": null}
           </p>

@@ -71,6 +71,7 @@ const Login = () => {
   const googleLogin = useGoogleAuth(handleLogin);
 
   return (
+
     <>
     <div className="w-full h-screen flex justify-center items-center px-4">
     <div className="content w-full sm:w-[90vw] md:w-[75vw] lg:w-[70vw] xl:w-[65vw] h-full sm:h-[80vh] md:h-[70vh] lg:h-[60vh] xl:h-[55vh] rounded-md flex flex-col md:flex-row justify-evenly items-center">
@@ -90,6 +91,7 @@ const Login = () => {
               <li className="text-red-500 py-1">Share</li>
               <li className="py-1">Comments</li>
             </ul>
+
           </div>
         </div>
       </div>
