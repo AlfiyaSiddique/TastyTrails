@@ -31,6 +31,7 @@ router.post(
   authenticateToken,
   RecipeController.addComment
 );
+router.delete("/recipe/deletecomment/:commentId",authenticateToken,RecipeController.deleteComment)
 router.post("/feedback", UserController.Sendcontactmail);
 
 export default router;

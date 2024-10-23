@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { MdDelete } from "react-icons/md";
+
 
 // Displays single Recipe
 const OneRecipe = () => {
@@ -91,6 +92,25 @@ const OneRecipe = () => {
       }
     }
   };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      // Send a DELETE request to the backend to remove the comment by ID
+
+      const response = await axios.delete(
+        `${backendURL}/api/recipe/deletecomment/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Use token for authentication
+          },
+        }
+      );
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (error) {
+      console.error("Error deleting comment:", error.message);
+    }
+  };
+
   if (loading || (!recipe)) {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
@@ -186,15 +206,28 @@ const OneRecipe = () => {
         <div className="mt-4">
           {comments && comments.length > 0 ? (
             comments.map((comment, index) => (
-              <div key={index} className="border border-gray-300 p-4 rounded-md mb-2">
-                <h3 className="font-semibold">{comment.username}</h3>
-                <p>{comment.content}</p>
+              <div
+              key={index}
+              className="border border-gray-300 p-4 rounded-md mb-2 flex justify-between  items-start"
+            >
+              <div>
+                <h3 className="font-semibold">{comment?.username}</h3>
+                <p>{comment?.content}</p>
                 <small className="text-gray-500">
-                  {new Date(comment.date).getFullYear()}-
-                  {new Date(comment.date).getMonth() + 1}-
-                  {new Date(comment.date).getDate()}
+                  {new Date(comment?.date).getFullYear()}-
+                  {new Date(comment?.date).getMonth() + 1}-
+                  {new Date(comment?.date).getDate()}
                 </small>
               </div>
+              <div
+                className="cursor-pointer"
+                onClick={() => handleDeleteComment(comment?._id)}
+              >
+                <span className=" p-2 text-red-500 ">
+                  <MdDelete />
+                </span>
+              </div>
+            </div>
             ))
           ) : (
             <p className="text-gray-500">No comments yet.</p>
