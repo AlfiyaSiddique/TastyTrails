@@ -147,7 +147,7 @@ const Signup = () => {
 const googleSignup = useGoogleAuth(handleGoogleSignup, true);
 
   return (
-    <div className="Container h-[100vh] w-[90vw] bg-white flex justify-center items-center mx-auto px-4 sm:px-8 md:px-12">
+   <div className="Container h-[100vh] w-[90vw] bg-white flex justify-center items-center mx-auto px-4 sm:px-8 md:px-12">
     <div className="InnerDiv h-[90vh] w-full md:w-[75vw] mb-8 flex flex-col md:flex-row justify-between items-center">
       {/* Left Section */}
       <div className="left w-full md:w-[45%] lg:w-[35vw] mb-8 md:mb-0">
