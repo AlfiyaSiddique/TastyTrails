@@ -42,7 +42,7 @@ const OneRecipe = () => {
           navigate('*')
         })
     }
-   
+
   }, [])
 
 
@@ -54,7 +54,6 @@ const OneRecipe = () => {
 
   useEffect(() => {
     const fetchComments = async () => {
-
       try {
         const response = await axios.get(`${backendURL}/api/recipe/getcomments/${recipe._id}`);
         console.log(recipe._id)
@@ -68,11 +67,8 @@ const OneRecipe = () => {
   }, [recipe]);
 
 
-
-
   // Function to handle posting a comment
   const handlePostComment = async () => {
-
     // getting username from token named "username" created during login
     const username = JSON.parse(localStorage.getItem("username"));
     if (commentInput.trim()) {

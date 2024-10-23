@@ -18,8 +18,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 // CORS configuration
 const allowedOrigins = [
     "https://delightful-daifuku-a9f6ea.netlify.app",
-    /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
-    "http://localhost:5173"
+    /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/
 ];
 
 app.use(
@@ -38,7 +37,7 @@ app.use(
     })
 );
 
-app.use(cors({ origin: "http://localhost:5173" })) // for local use
+// app.use(cors({ origin: "http://localhost:5173" })) // for local use
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 

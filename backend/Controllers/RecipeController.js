@@ -130,7 +130,6 @@ const imageToGithub = async (fileImage, name, unique) => {
   }
 
   console.log('Config:', { owner, repo, branch }); // Debug log
-  console.log(fileImage)
   const base64Content = fileImage.split(';base64,').pop();
   const fileContent = Buffer.from(base64Content, 'base64').toString('base64');
 
