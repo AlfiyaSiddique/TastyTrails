@@ -11,7 +11,6 @@ router.get("/token", authenticateToken, UserController.verifyUserByToken);
 router.get("/recipes", RecipeController.allRecipe);
 // added route to get previous comments
 router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
-
 // Post Requests
 router.post("/signup", UserController.Signup);
 router.post("/login", UserController.Login);
@@ -36,5 +35,6 @@ router.post(
   authenticateToken,
   RecipeController.removeRecipeLike
 );
+router.post("/recipe/liked_recipes", RecipeController.getLikedRecipe);
 
 export default router;

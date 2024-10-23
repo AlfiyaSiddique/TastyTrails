@@ -17,6 +17,7 @@ const Cards = ({ dish }) => {
   const navigator = useNavigate();
   const userData = JSON.parse(localStorage.getItem("userData")) || null;
   const [liked, setLiked] = useState(false);
+  const [totalLikes, setTotalLikes] = useState(dish.likes); // Initialize with the dish's total likes
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   // Checks if user is authenticated or not
@@ -46,24 +47,31 @@ const Cards = ({ dish }) => {
     }
 
     try {
+      let response;
       if (!liked) {
-        await axios.post(
+        // Call the API to like the recipe first
+        response = await axios.post(
           `${backendURL}/api/recipe/like`,
           { recipeId: dish._id, userId: userData._id },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+        // Update totalLikes only after the API response
+        setTotalLikes(response.data.totalLikes);
         setLiked(true);
         toast.success("Recipe liked!");
       } else {
-        await axios.post(
+        // Call the API to unlike the recipe first
+        response = await axios.post(
           `${backendURL}/api/recipe/unlike`,
           { recipeId: dish._id, userId: userData._id },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+        // Update totalLikes only after the API response
+        setTotalLikes(response.data.totalLikes);
         setLiked(false);
         toast.success("Recipe unliked!");
       }
@@ -82,13 +90,15 @@ const Cards = ({ dish }) => {
       toast.error("Something went wrong!");
     }
   };
+
   return (
-    <div className="p-4 cursor-pointer" onClick={handleClick}>
+    <div className="p-4">
       <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
         <img
-          className="lg:h-48 md:h-36 w-full object-cover object-center"
+          className="lg:h-48 md:h-36 w-full object-cover object-center cursor-pointer"
           src={dish.image}
           alt={dish.name}
+          onClick={handleClick}
         />
         <div className="p-6">
           <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
@@ -102,7 +112,10 @@ const Cards = ({ dish }) => {
             {dish.description.length > 174 ? "..." : null}
           </p>
           <div className="flex items-center flex-wrap">
-            <span className="text-red-500 inline-flex items-center md:mb-2 lg:mb-0">
+            <span
+              className="text-red-500 inline-flex items-center md:mb-2 lg:mb-0 cursor-pointer"
+              onClick={handleClick}
+            >
               Recipe <FontAwesomeIcon icon={faArrowRight} />
             </span>
             <span
@@ -112,7 +125,7 @@ const Cards = ({ dish }) => {
               onClick={handleLikeClick}
             >
               <FontAwesomeIcon icon={faHeart} className="mx-2" />
-              {dish.likes}
+              {totalLikes} {/* Display the global like count */}
             </span>
             <span className="text-gray-400 inline-flex items-center leading-none text-sm cursor-pointer">
               <FontAwesomeIcon icon={faShare} className="mx-2" />

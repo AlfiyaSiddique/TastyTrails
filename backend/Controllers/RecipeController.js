@@ -425,17 +425,30 @@ const getComments = async (req, res) => {
 const addRecipeLike = async (req, res) => {
   try {
     const { recipeId, userId } = req.body;
+
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (!user.likedRecipes.includes(recipeId)) {
-      user.likedRecipes.push(recipeId);
-      await user.save();
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
     }
 
-    res.status(200).json({ success: true, message: "Recipe liked" });
+    // If the user hasn't already liked the recipe, add the like
+    if (!user.likedRecipes.includes(recipeId)) {
+      user.likedRecipes.push(recipeId);
+      recipe.likes += 1; // Increment the like count
+      await user.save();
+      await recipe.save();
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Recipe liked",
+      totalLikes: recipe.likes,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server error" });
   }
@@ -450,10 +463,42 @@ const removeRecipeLike = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.likedRecipes = user.likedRecipes.filter((id) => id !== recipeId);
-    await user.save();
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
 
-    res.status(200).json({ success: true, message: "Recipe unliked" });
+    // If the user has liked the recipe, remove the like
+    if (user.likedRecipes.includes(recipeId)) {
+      user.likedRecipes = user.likedRecipes.filter((id) => id !== recipeId);
+      recipe.likes -= 1; // Decrement the like count
+      await user.save();
+      await recipe.save();
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Recipe unliked",
+      totalLikes: recipe.likes,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+const getLikedRecipe = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const likedRecipeIds = user.likedRecipes;
+    const likedRecipes = await Recipe.find({
+      _id: { $in: likedRecipeIds },
+    });
+    console.log(likedRecipes);
+    return res.status(200).json({ success: true, likedRecipes });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server error" });
   }
@@ -469,6 +514,7 @@ const RecipeController = {
   getComments,
   addRecipeLike,
   removeRecipeLike,
+  getLikedRecipe,
 };
 
 export default RecipeController;
