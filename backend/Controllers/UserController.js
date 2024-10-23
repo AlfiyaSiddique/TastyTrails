@@ -167,7 +167,6 @@ async function Sendcontactmail(req, res) {
 const forgotPassword = async function (req, res) {
   const { email } = req.body;
   const user = await User.findOne({ email });
-
   try {
     if (!user) {
       return res
@@ -211,11 +210,11 @@ const forgotPassword = async function (req, res) {
 
 const resetPassword = async function (req, res) {
   const { token } = req.params;
-  console.log(token);
   const { password } = req.body;
   try {
     const decoded = jwt.verify(token, process.env.SECRET);
-    const id = decoded.id;
+    console.log(decoded);
+    const id = decoded.userId;
     const hashPassword = await bcrypt.hash(password, 10);
     await User.findByIdAndUpdate({ _id: id }, { password: hashPassword });
     return res
