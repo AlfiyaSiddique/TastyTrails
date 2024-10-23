@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
 import Pagination from "../Components/Pagination.jsx";
+import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
 
 const Recipes = ({type}) => {
   const [loading, setLoading] = useState(true);
@@ -113,11 +114,8 @@ const Recipes = ({type}) => {
       {/* Recipes List or Loading Skeleton */}
       {loading ? (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 pt-20 pb-4">
-          {Array.from({ length: 6 }).map((item, i) => (
-            <div
-              key={i}
-              className="h-[230px] sm:h-[280px] bg-gray-200 animate-pulse rounded-sm"
-            />
+          {Array.from({ length: 6 }).map((_, i) => (
+            <RecipeCardSkeleton key={i} />
           ))}
         </div>
       ) : (
