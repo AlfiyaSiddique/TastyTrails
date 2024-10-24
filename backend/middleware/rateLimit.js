@@ -1,33 +1,27 @@
-const rateLimit = (limit, windowMs) => {
-    const requestCounts = {};
+const rateLimit = (limit, windowMs, endpoint = null) => {
+  const requestCounts = {};
 
-    return (req, res, next) => {
-        const ip = req.ip; // Get client IP
-        const currentTime = Date.now();
+  return (req, res, next) => {
+    const ip = req.ip;
+    const currentTime = Date.now();
+    const key = endpoint ? `${ip}-${endpoint}` : ip; // Track by endpoint
 
-        // If this IP doesn't exist, initialize it
-        if (!requestCounts[ip]) {
-            requestCounts[ip] = { count: 1, startTime: currentTime };
-        } else {
-            const { count, startTime } = requestCounts[ip];
-
-            if (currentTime - startTime < windowMs) {
-                // If the limit is exceeded, block the request
-                if (count >= limit) {
-                    return res.status(429).json({
-                        message: "Too many requests, please slow down!",
-                    });
-                }
-                // Otherwise, increment the request count
-                requestCounts[ip].count++;
-            } else {
-                // Reset the count and time if the time window has passed
-                requestCounts[ip] = { count: 1, startTime: currentTime };
-            }
+    if (!requestCounts[key]) {
+      requestCounts[key] = { count: 1, startTime: currentTime };
+    } else {
+      const { count, startTime } = requestCounts[key];
+      if (currentTime - startTime < windowMs) {
+        if (count >= limit) {
+          return res.status(429).json({
+            message: "Too many requests, please slow down!",
+          });
         }
-
-        next();
-    };
+        requestCounts[key].count++;
+      } else {
+        requestCounts[key] = { count: 1, startTime: currentTime };
+      }
+    }
+    next();
+  };
 };
-
 export { rateLimit };

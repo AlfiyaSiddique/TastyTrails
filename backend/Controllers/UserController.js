@@ -56,6 +56,24 @@ const getAllUserName = async (req, res) => {
 };
 
 /**
+ * @route {GET} /api/user/:id
+ * @description Get details of a user by ID
+ * @access public
+ */
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+/**
  * @route {POST} /api/usernames
  * @description Authenticates an User
  * @access public
@@ -118,6 +136,21 @@ const verifyUserByToken = async (req, res) => {
 
 }
 
+/**
+ * @route {GET} /api/users
+ * @description Get details of all users
+ * @access public
+ */
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, { username: 1, email: 1, _id: 1 });
+    res.status(200).json({ users, success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 async function Sendcontactmail(req, res) {
   const { name, email, message, rating } = req.body; // Capture rating from the request
   console.log(req.body);
@@ -169,8 +202,10 @@ const UserController = {
   Signup,
   Login,
   getAllUserName,
+    getAllUsers,  // Added new endpoint
   verifyUserByToken,
-  Sendcontactmail
+  Sendcontactmail,
+  getUserById
 };
 
 export default UserController;
