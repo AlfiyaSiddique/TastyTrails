@@ -21,23 +21,23 @@ const allowedOrigins = [
     /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
 ];
 
-app.use(
-    cors({
-        origin: function (origin, callback) {
-            // Allow requests with no `origin` (like from Postman or server-side scripts)
-            if (!origin || allowedOrigins.some((o) =>
-                typeof o === "string" ? o === origin : o.test(origin)
-            )) {
-                callback(null, true);
-            } else {
-                // Provide a more informative error message if necessary
-                callback(new Error("CORS policy: This origin is not allowed."));
-            }
-        },
-    })
-);
+// app.use(
+//     cors({
+//         origin: function (origin, callback) {
+//             // Allow requests with no `origin` (like from Postman or server-side scripts)
+//             if (!origin || allowedOrigins.some((o) =>
+//                 typeof o === "string" ? o === origin : o.test(origin)
+//             )) {
+//                 callback(null, true);
+//             } else {
+//                 // Provide a more informative error message if necessary
+//                 callback(new Error("CORS policy: This origin is not allowed."));
+//             }
+//         },
+//     })
+// );
 
-// app.use(cors({origin:"http://localhost:5173"})) // for local use
+app.use(cors({origin:"http://localhost:5173"})) // for local use
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 

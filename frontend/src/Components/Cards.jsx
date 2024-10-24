@@ -26,7 +26,7 @@ const Cards = ({dish}) => {
   }
   return (
     <div className="p-4 cursor-pointer" onClick={handleClick}>
-      <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+      <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
         <img
           className="lg:h-48 md:h-36 w-full object-cover object-center"
           src={dish.image}
