@@ -45,7 +45,7 @@ const Footer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !message || rating === 0) {
-      alert("Name, Email, Message, and Rating are mandatory fields!");
+      toast.error("Name, Email, Message, and Rating are mandatory fields!"); // Changed alert to toast notification
       return;
     }
 
@@ -308,3 +308,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
