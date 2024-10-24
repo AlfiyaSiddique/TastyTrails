@@ -85,3 +85,36 @@
     background: #B91C1C;
   }
 }
+
+.navbar{
+  background-color: #fed4d4;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.text-\[4rem\] {
+  font-size: 4.2rem !important;
+}
+
+.text-left {
+  text-align: justify !important;
+}
+
+.leading-relaxed {
+  text-align: justify;
+}
+
+/* ADD THE CLASS OF CLAMPED-TEXT  */
+.clamped-text {
+  display: -webkit-box; 
+  -webkit-box-orient: vertical; /* Define the orientation as vertical */
+  -webkit-line-clamp: 4; /* Limit the number of lines to 4 */
+  overflow: hidden; /* Hide any overflowed content */
+  text-overflow: ellipsis; /* Add ellipsis (...) for overflow */
+}
+
+
+
+
+
+
+

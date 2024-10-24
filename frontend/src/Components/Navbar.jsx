@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -71,51 +70,101 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`z-50 relative ${
+      className={`z-50 relative navbar ${
         isSticky ? "fixed top-0 left-0 w-full bg-white shadow-md" : ""
       }`}
     >
       <header className="text-gray-600 body-font">
         <div className="container mx-auto flex items-center justify-between p-5">
+          {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button onClick={handleMenuToggle} className="text-red-700">
               <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} size="lg" />
             </button>
           </div>
-          <nav
-            className={`md:hidden ${
-              menuOpen ? "block" : "hidden"
-            } absolute flex flex-col top-14 left-5 bg-white border-2 shadow-md rounded-md px-5 py-3 space-y-2 w-[150px]`}
+
+          {/* Slide-in Menu and Overlay */}
+          <div
+            className={`fixed inset-0 z-40 transition-all duration-300 transform ${
+              menuOpen ? "translate-x-0" : "-translate-x-full"
+            } flex flex-col top-0 left-0 bg-white w-[250px] h-full p-5`}
           >
-            <Link
-              to="/recipes"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
-              onClick={handleLinkClick}
-            >
-              Recipes
-            </Link>
-            <Link
-              to="/mainmeals"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
-              onClick={handleLinkClick}
-            >
-              Main Meals
-            </Link>
-            <Link
-              to="/smallbites"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
-              onClick={handleLinkClick}
-            >
-              Small Bites
-            </Link>
-            <Link
-              to="/healthy"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
-              onClick={handleLinkClick}
-            >
-              Healthy
-            </Link>
-          </nav>
+            {/* Close button inside the menu */}
+            <div className="flex justify-end">
+              <button onClick={handleMenuToggle} className="text-red-700">
+                <FontAwesomeIcon icon={faTimes} size="lg" />
+              </button>
+            </div>
+
+            {/* Navigation links with enhanced mobile styling */}
+            <nav className="flex flex-col space-y-6 mt-8 text-lg">
+              <NavLink
+                to="/recipes"
+                className={({ isActive }) =>
+                  `hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
+                }
+                onClick={handleLinkClick}
+              >
+                Recipes
+              </NavLink>
+              <NavLink
+                to="/mainmeals"
+                className={({ isActive }) =>
+                  `hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
+                }
+                onClick={handleLinkClick}
+              >
+                Main Meals
+              </NavLink>
+              <NavLink
+                to="/smallbites"
+                className={({ isActive }) =>
+                  `hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
+                }
+                onClick={handleLinkClick}
+              >
+                Small Bites
+              </NavLink>
+              <NavLink
+                to="/healthy"
+                className={({ isActive }) =>
+                  `hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
+                }
+                onClick={handleLinkClick}
+              >
+                Healthy
+              </NavLink>
+              <NavLink
+                to="/recipe-suggestions"
+                className={({ isActive }) =>
+                  `mr-5 hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
+                }
+                onClick={handleLinkClick}
+              >
+                Recipe bot
+              </NavLink>
+            </nav>
+          </div>
+
+          {/* Overlay */}
+          {menuOpen && (
+            <div
+              className="fixed inset-0 z-30 bg-black bg-opacity-50"
+              onClick={handleMenuToggle}
+            />
+          )}
+
+          {/* Logo */}
           <div className="flex title-font font-medium items-center text-red-700 md:mb-0">
             <span className="ml-3 text-xl font-bold">
               <Link to="/" className="font-[Merriweather]">
@@ -124,42 +173,66 @@ const Navbar = () => {
             </span>
           </div>
 
-          {/* Links for larger screens */}
+          {/* Desktop navigation */}
           <nav
             className={
-              "hidden md:ml-auto md:mr-auto flex flex-col md:flex-row md:flex items-center text-base justify-center"
+              "hidden md:flex md:flex-row md:ml-auto md:mr-auto items-center text-base justify-center"
             }
           >
-            <Link
+            <NavLink
               to="/recipes"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
-              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
+              }
             >
               Recipes
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/mainmeals"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
-              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
+              }
             >
               Main Meals
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/smallbites"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
-              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
+              }
             >
               Small Bites
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/healthy"
-              className="mr-5 hover:text-red-700 text-black font-semibold"
-              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
+              }
             >
               Healthy
-            </Link>
+            </NavLink>
+            <NavLink
+              to="/recipe-suggestions"
+              className={({ isActive }) =>
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
+              }
+              onClick={handleLinkClick}
+            >
+              Recipe bot
+            </NavLink>
           </nav>
 
+          {/* User profile actions */}
           {user === null ? (
             <div className="flex items-center">
               <Link
@@ -215,7 +288,7 @@ const Navbar = () => {
               >
                 <FontAwesomeIcon
                   icon={faBell}
-                  className="text-Black-700 text-lg"
+                  className="text-black-700 text-lg"
                 />
               </div>
             </div>

@@ -28,25 +28,43 @@ const Login = () => {
   // Handle Login Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleLogin(form);
+    axios
+      .post(`${backendURL}/api/login`, form)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("Login Successful");
+          localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+          // creating a token named "username" for storing logged in user's name for comment purposes
+          localStorage.setItem("username", JSON.stringify(res.data.user.username));
+          navigate(`/user/${res.data.user._id}`, {
+            state: { user: res.data.user },
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+        
+      });
   };
 
+  
   // Reusable function
   const handleLogin = (formData) => {
-  axios
-    .post(`${backendURL}/api/login`, formData)
-    .then((res) => {
-      if (res.data.success) {
-        toast.success("Login Successful");
-        localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
-        navigate(`/user/${res.data.user._id}`, {
-          state: { user: res.data.user },
-        });
-      }
-    })
-    .catch((err) => {
-      toast.error(err.response.data.message);
-    });
+    axios
+      .post(`${backendURL}/api/login`, formData)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("Login Successful");
+          localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+          navigate(`/user/${res.data.user._id}`, {
+            state: { user: res.data.user },
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      
+      });
   };
   // Using custom Google Auth hook
   const googleLogin = useGoogleAuth(handleLogin);
