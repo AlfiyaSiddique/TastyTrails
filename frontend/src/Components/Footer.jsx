@@ -45,7 +45,7 @@ const Footer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !message || rating === 0) {
-      alert("Name, Email, Message, and Rating are mandatory fields!");
+      toast.error("Name, Email, Message, and Rating are mandatory fields!"); // Changed alert to toast notification
       return;
     }
 
@@ -93,7 +93,7 @@ const Footer = () => {
     <div className={`w-full ${path !== "/user" ? "relative" : "fixed bottom-0"}`}>
       {path !== "/user" && (
         <>
-          <footer className="text-gray-600 body-font w-full">
+          <footer className="text-gray-600 body-font w-full bg-[#fed4d4]">
             <div className="container px-2 py-2 flex items-center sm:flex-row flex-col justify-between space-y-4">
               <div className="flex title-font font-bold items-center md:justify-start justify-center text-red-700 max-sm:flex-col">
 
@@ -308,3 +308,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
