@@ -69,6 +69,10 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
   }
 
   return (
+
+    <div className="p-4 cursor-pointer" onClick={handleClick}>
+      <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
+
     <div className="p-4 cursor-pointer" >
       <div className="border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden" onClick={handleClick}>
         <img
