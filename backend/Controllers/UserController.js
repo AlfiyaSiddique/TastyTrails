@@ -68,7 +68,6 @@ const Login = async (req, res) => {
         { username: req.body.searchTerm }, // Search by username
       ],
     });
-
     if (!user)
       return res
         .status(400)
@@ -105,7 +104,6 @@ const Login = async (req, res) => {
 const verifyUserByToken = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
-    console.log(req.user);
     return res.status(200).json({ success: true, user });
   } catch (error) {
     console.log(error);
