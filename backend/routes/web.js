@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserController from "../Controllers/UserController.js";
 import RecipeController from "../Controllers/RecipeController.js";
+import ChatbotController from "../Controllers/ChatbotController.js";
 import authenticateToken from "../middleware/auth.js";
 
 const router = Router();
@@ -22,6 +23,7 @@ router.post(
   RecipeController.getOneUserRecipes
 );
 router.post("/recipe/delete", authenticateToken, RecipeController.deleteRecipe);
+router.post("/get-recipe", ChatbotController.getRecipeSuggestions);
 // added route to add new comment to database
 router.post(
   "/recipe/addcomment",
@@ -36,5 +38,10 @@ router.post(
   RecipeController.removeRecipeLike
 );
 router.post("/recipe/liked_recipes", RecipeController.getLikedRecipe);
+router.delete(
+  "/recipe/deletecomment/:commentId",
+  authenticateToken,
+  RecipeController.deleteComment
+);
 
 export default router;

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,28 +7,30 @@ import {
   faHeart,
   faShare,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "../App.css";
 
 // Cards Component for Creating Recipe Cards
-const Cards = ({ dish }) => {
-  const navigator = useNavigate();
+const Cards = ({ dish, setRecipes, recipes, index }) => {
+  const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("userData")) || null;
   const [liked, setLiked] = useState(false);
   const [totalLikes, setTotalLikes] = useState(dish.likes); // Initialize with the dish's total likes
   const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const shareButton = useRef(null);
+  const recipeId = dish._id;
 
   // Checks if user is authenticated or not
   const handleClick = async () => {
     const token = await JSON.parse(localStorage.getItem("tastytoken"));
     if (token !== null) {
       // here passing logged in username as well for comment use
-      navigator(`/recipe/${dish._id}`, { state: { dish } });
+      navigate(`/recipe/${dish._id}`, { state: { dish } });
     } else {
       toast.info("Please Login First");
-      navigator("/login");
+      navigate("/login");
     }
   };
   useEffect(() => {
@@ -37,6 +39,45 @@ const Cards = ({ dish }) => {
       setLiked(true);
     }
   }, [dish]);
+  const handleShare = async (e) => {
+    e.stopPropagation();
+    try {
+      const token = await JSON.parse(localStorage.getItem("tastytoken"));
+      if (token == null) {
+        toast.info("Please Login First");
+        navigate("/login");
+      }
+      if (token !== null) {
+        const updateShareCount = await axios.patch(
+          `${backendURL}/api/recipe/share/${recipeId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (updateShareCount.status === 200) {
+          const postURL = window.location.origin + "/recipe/" + dish._id;
+          console.log(window.location.origin);
+          const updatedRecipes = [...recipes];
+          // Update the share count for the specific index
+          updatedRecipes[index] = {
+            ...updatedRecipes[index], // Spread the existing recipe object
+            share: updatedRecipes[index].share + 1, // Increase the share value
+          };
+
+          setRecipes(updatedRecipes);
+          navigate.clipboard.writeText(postURL);
+          toast.success("Copied!");
+        } else {
+          toast.info(updateShareCount.message || "Something went wrong");
+        }
+      }
+    } catch (error) {
+      toast.info("Something went wrong");
+    }
+  };
 
   const handleLikeClick = async () => {
     const token = await JSON.parse(localStorage.getItem("tastytoken"));
@@ -125,8 +166,15 @@ const Cards = ({ dish }) => {
               <FontAwesomeIcon icon={faHeart} className="mx-2" />
               {totalLikes} {/* Display the global like count */}
             </span>
-            <span className="text-gray-400 inline-flex items-center leading-none text-sm cursor-pointer">
-              <FontAwesomeIcon icon={faShare} className="mx-2" />
+            <span
+              className="text-gray-400 inline-flex items-center leading-none text-sm cursor-pointer"
+              onClick={handleShare}
+            >
+              <FontAwesomeIcon
+                ref={shareButton}
+                icon={faShare}
+                className="mx-2"
+              />
               {dish.share}
             </span>
           </div>

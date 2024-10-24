@@ -4,6 +4,7 @@ import axios from "axios";
 import User from "../models/User.js";
 import mongoose from "mongoose";
 import { Octokit } from "@octokit/rest";
+import { json } from "express";
 
 const g_owner = process.env.OWNER;
 const g_repo = process.env.REPO;
@@ -142,7 +143,6 @@ const imageToGithub = async (fileImage, name, unique) => {
   }
 
   console.log("Config:", { owner, repo, branch }); // Debug log
-
   const base64Content = fileImage.split(";base64,").pop();
   const fileContent = Buffer.from(base64Content, "base64").toString("base64");
 
@@ -412,7 +412,8 @@ const getComments = async (req, res) => {
     }
 
     // Fetch all comments for this recipe
-    const comments = await Comment.find({ recipe: recipeId })
+    const recipeObjectId = new mongoose.Types.ObjectId(recipeId);
+    const comments = await Comment.find({ recipe: recipeObjectId })
       .select("username content date")
       .sort({ date: -1 });
     return res.status(200).json({ success: true, comments });
@@ -516,6 +517,108 @@ const getLikedRecipe = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+/**
+ * @PATCH /api/recipe/share/:recipeId
+ * @description update the number of share of recipe id
+ * @access private
+ */
+//This function will update share count of any recipe
+
+const deleteComment = async (req, res) => {
+  try {
+    // Extract comment ID from the request parameters
+    const { commentId } = req.params;
+
+    // Find the comment by ID and delete it
+    const deletedComment = await Comment.findByIdAndDelete(commentId);
+
+    if (!deletedComment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // Return success response
+    res.status(200).json({
+      message: "Comment deleted successfully",
+      deletedComment, // Optional: You can return the deleted comment data if needed
+    });
+  } catch (error) {
+    // Handle any errors that occur during the process
+    res.status(500).json({
+      message: "An error occurred while deleting the comment",
+      error: error.message,
+    });
+  }
+};
+
+const updateShareCount = async (req, res) => {
+  const { recipeId } = req.params;
+  if (!recipeId) {
+    return res.status(400).json({ success: false, message: "Invalid request" });
+  }
+
+  try {
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe)
+      return res
+        .status(404)
+        .json({ success: false, message: "Recipe Not found!!" });
+    const shareCount = recipe.share;
+    const updateStatus = await Recipe.findByIdAndUpdate(
+      recipeId,
+      {
+        $set: {
+          share: shareCount + 1,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    if (!updateStatus)
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal Server error" });
+    return res.status(200).json({ success: true, updateStatus });
+  } catch (error) {
+    // console.log(error)
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+//Function to get individual recipe by ID. This will be needed when we share our recipe so in order to ensure that link works we need to make function that will fetch individual recipe by id
+/**
+ * @PATCH /api/recipe/:recipeId
+ * @description get individual recipe by id
+ * @access public
+ */
+const getRecipeById = async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    if (!recipeId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid request" });
+    }
+    const recipeIdObejctId = new mongoose.Types.ObjectId(recipeId);
+    if (!recipeIdObejctId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid request" });
+    }
+    const recipe = await Recipe.findById(recipeIdObejctId);
+    if (!recipe) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Recipe Not Found" });
+    }
+    return res.status(200).json({ success: true, dish: recipe });
+  } catch (error) {
+    // console.log(error)
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server error" });
+  }
+};
 
 const RecipeController = {
   addRecipe,
@@ -528,6 +631,9 @@ const RecipeController = {
   addRecipeLike,
   removeRecipeLike,
   getLikedRecipe,
+  updateShareCount,
+  getRecipeById,
+  deleteComment,
 };
 
 export default RecipeController;
