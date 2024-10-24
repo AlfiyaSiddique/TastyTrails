@@ -10,33 +10,36 @@ const ChatWindow = ({ chat, currentUser }) => {
   const [userData, setUserData] = useState(null);
   const [currentUserData, setCurrentUserData] = useState(null);
   const socket = useRef();
-
-  // Connect to the socket server
+  const socketURL = import.meta.env.VITE_SOCKET_URL;
+    
   useEffect(() => {
-    socket.current = io("http://localhost:8800");
+  socket.current = io(socketURL);
+  return () => {
+    socket.current.disconnect(); // Cleanup when component unmounts
+  };
+}, []);
 
-    // Listen for incoming messages from the server
-    socket.current.on("receive-message", (newMessage) => {
-      if (newMessage.chatId === chat._id) {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-      }
-    });
+useEffect(() => {
+  if (currentUser && socket.current) {
+    socket.current.emit("new-user-add", currentUser);
+    // console.log("Emitted new user add:", currentUser);
+  }
+}, [currentUser]);
 
-    return () => {
-      socket.current.disconnect();
-    };
-  }, [chat._id]);
 
   const cachedUserData = useRef({}); // Cache for user data
 
-  // Fetch messages and user data when the chat is selected
-useEffect(() => {
+  useEffect(() => {
   const fetchUserData = async () => {
-  const userId = chat?.members?.find((id) => id !== currentUser);
-
-  if (!userId || cachedUserData.current[userId]) {
-    setUserData(cachedUserData.current[userId]);
-      console.log("No valid userId found for chat members.");
+    // Ensure chat and members array are valid
+    if (!chat || !chat.members || chat.members.length < 2) {
+      // console.log("Chat or chat members are not valid.");
+      return;
+    }
+    const userId = chat?.members?.find((id) => id !== currentUser);
+    if (!userId || cachedUserData.current[userId]) {
+      setUserData(cachedUserData.current[userId]);
+      // console.log("No valid userId found for chat members.");
       return; // Early exit if userId is invalid
     }
 
@@ -53,39 +56,65 @@ useEffect(() => {
     }
   };
 
-    const fetchMessages = async () => {
-      try {
-        const { data } = await getMessages(chat._id);
-        if (data) {
-          setMessages(data);
-        } else {
-          console.log("No messages found for this chat.");
-        }
-      } catch (err) {
-        console.log("Error fetching messages:", err);
+  const fetchMessages = async () => {
+    try {
+      const { data } = await getMessages(chat._id);
+      if (data) {
+        setMessages(data);
+      } else {
+        console.log("No messages found for this chat.");
       }
-    };
-
-    const fetchCurrentUserData = async () => {
-      try {
-        const { data } = await getUser(currentUser);
-        if (data.user) {
-          setCurrentUserData(data.user);
-        } else {
-          console.log("Current user not found.");
-        }
-      } catch (error) {
-        console.log("Error fetching current user data:", error);
-      }
-    };
-
-    if (chat) {
-      fetchUserData();
-      fetchMessages();
-      fetchCurrentUserData();
+    } catch (err) {
+      console.log("Error fetching messages:", err);
     }
-  }, [chat, currentUser]);
+  };
 
+  const fetchCurrentUserData = async () => {
+    try {
+      const { data } = await getUser(currentUser);
+      if (data.user) {
+        setCurrentUserData(data.user);
+      } else {
+        console.log("Current user not found.");
+      }
+    } catch (error) {
+      console.log("Error fetching current user data:", error);
+    }
+  };
+
+  if (chat) {
+    fetchUserData();
+    fetchMessages();
+    fetchCurrentUserData();
+
+    const attachSocketListeners = () => {
+      socket.current.on("receive-message", (newMessage) => {
+        // console.log('new message received');
+        if (newMessage.chatId === chat._id) {
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+        }
+      });
+    };
+
+    // Ensure socket connection is established
+    if (socket.current && !socket.current.connected) {
+      socket.current.on("connect", () => {
+        // console.log("Socket connected with ID:", socket.current.id);
+        attachSocketListeners();
+      });
+    } else if (socket.current.connected) {
+      attachSocketListeners();
+    } else {
+      console.error("Socket connection not established");
+    }
+
+    // Clean up listener when the chat changes or component unmounts
+    return () => {
+      socket.current.off("receive-message");
+      // console.log('Listener removed');
+    };
+  }
+}, [chat, currentUser]);
   // Send message logic
   const handleSendMessage = async (message) => {
     const newMessage = { text: message, senderId: currentUser, chatId: chat._id };

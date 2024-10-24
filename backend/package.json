@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "concurrently \"node server.js\" \"node ./socket/socket.js\"",
     "dev": "nodemon server.js",
-    "socket":"nodemon ./socket/socket.js"
+    "socket": "nodemon ./socket/socket.js"
   },
   "author": "Alfiya Siddique",
   "license": "ISC",
@@ -27,6 +27,7 @@
     "socket.io": "^4.8.0"
   },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "nodemon": "^3.1.7"
   }
 }
