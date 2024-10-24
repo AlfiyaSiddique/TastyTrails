@@ -1,5 +1,5 @@
 import React from "react";
-import food from "../assets/Images/food404.png";
+import food from "../assets/Images/food404.webp";
 import { Link } from "react-router-dom";
 
 const NotFound = () => {
