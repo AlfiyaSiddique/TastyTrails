@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import useGoogleAuth from "../../common/useGoogleAuth"
+
 const Login = () => {
   const navigate = useNavigate(); 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
