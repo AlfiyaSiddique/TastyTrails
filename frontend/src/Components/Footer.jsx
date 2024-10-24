@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons"; // Import success and error icons
+} from "@fortawesome/free-solid-svg-icons";
 import {
   faInstagramSquare,
   faLinkedinIn,
@@ -23,7 +23,7 @@ const Footer = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const path = useLocation().pathname;
 
-  // Check if the content is smaller than the screen
+
   useEffect(() => {
     const handleResize = () => {
       const contentHeight = document.documentElement.scrollHeight;
@@ -42,27 +42,10 @@ const Footer = () => {
     setRating(rate);
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (name.length < 2 || name.length > 50) {
-      newErrors.name = "Name must be between 2 and 50 characters";
-    }
-    if (email.length < 5 || email.length > 100) {
-      newErrors.email = "Email must be between 5 and 100 characters";
-    }
-    if (message.length < 10 || message.length > 500) {
-      newErrors.message = "Message must be between 10 and 500 characters";
-    }
-    if (rating === 0) {
-      newErrors.rating = "Rating is required";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
+    if (!name || !email || !message || rating === 0) {
+      toast.error("Name, Email, Message, and Rating are mandatory fields!"); // Changed alert to toast notification
       return;
     }
 
@@ -107,66 +90,93 @@ const Footer = () => {
   };
 
   return (
-    <div className="fixed bottom-0 bg-white  w-full">
+    <div className={`w-full ${path !== "/user" ? "relative" : "fixed bottom-0"}`}>
       {path !== "/user" && (
         <>
-          <footer className="text-gray-600 body-font">
-            <div className="container px-2 py-2 flex items-center sm:flex-row flex-col">
-              <span className="flex title-font font-bold items-center md:justify-start justify-center text-red-700">
+          <footer className="text-gray-600 body-font w-full bg-[#fed4d4]">
+            <div className="container px-2 py-2 flex items-center sm:flex-row flex-col justify-between space-y-4">
+              <div className="flex title-font font-bold items-center md:justify-start justify-center text-red-700 max-sm:flex-col">
+
                 <span className="ml-3 text-xl font-[Mrriweather]">
                   TastyTrails
                 </span>
-              </span>
-              <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 sm:text-center">
-                © {new Date().getFullYear()} TastyTrails Developer —
-                <Link
-                  to="https://twitter.com/A_l_f_i_y_a"
-                  className="text-gray-600 ml-1 sm:text-center"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  @A_l_f_i_y_A
-                </Link>
-                <Link to="/contributors" className="ml-4">
-                  <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all">
-                    Contributors
-                  </button>
-                </Link>
-              </p>
-              <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
-                <Link
-                  to={"https://www.instagram.com/alfiya.17.siddiq/"}
-                  className="text-ref-500 text-red-700"
-                >
-                  <FontAwesomeIcon icon={faInstagramSquare} />
-                </Link>
-                <Link
-                  to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
-                  className="ml-3 text-red-700"
-                >
-                  <FontAwesomeIcon icon={faLinkedinIn} className="" />
-                </Link>
-                <Link
-                  to={"https://github.com/AlfiyaSiddique"}
-                  className="ml-3 text-red-700"
-                >
-                  <FontAwesomeIcon icon={faGithubSquare} />
-                </Link>
 
-            
-              </span>
-                <div className="translate flex ml-4 my-auto">
-                  <GoogleTranslate />
+                <div className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 sm:text-center flex max-sm:flex-col">
+
+                  <div>
+
+                    <span>
+                      © {new Date().getFullYear()} TastyTrails Developer —
+                    </span>
+
+                    <Link
+                      to="https://twitter.com/A_l_f_i_y_a"
+                      className="text-gray-600 ml-1 sm:text-center px-0"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      @A_l_f_i_y_A
+                    </Link>
+                  </div>
+                  <div>
+
+
+                    {/* added privacy policy */}
+                    <Link to="/privacy-policy" className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all mx-3">
+                      Privacy Policy
+                    </Link>
+
+                    <Link to="/contributors" className="ml-4">
+                      <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all mx-0">
+                        Contributors
+                      </button>
+                    </Link>
+                  </div>
+
+                </div>
+              </div>
+
+              <div className="flex items-center max-sm:flex-col-reverse">
+
+                <div className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                  <Link
+                    to={"https://www.instagram.com/alfiya.17.siddiq/"}
+                    className="text-ref-500 text-red-700"
+                  >
+                    <FontAwesomeIcon icon={faInstagramSquare} />
+                  </Link>
+                  <Link
+                    to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
+                    className="ml-3 text-red-700"
+                  >
+                    <FontAwesomeIcon icon={faLinkedinIn} className="" />
+                  </Link>
+                  <Link
+                    to={"https://github.com/AlfiyaSiddique"}
+                    className="ml-3 text-red-700"
+                  >
+                    <FontAwesomeIcon icon={faGithubSquare} />
+                  </Link>
+
+
+                </div>
+                <div className="flex">
+                  <div className="translate flex ml-4 my-auto max-sm:ml-0">
+                    <GoogleTranslate />
+                  </div>
+
+                  <button
+                    onClick={openModal} // Call openModal when feedback button is clicked
+                    className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
+                  >
+                    Feedback
+                  </button>
                 </div>
 
-              <button
-                onClick={openModal} // Call openModal when feedback button is clicked
-                className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
-              >
-                Feedback
-              </button>
+              </div>
             </div>
           </footer>
+
 
           {/* Modal */}
           {showModal && (
@@ -174,7 +184,7 @@ const Footer = () => {
               <div className="bg-white p-6 rounded-lg w-full max-w-lg">
                 {submitStatus === null ? (
                   <>
-                    {/* Show the form if no status has been set */}
+                    { }
                     <h2 className="text-2xl font-bold mb-4">Feedback</h2>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                       <div>
@@ -186,8 +196,10 @@ const Footer = () => {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           required
+                          pattern="[a-zA-Z ]+"
+                          oninvalid="this.setCustomValidity('Numbers and Symbols are not allowed')"
+                          oninput="this.setCustomValidity('')"
                         />
-                        {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
                       </div>
 
                       <div>
@@ -200,7 +212,6 @@ const Footer = () => {
                           onChange={(e) => setEmail(e.target.value)}
                           required
                         />
-                        {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
                       </div>
 
                       <div>
@@ -212,7 +223,6 @@ const Footer = () => {
                           onChange={(e) => setMessage(e.target.value)}
                           required
                         ></textarea>
-                        {errors.message && <p className="text-red-600 text-sm">{errors.message}</p>}
                       </div>
 
                       <div>
@@ -221,11 +231,10 @@ const Footer = () => {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <span
                               key={star}
-                              className={`cursor-pointer ${
-                                rating >= star
-                                  ? "text-yellow-400"
-                                  : "text-gray-400"
-                              }`}
+                              className={`cursor-pointer ${rating >= star
+                                ? "text-yellow-400"
+                                : "text-gray-400"
+                                }`}
                               onClick={() => handleRating(star)}
                             >
                               {rating >= star ? "★" : "☆"}
@@ -237,7 +246,6 @@ const Footer = () => {
                             Rating is required!
                           </p>
                         )}
-                        {errors.rating && <p className="text-red-600 text-sm">{errors.rating}</p>}
                       </div>
 
                       <div className="flex justify-end">
