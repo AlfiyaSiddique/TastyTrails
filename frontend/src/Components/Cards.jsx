@@ -60,7 +60,6 @@ const Cards = ({ dish }) => {
         // Update totalLikes only after the API response
         setTotalLikes(response.data.totalLikes);
         setLiked(true);
-        toast.success("Recipe liked!");
       } else {
         // Call the API to unlike the recipe first
         response = await axios.post(
@@ -73,7 +72,6 @@ const Cards = ({ dish }) => {
         // Update totalLikes only after the API response
         setTotalLikes(response.data.totalLikes);
         setLiked(false);
-        toast.success("Recipe unliked!");
       }
 
       // Update liked recipes in local storage
