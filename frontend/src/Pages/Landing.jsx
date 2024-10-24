@@ -199,7 +199,10 @@ const Landing = () => {
         <RecipeCardSkeleton key={i} />
       ))}
     </div>
-  ) : (
+  ) :
+    {/*integrating slider for landing page */}
+  (
+  
     <Slider {...sliderSettings}>
       {best.map((food) => (
         <Cards dish={food} key={food._id} />
