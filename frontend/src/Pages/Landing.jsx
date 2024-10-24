@@ -8,14 +8,53 @@ import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
-
-
+/*import React Slick */
+import Slider from 'react-slick'
+/* slick-carousel CSS */
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
   const [loading, setLoading] = useState(true);
    const backendURL = import.meta.env.VITE_BACKEND_URL;
-   
+   const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+    slidesToScroll: 1,
+    
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
 
   useEffect(()=>{
     let token = localStorage.getItem("tastytoken");
@@ -149,24 +188,24 @@ const Landing = () => {
 
       {/* -------------------------- Best Dishes Section ----------------------  */}
       <section id="Trending" className="py-4 my-20 mx-8">
-        <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
-           World's Best Dishes
-        </h1>
-        {/* integrated a loading skeleton for landing page */}
-          {loading ? (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 py-4">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <RecipeCardSkeleton key={i} />
-              ))}
-            </div>
-            ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {best.map((food) => (
-                <Cards dish={food} key={food._id} />
-              ))}
-            </div>
-        )}
-      </section>
+  <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
+    World's Best Dishes
+  </h1>
+  {/* integrated a loading skeleton for landing page */}
+  {loading ? (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 py-4">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <RecipeCardSkeleton key={i} />
+      ))}
+    </div>
+  ) : (
+    <Slider {...sliderSettings}>
+      {best.map((food) => (
+        <Cards dish={food} key={food._id} />
+      ))}
+    </Slider>
+  )}
+</section>
 
       {/* -------------------------- About Section ----------------------  */}
       <section
