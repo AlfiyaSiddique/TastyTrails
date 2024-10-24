@@ -12,7 +12,6 @@ router.get("/token", authenticateToken, UserController.verifyUserByToken);
 router.get("/recipes", RecipeController.allRecipe);
 // added route to get previous comments
 router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
-
 // Post Requests
 router.post("/signup", UserController.Signup);
 router.post("/login", UserController.Login);
@@ -31,7 +30,12 @@ router.post(
   authenticateToken,
   RecipeController.addComment
 );
-router.delete("/recipe/deletecomment/:commentId",authenticateToken,RecipeController.deleteComment)
 router.post("/feedback", UserController.Sendcontactmail);
-
+router.post("/forgot_password", UserController.forgotPassword);
+router.post("/reset_password/:token", UserController.resetPassword);
+router.delete(
+  "/recipe/deletecomment/:commentId",
+  authenticateToken,
+  RecipeController.deleteComment
+);
 export default router;

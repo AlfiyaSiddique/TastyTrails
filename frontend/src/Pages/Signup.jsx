@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,14 +5,13 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
-import useGoogleAuth from "../../common/useGoogleAuth"
-
+import useGoogleAuth from "../../common/useGoogleAuth";
 
 const Signup = () => {
   const navigator = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
-  const [passwordFocused,setPasswordFocused]=useState(false);
-  const [show, setShow] = useState(false); 
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     // Signup Form Data
     firstName: "",
@@ -44,10 +42,10 @@ const Signup = () => {
     // Handling Signup Form
     const { name, value } = e.target;
     let message = {};
-    
+
     // Trim trailing spaces for username
     const trimmedValue = name === "username" ? value.trim() : value;
-    
+
     if (name === "cpassword") {
       message = validate.cpasssword(trimmedValue, form.password);
     } else if (name === "username") {
@@ -55,16 +53,15 @@ const Signup = () => {
     } else {
       message = validate[name](trimmedValue);
     }
-    
+
     setError((prev) => {
       return { ...prev, ...message };
     });
-  
+
     setForm((prev) => {
       return { ...prev, [name]: trimmedValue };
     });
   };
-  
 
   // Get all the current username present
   const getUsernames = async () => {
@@ -103,7 +100,10 @@ const Signup = () => {
                 JSON.stringify(res.data.token)
               );
               // creating a token named "username" for storing logged in user's name for comment purposes
-              localStorage.setItem("username", JSON.stringify(res.data.user.username));
+              localStorage.setItem(
+                "username",
+                JSON.stringify(res.data.user.username)
+              );
               navigator(`/user/${res.data.user._id}`, {
                 state: { user: res.data.user },
               });
@@ -119,35 +119,38 @@ const Signup = () => {
   };
 
   const handleGoogleSignup = async (googleUser) => {
-  const googleForm = {
-    // Defining Google-specific form data here
-    firstName: googleUser.firstName,
-    lastName: googleUser.lastName,
-    email: googleUser.email,
-    profile: googleUser.profile, 
-    username: googleUser.username, 
-    password: googleUser.password,
-  };
-  try {
-    const res = await axios.post(`${backendURL}/api/signup`, googleForm);
-    if (res.data.success) {
-      toast.success("Google Signup Successful");
-      localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
-      // creating a token named "username" for storing logged in user's name for comment purposes
-      localStorage.setItem("username", JSON.stringify(res.data.user.username));
-      navigator(`/user/${res.data.user._id}`, {
-        state: { user: res.data.user },
-      });
+    const googleForm = {
+      // Defining Google-specific form data here
+      firstName: googleUser.firstName,
+      lastName: googleUser.lastName,
+      email: googleUser.email,
+      profile: googleUser.profile,
+      username: googleUser.username,
+      password: googleUser.password,
+    };
+    try {
+      const res = await axios.post(`${backendURL}/api/signup`, googleForm);
+      if (res.data.success) {
+        toast.success("Google Signup Successful");
+        localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+        // creating a token named "username" for storing logged in user's name for comment purposes
+        localStorage.setItem(
+          "username",
+          JSON.stringify(res.data.user.username)
+        );
+        navigator(`/user/${res.data.user._id}`, {
+          state: { user: res.data.user },
+        });
+      }
+    } catch (err) {
+      toast.error(err.response.data.message || "Google signup failed");
     }
-  } catch (err) {
-    toast.error(err.response.data.message || "Google signup failed");
-  }
-};
+  };
 
-const googleSignup = useGoogleAuth(handleGoogleSignup, true);
+  const googleSignup = useGoogleAuth(handleGoogleSignup, true);
 
   return (
- <div>
+    <div>
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -273,10 +276,8 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                       required={true}
                       value={form.password}
                       onChange={handleChange}
-
                       onFocus={() => setPasswordFocused(true)}
                       onBlur={() => setPasswordFocused(false)}
-
                     />
                     <FontAwesomeIcon
                       icon={show ? faEye : faEyeSlash}
@@ -330,19 +331,26 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                   Sign Up
                 </button>
               </form>
-              <button onClick={() => googleSignup()} className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ">
-              <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" className="w-8 h-8 mr-2 inline-block"/> Sign up with Google
+              <button
+                onClick={() => googleSignup()}
+                className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
+              >
+                <img
+                  src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000"
+                  className="w-8 h-8 mr-2 inline-block"
+                />{" "}
+                Sign up with Google
               </button>
-                 {/* Already Have an Account */}
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Already Have an Account?{" "}
-                  <Link
-                    to="/login"
-                    className="font-medium text-pt-gray-900 hover:underline dark:text-primary-500 hover:text-red-700"
-                  >
-                    Login
-                  </Link>
-                </p>
+              {/* Already Have an Account */}
+              <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
+                Already Have an Account?{" "}
+                <Link
+                  to="/login"
+                  className="font-medium text-pt-gray-900 hover:underline dark:text-primary-500 hover:text-red-700"
+                >
+                  Login
+                </Link>
+              </p>
             </div>
           </div>
         </div>
