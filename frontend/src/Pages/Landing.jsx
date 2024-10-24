@@ -18,6 +18,7 @@ const Landing = () => {
   const [best, setBest] = useState([])
   const [loading, setLoading] = useState(true);
    const backendURL = import.meta.env.VITE_BACKEND_URL;
+   {/*Slider Configuration */}
    const sliderSettings = {
     dots: true,
     infinite: true,
