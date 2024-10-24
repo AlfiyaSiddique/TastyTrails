@@ -147,23 +147,23 @@ const Signup = () => {
 const googleSignup = useGoogleAuth(handleGoogleSignup, true);
 
   return (
-   <div className="Container h-[100vh] w-[90vw] bg-white flex justify-center items-center mx-auto px-4 sm:px-8 md:px-12">
-    <div className="InnerDiv h-[90vh] w-full md:w-[75vw] mb-8 flex flex-col md:flex-row justify-between items-center">
+   <div className="Container min-h-screen  bg-white flex justify-center items-center  px-4 sm:px-8 md:px-12 lg:px-16">
+    <div className="InnerDiv  w-full max-w-[95vw] lg:max-w-[85vw]  xl:max-w-[75vw] md:w-[75vw] mb-8 flex flex-col md:flex-row justify-between items-center lg:flex-row  space-y-12 lg:space-y-0">
       {/* Left Section */}
-      <div className="left w-full md:w-[45%] lg:w-[35vw] mb-8 md:mb-0">
+      <div className="left w-full md:w-[45%] lg:w-[40%] text-center lg:text-left space-y-8">
         <div className="content w-full">
-          <h2 className="font-extrabold text-2xl sm:text-3xl md:text-4xl text-center md:text-left">
+          <h2 className="font-extrabold text-3xl sm:text-4xl md:text-4xl text-center md:text-left">
             Join the Community of Over{" "}
             <span className="text-red-500">1 million+ people</span>
           </h2>
-          <div className="image  w-full  mt-6">
+          <div className="image  ml-6  mt-6">
             <img
-              className="w-full rounded-full md:h-[65vh]  shadow-md "
+              className="w-full max-w-[28rem] rounded-full md:h-[65vh]  shadow-md "
               src={image}
               alt="Community"
             />
           </div>
-          <h3 className="font-extrabold text-2xl sm:text-3xl md:text-3xl mt-8 text-center">
+          <h3 className="font-extrabold text-2xl sm:text-3xl md:text-3xl mt-8 text-center lg:text-4xl">
             <span className="">#1</span> Food Review{" "}
             <span className="text-red-500">Explore</span> Site
           </h3>
@@ -171,13 +171,13 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
       </div>
   
       {/* Right Section (Form) */}
-      <div className="right w-full md:w-[50%] lg:w-[30vw] flex justify-center">
-        <div className="form w-full md:w-[80%] lg:w-[100%] h-auto p-6  shadow-md rounded-xl ">
-          <h1 className="text-black text-xl text-center mb-6">Register</h1>
+      <div className="right w-full md:w-[50%] lg:w-[50%] flex justify-center">
+        <div className="form w-full max-w-[90%]  md:w-[80%] lg:max-w-[80%] h-auto p-6  shadow-md rounded-xl ">
+          <h1 className="text-black text-xl lg:text-2xl text-center mb-6">Register</h1>
           <form className="space-y-4" onSubmit={handleSubmit}>
             {/* First and Last Name */}
-            <div className="name flex flex-col md:flex-row justify-between">
-              <div className="first w-full md:w-[48%] mb-4 md:mb-0">
+            <div className="name flex flex-col md:flex-row justify-between space-y-4 md:space-y-0">
+              <div className="first w-full md:w-[48%] ">
                 <label
                   htmlFor="firstName"
                   className="block text-sm font-medium text-black"
@@ -188,7 +188,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                   type="text"
                   id="firstName"
                   name="firstName"
-                  className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                  className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
                   placeholder="Ex. John"
                   value={form.firstName}
                   onChange={handleChange}
@@ -210,7 +210,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                   type="text"
                   id="lastName"
                   name="lastName"
-                  className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                  className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
                   placeholder="Ex. Doe"
                   value={form.lastName}
                   onChange={handleChange}
@@ -234,7 +234,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                 type="text"
                 id="username"
                 name="username"
-                className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
                 placeholder="Ex. jhonedoe12"
                 value={form.username}
                 onChange={handleChange}
@@ -257,7 +257,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                 type="email"
                 id="email"
                 name="email"
-                className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
                 placeholder="abc@gmail.com"
                 value={form.email}
                 onChange={handleChange}
@@ -282,7 +282,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                  className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
                   value={form.password}
                   onChange={handleChange}
                   required
@@ -295,7 +295,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
               </div>
               {error.password && (
                 <div className="text-red-500 text-sm mt-2">
-                  <ul className="list-disc list-inside">
+                  <ul className="list-disc pl-5">
                     <li>Minimum 8 characters</li>
                     <li>At least 1 uppercase letter</li>
                     <li>At least 1 lowercase letter</li>
@@ -319,7 +319,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                 name="cpassword"
                 id="cpassword"
                 placeholder="••••••••"
-                className="w-full p-2.5 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
                 value={form.cpassword}
                 onChange={handleChange}
                 required
@@ -334,7 +334,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full ml-16  md:w-[18vw] h-[5vh] mx-auto mt-6 bg-red-700 text-white rounded-md hover:bg-red-600 transition hover:border-white hover:border-solid hover:border-2"
+              className="w-full   md:ml-16 md:w-[18vw] h-[5vh] mx-auto mt-6 bg-red-700 text-white rounded-md hover:bg-red-600 transition hover:border-white hover:border-solid hover:border-2"
             >
               Sign up
             </button>
