@@ -1,3 +1,4 @@
+/* General Font and Layout */
 * {
   font-family: 'Roboto', sans-serif;
 }
@@ -15,82 +16,123 @@
   background-size: cover;
 }
 
-.error{
+.error {
   margin-top: 0 !important;
 }
 
 /* Animations */
 .animated-text {
-  animation: scaleText .7s ease-in-out 1 alternate; /* Animation properties */
+  animation: scaleText .7s ease-in-out 1 alternate;
   transition: all smooth;
 }
 
 @keyframes scaleText {
   from {
-    font-size: 8rem; /* Initial font size */
+    font-size: 8rem;
   }
   to {
-    font-size: 4rem; /* Final font size */
+    font-size: 4rem;
   }
 }
 
+/* Recipe of the Day Section */
+.recipe-of-the-day {
+  background-color: #fff8f8; /* Light background for contrast */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  padding: 24px;
+  margin: 20px auto;
+  max-width: 800px;
+  text-align: center;
+}
 
+.recipe-of-the-day h2 {
+  font-size: 2.5rem;
+  color: #B91C1C;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
 
+.recipe-of-the-day .recipe-info h3 {
+  font-size: 2rem;
+  color: #333;
+  margin-top: 10px;
+}
+
+.recipe-of-the-day img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-top: 12px;
+  transition: transform 0.3s ease;
+}
+
+.recipe-of-the-day img:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.recipe-of-the-day p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* Clamped Text for Description */
+.clamped-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4; /* Limit description to 4 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #fafafc; 
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background:  #B91C1C !important;
+  background: #B91C1C !important;
   border-radius: 12px !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background:  #B91C1C!important;
+  background: #B91C1C !important;
   border-radius: 12px !important;
 }
 
-::-webkit-scrollbar {
-  width: 7px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #fafafc; 
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background:  #B91C1C !important;
-  border-radius: 12px !important;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background:  #B91C1C!important;
-  border-radius: 12px !important;
-}
-
+/* Responsive Recipe of the Day */
 @media (max-width: 600px) {
+  .recipe-of-the-day h2 {
+    font-size: 2rem;
+  }
+  
+  .recipe-of-the-day .recipe-info h3 {
+    font-size: 1.5rem;
+  }
+
+  .recipe-of-the-day p {
+    font-size: 1rem;
+  }
+
   ::-webkit-scrollbar {
-    width: 7px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #B91C1C;
+    width: 5px;
   }
 }
 
-.navbar{
+/* Navbar */
+.navbar {
   background-color: #fed4d4;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Utility classes */
 .text-\[4rem\] {
   font-size: 4.2rem !important;
 }
@@ -102,19 +144,3 @@
 .leading-relaxed {
   text-align: justify;
 }
-
-/* ADD THE CLASS OF CLAMPED-TEXT  */
-.clamped-text {
-  display: -webkit-box; 
-  -webkit-box-orient: vertical; /* Define the orientation as vertical */
-  -webkit-line-clamp: 4; /* Limit the number of lines to 4 */
-  overflow: hidden; /* Hide any overflowed content */
-  text-overflow: ellipsis; /* Add ellipsis (...) for overflow */
-}
-
-
-
-
-
-
-
