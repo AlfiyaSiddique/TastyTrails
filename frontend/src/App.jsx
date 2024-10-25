@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./Components/Navbar.jsx";
@@ -20,6 +19,7 @@ import Contributors from "./Pages/Contributors.jsx"; // Import the Contributors 
 import PrivacyPolicy from "./Components/PrivacyPolicy.jsx";
 import NotFound from "./Pages/NotFound.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
+import RecipeOfTheDay from "./Components/RecipeOfTheDay.jsx"; // Import RecipeOfTheDay component
 
 function App() {
   const [showScroll, setShowScroll] = useState(false);
@@ -82,10 +82,12 @@ function App() {
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/recipe-suggestions" element={<RecipeSuggestions />} />
           <Route path="*" element={<NotFound />} />
-          {/* Add Contributors route */}
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          {/* Added Privacy-policy route */}
         </Routes>
+
+        {/* Add Recipe of the Day section on the homepage */}
+        <Route path="/" element={<RecipeOfTheDay />} />
+
         <Footer />
       </BrowserRouter>
 
