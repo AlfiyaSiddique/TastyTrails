@@ -202,6 +202,14 @@ const Dashboard = () => {
                     </section>
                 </div>
             </div>
+            <div className="p-16 h-auto bg-gray-100 rounded-lg shadow-md">
+    <h2 className="text-2xl font-medium text-gray-900 mb-4">Your Activity</h2>
+    <ul className="list-disc list-inside">
+        <li className="mb-2 text-gray-700">Commented on "Sushi": "Looks delicious!" </li>
+        <li className="mb-2 text-gray-700">Commented on "Tandoori Chicken": "Can't wait to try this!"</li>
+    </ul>
+</div>
+
         </div>
     );
 };
