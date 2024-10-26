@@ -51,7 +51,7 @@ const GoogleTranslate = () => {
   }, []);
 
   return (
-    <div id="google_element" className="google-translate-container pl-20 md:pl-0">
+    <div id="google_element" className="google-translate-container pl-20 md:pl-0 max-sm:!pl-0">
       <style jsx>{`
         .goog-te-combo {
           display: inline-block;

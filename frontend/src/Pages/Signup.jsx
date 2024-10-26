@@ -331,7 +331,7 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
                 </button>
               </form>
               <button onClick={() => googleSignup()} className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ">
-              <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" class="w-8 h-8 mr-2 inline-block"/> Sign up with Google
+              <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" className="w-8 h-8 mr-2 inline-block"/> Sign up with Google
               </button>
                  {/* Already Have an Account */}
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">

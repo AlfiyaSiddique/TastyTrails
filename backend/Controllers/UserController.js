@@ -49,7 +49,7 @@ const getAllUserName = async (req, res) => {
     const nameArr = [];
     names.forEach((val) => nameArr.push(val.username));
     res.status(200).json({ usernames: nameArr, success: true });
-  } catch(error){
+  } catch (error) {
     console.log(error)
     res.status(404).json({ success: false, message: "Internal server error" });
   }
@@ -68,7 +68,6 @@ const Login = async (req, res) => {
         { username: req.body.searchTerm }, // Search by username
       ],
     });
-
     if (!user)
       return res
         .status(400)
@@ -86,7 +85,7 @@ const Login = async (req, res) => {
 
     // If the password is correct, generate a JWT token
     const token = jwt.sign(
-      { userId: user._id},
+      { userId: user._id },
       process.env.SECRET,
       {
         expiresIn: "30d",
@@ -106,18 +105,17 @@ const Login = async (req, res) => {
  * @description Verifies an user token an implement session
  * @access public
  */
-const verifyUserByToken =  async (req, res)=>{
-  try{
-        const user = await User.findById(req.user.userId)
-        console.log(req.user)
-        return res.status(200).json({success: true, user})
-  }catch (error){
+const verifyUserByToken = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId)
+    return res.status(200).json({ success: true, user })
+  } catch (error) {
     console.log(error);
     return res
       .status(404)
       .json({ success: false, message: "Internal Server Error" });
   }
- 
+
 }
 
 async function Sendcontactmail(req, res) {
