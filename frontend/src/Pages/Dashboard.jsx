@@ -16,7 +16,7 @@ const Dashboard = () => {
     const [recipes, setRecipes] = useState([]);
     const [error, setError] = useState(null); // Track any errors
     const [userImage, setUserImage] = useState(user.profile);
-    const [imagePreview, setImagePreview] = useState(user.image);
+    const [imagePreview, setImagePreview] = useState(user.profile);
     const inputFile = useRef(null)
     // Function to fetch all recipes for the user
     const [form, setForm] = useState({
