@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,8 +15,14 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [recipes, setRecipes] = useState([]);
     const [error, setError] = useState(null); // Track any errors
-
+    const [userImage, setUserImage] = useState(user.profile);
+    const [imagePreview, setImagePreview] = useState(user.image);
+    const inputFile = useRef(null)
     // Function to fetch all recipes for the user
+    const [form, setForm] = useState({
+      name: user.name,
+      image: user.image,
+    })
     const fetchRecipes = () => {
         setLoading(true);
         setError(null); // Reset any previous errors
@@ -77,6 +83,32 @@ const Dashboard = () => {
                 });
         }
     };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    form.imagename = file.name;
+    console.log(file)
+
+    if (file) {
+      setUserImage(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+        form.image = reader.result;
+      };
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        console.log('called:', reader);
+        setUserImage(reader.result)
+      }
+      console.log(userImage)
+    }
+  };
+
+  const uploadImage = async(e)=> {
+    inputFile.current.click();
+  }
 
     // Function to Logout
     const logout = () => {
@@ -169,12 +201,23 @@ const Dashboard = () => {
                     <section className="text-gray-600 body-font">
                         <div className="container mx-auto flex px-5 py-20 items-center justify-center flex-col">
                             <img
-                                className="lg:w-2/5 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded-[100%] hover:border-2 border-sky-500 "
+                                className="w-40 h-40 bg-gray-200 object-cover object-center rounded-[100%]"
                                 alt="profile"
-                                src={user.profile}
+                                src={imagePreview}
                                 loading="lazy"
                             />
-                            <FontAwesomeIcon icon={faPen} className="relative bottom-14 right-10 bg-neutral-300 rounded-full h-3.5 p-1.5 cursor-pointer hover:bg-neutral-400 hover:rotate-[-12deg]"/>
+                            <FontAwesomeIcon icon={faPen}
+                              className="relative bottom-6 right-12 bg-neutral-300 rounded-full h-3.5 p-1.5 cursor-pointer hover:bg-neutral-400 hover:rotate-[-12deg]"
+                              onClick={uploadImage}
+                            >
+                            </FontAwesomeIcon>
+                            <input
+                              type="file"
+                              accept=".jpg, .png, image/jpeg, image/png"
+                              ref={inputFile}
+                              className="hidden"
+                              onChange={handleImageChange}
+                            ></input>
                             <div className="text-center lg:w-2/3 w-full">
                                 <h1>
                                     {user.firstName} {user.lastName}
