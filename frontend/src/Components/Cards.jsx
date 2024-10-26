@@ -136,6 +136,7 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
           className="lg:h-48 md:h-36 w-full object-cover object-center cursor-pointer"
           src={dish.image}
           alt={dish.name}
+          loading="lazy"
           onClick={handleClick}
         />
         <div className="p-6">
