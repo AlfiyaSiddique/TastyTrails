@@ -70,12 +70,12 @@ const OneRecipe = () => {
   // Function to handle posting a comment
   const handlePostComment = async () => {
     // getting username from token named "username" created during login
-    const username = JSON.parse(localStorage.getItem("username"));
+    const token = JSON.parse(localStorage.getItem("tastytoken"));
     if (commentInput.trim()) {
       try {
         await axios.post(`${backendURL}/api/recipe/addcomment`, {
           recipeId: recipe._id,
-          username: username,  // Assuming the user is already logged in
+          token: token,  // Assuming the user is already logged in
           content: commentInput,
         },
           {
