@@ -169,11 +169,12 @@ const Dashboard = () => {
                     <section className="text-gray-600 body-font">
                         <div className="container mx-auto flex px-5 py-20 items-center justify-center flex-col">
                             <img
-                                className="lg:w-2/5 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded-[100%]"
+                                className="lg:w-2/5 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded-[100%] hover:border-2 border-sky-500 "
                                 alt="profile"
                                 src={user.profile}
                                 loading="lazy"
                             />
+                            <FontAwesomeIcon icon={faPen} className="relative bottom-14 right-10 bg-neutral-300 rounded-full h-3.5 p-1.5 cursor-pointer hover:bg-neutral-400 hover:rotate-[-12deg]"/>
                             <div className="text-center lg:w-2/3 w-full">
                                 <h1>
                                     {user.firstName} {user.lastName}
