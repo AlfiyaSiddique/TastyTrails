@@ -59,7 +59,6 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
         );
         if (updateShareCount.status === 200) {
           const postURL = window.location.origin + "/recipe/" + dish._id;
-          console.log(window.location.origin);
           const updatedRecipes = [...recipes];
           // Update the share count for the specific index
           updatedRecipes[index] = {
