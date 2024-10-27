@@ -115,33 +115,53 @@ const verifyUserByToken = async (req, res) => {
   }
 };
 
-async function submitFeedback(req, res) {
-  const { name, email, message, rating } = req.body; // Capture data from the request
-
+async function Sendcontactmail(req, res) {
+  const { name, email, message, rating } = req.body; // Capture rating from the request
+  console.log(req.body);
   try {
-    // Create a new feedback document
-    const newfeedback = new feedback({
-      name,
-      email,
-      message,
-      rating,
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_EMAIL,
+        pass: process.env.SMTP_PASSWORD,
+      },
     });
 
-    // Save feedback to the database
-    await newfeedback.save();
+    // Create a string of stars based on the rating, filled and unfilled stars
+    const totalStars = 5;
+    const filledStars = "★".repeat(rating); // Filled stars
+    const emptyStars = "☆".repeat(totalStars - rating); // Empty stars
+
+    const mailOptions = {
+      from: email,
+      to: process.env.RESPONSE_MAIL,
+      subject: `Feedback from ${name}`,
+      text: message,
+      html: `
+        <p>You have received a new message from the Feedback form:</p>
+        <h3>Contact Details:</h3>
+        <ul>
+          <li>Name: ${name}</li>
+          <li>Email: ${email}</li>
+        </ul>
+        <h3>Message:</h3>
+        <p>${message}</p>
+
+        <h3>Rating:</h3>
+        <p style="font-size: 24px; color: #FFD700;">${filledStars}${emptyStars}</p> <!-- Display the stars -->
+      `, // HTML body
+    };
+
+    await transporter.sendMail(mailOptions);
 
     return res
       .status(200)
-      .json({
-        success: true,
-        message: "Feedback stored successfully!",
-        newfeedback,
-      });
+      .json({ success: true, message: "Message sent successfully!" });
   } catch (error) {
-    console.error("Error storing feedback:", error);
+    console.error("Error sending email:", error);
     return res
       .status(500)
-      .json({ success: false, message: "Error storing feedback" });
+      .json({ success: false, message: "Error sending email" });
   }
 }
 const forgotPassword = async function (req, res) {
@@ -212,7 +232,7 @@ const UserController = {
   verifyUserByToken,
   forgotPassword,
   resetPassword,
-  submitFeedback,
+  Sendcontactmail,
 };
 
 export default UserController;
