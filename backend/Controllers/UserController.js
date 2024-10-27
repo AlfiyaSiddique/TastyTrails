@@ -2,7 +2,8 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
-import nodemailer from "nodemailer";
+
+import feedback from "../models/feedback.js";
 dotenv.config()
 /**
  * @route {POST} /api/signup
@@ -49,7 +50,7 @@ const getAllUserName = async (req, res) => {
     const nameArr = [];
     names.forEach((val) => nameArr.push(val.username));
     res.status(200).json({ usernames: nameArr, success: true });
-  } catch(error){
+  } catch (error) {
     console.log(error)
     res.status(404).json({ success: false, message: "Internal server error" });
   }
@@ -68,7 +69,6 @@ const Login = async (req, res) => {
         { username: req.body.searchTerm }, // Search by username
       ],
     });
-
     if (!user)
       return res
         .status(400)
@@ -86,7 +86,7 @@ const Login = async (req, res) => {
 
     // If the password is correct, generate a JWT token
     const token = jwt.sign(
-      { userId: user._id},
+      { userId: user._id },
       process.env.SECRET,
       {
         expiresIn: "30d",
@@ -106,73 +106,47 @@ const Login = async (req, res) => {
  * @description Verifies an user token an implement session
  * @access public
  */
-const verifyUserByToken =  async (req, res)=>{
-  try{
-        const user = await User.findById(req.user.userId)
-        console.log(req.user)
-        return res.status(200).json({success: true, user})
-  }catch (error){
+const verifyUserByToken = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId)
+    return res.status(200).json({ success: true, user })
+  } catch (error) {
     console.log(error);
     return res
       .status(404)
       .json({ success: false, message: "Internal Server Error" });
   }
- 
+
 }
 
-async function Sendcontactmail(req, res) {
-  const { name, email, message, rating } = req.body; // Capture rating from the request
-  console.log(req.body);
+async function submitFeedback(req, res) {
+  const { name, email, message, rating } = req.body; // Capture data from the request
+
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD,
-      },
+    // Create a new feedback document
+    const newfeedback = new feedback({
+      name,
+      email,
+      message,
+      rating,
     });
 
-    // Create a string of stars based on the rating, filled and unfilled stars
-    const totalStars = 5;
-    const filledStars = '★'.repeat(rating);   // Filled stars
-    const emptyStars = '☆'.repeat(totalStars - rating); // Empty stars
+    // Save feedback to the database
+    await newfeedback.save();
 
-    const mailOptions = {
-      from: email,
-      to: process.env.RESPONSE_MAIL,
-      subject: `Feedback from ${name}`,
-      text: message,
-      html: `
-        <p>You have received a new message from the Feedback form:</p>
-        <h3>Contact Details:</h3>
-        <ul>
-          <li>Name: ${name}</li>
-          <li>Email: ${email}</li>
-        </ul>
-        <h3>Message:</h3>
-        <p>${message}</p>
-
-        <h3>Rating:</h3>
-        <p style="font-size: 24px; color: #FFD700;">${filledStars}${emptyStars}</p> <!-- Display the stars -->
-      `, // HTML body
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    return res.status(200).json({ success: true, message: 'Message sent successfully!' });
+    return res.status(200).json({ success: true, message: 'Feedback stored successfully!',  newfeedback }); 
   } catch (error) {
-    console.error('Error sending email:', error);
-    return res.status(500).json({ success: false, message: 'Error sending email' });
+    console.error('Error storing feedback:', error);
+    return res.status(500).json({ success: false, message: 'Error storing feedback' });
   }
 }
-
 
 const UserController = {
   Signup,
   Login,
   getAllUserName,
   verifyUserByToken,
-  Sendcontactmail
+  submitFeedback
 };
 
 export default UserController;
