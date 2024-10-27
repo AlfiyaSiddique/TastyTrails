@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+
 import { MdDelete } from "react-icons/md";
 
 
@@ -70,12 +71,12 @@ const OneRecipe = () => {
   // Function to handle posting a comment
   const handlePostComment = async () => {
     // getting username from token named "username" created during login
-    const username = JSON.parse(localStorage.getItem("username"));
+    const token = JSON.parse(localStorage.getItem("tastytoken"));
     if (commentInput.trim()) {
       try {
         await axios.post(`${backendURL}/api/recipe/addcomment`, {
           recipeId: recipe._id,
-          username: username,  // Assuming the user is already logged in
+          token: token,  // Assuming the user is already logged in
           content: commentInput,
         },
           {
@@ -119,10 +120,10 @@ const OneRecipe = () => {
     )
   }
   return (
-    <div className="w-[80vw] m-auto  my-12">
+    <div className="w-[80vw] m-auto  my-12 ">
       <h1 className="text-3xl font-extrabold text-red-700 my-8 text-center">{recipe.name}</h1>
       <form>
-        <div className="md:grid md:grid-cols-[50%_50%] space-x-4">
+        <div className="md:grid md:grid-cols-[50%_50%] space-x-4 image">
           <input
             type="image"
             src={recipe.image}

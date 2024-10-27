@@ -43,8 +43,8 @@ const Footer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !message || rating === 0) {
-      toast.error("Name, Email, Message, and Rating are mandatory fields!"); // Changed alert to toast notification
+    if (!name || !email || !message || rating === 0 || message.length < 5) { // Added check for message length
+      toast.error("Name, Email, Message (at least 5 characters), and Rating are mandatory fields!"); // Replaced alert with toast notification
       return;
     }
 
@@ -216,6 +216,7 @@ const Footer = () => {
                           placeholder="Your Message"
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
+                          
                           required
                         ></textarea>
                       </div>

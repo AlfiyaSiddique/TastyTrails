@@ -30,9 +30,16 @@ router.post(
   authenticateToken,
   RecipeController.addComment
 );
-router.post("/feedback", UserController.Sendcontactmail);
+router.post("/feedback", UserController.submitFeedback);
 router.post("/forgot_password", UserController.forgotPassword);
 router.post("/reset_password/:token", UserController.resetPassword);
+router.post("/recipe/like", authenticateToken, RecipeController.addRecipeLike);
+router.post(
+  "/recipe/unlike",
+  authenticateToken,
+  RecipeController.removeRecipeLike
+);
+router.post("/recipe/liked_recipes", RecipeController.getLikedRecipe);
 router.delete(
   "/recipe/deletecomment/:commentId",
   authenticateToken,

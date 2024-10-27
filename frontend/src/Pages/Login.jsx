@@ -37,6 +37,8 @@ const Login = () => {
             "username",
             JSON.stringify(res.data.user.username)
           );
+          localStorage.setItem("userData", JSON.stringify(res.data.user));
+
           navigate(`/user/${res.data.user._id}`, {
             state: { user: res.data.user },
           });
