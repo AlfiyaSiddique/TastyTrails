@@ -30,6 +30,10 @@ router.post(
   authenticateToken,
   RecipeController.addComment
 );
+
+
+router.post("/feedback", UserController.submitFeedback);
+
 router.post("/feedback", UserController.Sendcontactmail);
 router.post("/recipe/like", authenticateToken, RecipeController.addRecipeLike);
 router.post(
@@ -43,5 +47,6 @@ router.delete(
   authenticateToken,
   RecipeController.deleteComment
 );
+
 
 export default router;
