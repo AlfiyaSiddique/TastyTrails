@@ -360,12 +360,9 @@ const deleteRecipe = async (req, res) => {
  * @description Add a comment to a recipe
  * @access private
  */
-// controllers/commentController.js
 const addComment = async (req, res) => {
   try {
-    const { recipeId, content , username} = req.body;
-    const userId = req.user.userId; // Assuming user is available in req.user after authentication middleware
-    // Assuming username is available in req.user
+    const { recipeId, username, content } = req.body;
 
     // Ensure the recipe exists
     const recipe = await Recipe.findById(recipeId);
@@ -378,8 +375,7 @@ const addComment = async (req, res) => {
     // Create a new comment
     const newComment = new Comment({
       recipe: recipeId,
-      user: userId,
-      username,
+      username: username,
       content,
     });
 
@@ -397,7 +393,6 @@ const addComment = async (req, res) => {
   }
 };
 
-
 /**
  * @GET /api/recipe/getcomments/:recipeId
  * @description Get all comments for a specific recipe
@@ -408,7 +403,7 @@ const getComments = async (req, res) => {
     const { recipeId } = req.params;
     console.log("Fetching comments for recipe:", recipeId);
 
-   
+    // Ensure the recipe exists
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
       return res
@@ -421,7 +416,6 @@ const getComments = async (req, res) => {
     const comments = await Comment.find({ recipe: recipeObjectId })
       .select("username content date")
       .sort({ date: -1 });
-
     return res.status(200).json({ success: true, comments });
   } catch (error) {
     console.log(error);
@@ -530,34 +524,31 @@ const getLikedRecipe = async (req, res) => {
  */
 //This function will update share count of any recipe
 
-
 const deleteComment = async (req, res) => {
   try {
+    // Extract comment ID from the request parameters
     const { commentId } = req.params;
-    const userId = req.user.userId;
 
-    const comment = await Comment.findById(commentId);
+    // Find the comment by ID and delete it
+    const deletedComment = await Comment.findByIdAndDelete(commentId);
 
- 
-    if (!comment) {
-      return res.status(404).json({ success: false, message: "Comment not found" });
+    if (!deletedComment) {
+      return res.status(404).json({ message: "Comment not found" });
     }
 
-
-    if (comment.user.toString() !== userId.toString()) {
-      return res.status(403).json({ success: false, message: "You are not authorized to delete this comment" });
-    }
-
- 
-    await comment.remove();
-
-    return res.status(200).json({ success: true, message: "Comment deleted successfully" });
+    // Return success response
+    res.status(200).json({
+      message: "Comment deleted successfully",
+      deletedComment, // Optional: You can return the deleted comment data if needed
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    // Handle any errors that occur during the process
+    res.status(500).json({
+      message: "An error occurred while deleting the comment",
+      error: error.message,
+    });
   }
 };
-
 
 const updateShareCount = async (req, res) => {
   const { recipeId } = req.params;
