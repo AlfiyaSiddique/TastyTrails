@@ -18,8 +18,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 // CORS configuration
 const allowedOrigins = [
   "https://delightful-daifuku-a9f6ea.netlify.app",
-  /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/
-  
+  /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
 ];
 
 
