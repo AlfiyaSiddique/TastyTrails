@@ -92,9 +92,7 @@ const Login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
       expiresIn: "30d",
     });
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
-      expiresIn: "30d",
-    });
+  
     res.status(200).json({ success: true, user: user, token: token });
   } catch (error) {
     console.log(error);
@@ -113,8 +111,7 @@ const verifyUserByToken = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     return res.status(200).json({ success: true, user });
-    const user = await User.findById(req.user.userId);
-    return res.status(200).json({ success: true, user });
+  
   } catch (error) {
     console.log(error);
     return res
@@ -124,7 +121,7 @@ const verifyUserByToken = async (req, res) => {
 };
 
 
-async function submitFeedback(req, res) {
+const  submitFeedback = async (req, res) => {
   const { name, email, message, rating } = req.body; // Capture data from the request
 
   try {

@@ -63,7 +63,7 @@ const addRecipe = async (req, res) => {
 
     return res
       .status(200)
-      .json({ success: true, message: "Recipe Published Successfully" });
+      .json({ success: true, message: "Recipe Published Successfully", saved });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
