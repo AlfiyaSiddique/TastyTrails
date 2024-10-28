@@ -18,7 +18,7 @@ jobs:
        run: |
         COMMENT=$(cat <<EOF
         {
-          "body": "🎉 Your pull request has been successfully merged! 🎉 Thank you for your contribution to our project. Your efforts are greatly appreciated. Keep up the fantastic work! 🚀"
+          "body": "🎉 Thank you @${{ github.actor }} Your pull request has been successfully merged! 🎉 Thank you for your contribution to our project. Your efforts are greatly appreciated. Keep up the fantastic work! 🚀"
         }
         EOF
         )
