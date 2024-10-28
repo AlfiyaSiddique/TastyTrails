@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import food from "../assets/Images/food404.png";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -6,8 +6,16 @@ const NotFound = () => {
   const navigate = useNavigate(); // Hook to access the navigation function
 
   const handleGoBack = () => {
-    navigate(-1); // Go back to the previous page
+    navigate(-3); // Go back 3 steps in history
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigate("/"); // Redirect to homepage after 5 seconds
+    }, 3000); // 5000 ms = 5 seconds
+  
+    return () => clearTimeout(timeout); // Cleanup to prevent memory leaks
+  }, [navigate]);
 
   return (
     <div className="h-screen w-screen flex items-stretch">
@@ -18,9 +26,8 @@ const NotFound = () => {
             <p className="text-2xl mt-8 mb-8 md:text-3xl font-[Merriweather] font-light leading-normal">
               Sorry! <br /> we couldn't find this page.
             </p>
-
             <p className="mt-8 mb-8 hidden md:block">
-              But don't worry, you can find plenty of other things on our homepage.
+              But don't worry, you'll be redirected to the homepage shortly.
             </p>
             <Link
               to="/"
@@ -44,7 +51,7 @@ const NotFound = () => {
         {/* Text and Button for smaller screens, displayed below the image */}
         <div className="mt-8 text-center md:hidden">
           <p className="mt-8 mb-8">
-            But don't worry, you can find plenty of other things on our homepage.
+            But don't worry, you'll be redirected to the homepage shortly.
           </p>
           <Link
             to="/"
