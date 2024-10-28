@@ -3,6 +3,9 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
+dotenv.config();
+import dotenv from "dotenv";
+
 import feedback from "../models/feedback.js";
 dotenv.config();
 /**
@@ -52,6 +55,7 @@ const getAllUserName = async (req, res) => {
     res.status(200).json({ usernames: nameArr, success: true });
   } catch (error) {
     console.log(error);
+    console.log(error);
     res.status(404).json({ success: false, message: "Internal server error" });
   }
 };
@@ -88,6 +92,9 @@ const Login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
       expiresIn: "30d",
     });
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
+      expiresIn: "30d",
+    });
     res.status(200).json({ success: true, user: user, token: token });
   } catch (error) {
     console.log(error);
@@ -106,6 +113,8 @@ const verifyUserByToken = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     return res.status(200).json({ success: true, user });
+    const user = await User.findById(req.user.userId);
+    return res.status(200).json({ success: true, user });
   } catch (error) {
     console.log(error);
     return res
@@ -113,6 +122,7 @@ const verifyUserByToken = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
 
 async function submitFeedback(req, res) {
   const { name, email, message, rating } = req.body; // Capture data from the request
