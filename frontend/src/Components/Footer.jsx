@@ -12,6 +12,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import GoogleTranslate from "./GoogleTranslate";
+
 const Footer = () => {
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState(0);
@@ -43,8 +44,8 @@ const Footer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !message || rating === 0 || message.length < 5) { // Added check for message length
-      toast.error("Name, Email, Message (at least 5 characters), and Rating are mandatory fields!"); // Replaced alert with toast notification
+    if (!name || !email || !message || rating === 0 || message.length < 5) {   // Added check for message length
+      toast.error("Name, Email, Message (at least 5 characters), and Rating are mandatory fields!");  // Replaced alert with toast notification
       return;
     }
 
@@ -89,97 +90,83 @@ const Footer = () => {
   };
 
   return (
-    <div
-      className={`w-full ${path !== "/user" ? "relative" : "fixed bottom-0"}`}
-    >
+    <div className={`w-full ${path !== "/user" ? "relative" : "fixed bottom-0"}`}>
       {path !== "/user" && (
         <>
           <footer className="text-gray-600 body-font w-full bg-[#fed4d4]">
-            <div className="container px-2 py-2 flex items-center sm:flex-row flex-col justify-between space-y-4">
-              <div className="flex title-font font-bold items-center md:justify-start justify-center text-red-700 max-sm:flex-col">
-                <span className="ml-3 text-xl font-[Mrriweather]">
-                  TastyTrails
-                </span>
-
-                <div className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 sm:text-center flex max-sm:flex-col">
-                  <div>
-                    <span>
-                      © {new Date().getFullYear()} TastyTrails Developer —
-                    </span>
-
-                    <Link
-                      to="https://twitter.com/A_l_f_i_y_a"
-                      className="text-gray-600 ml-1 sm:text-center px-0"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      @A_l_f_i_y_A
-                    </Link>
-                  </div>
-                  <div>
-                    {/* added privacy policy */}
-                    <Link
-                      to="/privacy-policy"
-                      className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all mx-3"
-                    >
-                      Privacy Policy
-                    </Link>
-
-                    <Link to="/contributors" className="ml-4">
-                      <button className="inline-flex items-center bg-transparent border-0 py-1 px-3 text-red-700 hover:bg-gray-200 rounded transition-all mx-0">
-                        Contributors
-                      </button>
-                    </Link>
-                  </div>
+          <div className="container px-2 py-4 flex flex-col sm:flex-row items-center justify-between">
+              <div className="flex title-font font-bold items-center justify-center md:justify-start text-red-700 max-sm:flex-col">
+                <span className="ml-3 text-xl font-[Merriweather]">TastyTrails</span>
+                <div className="hidden sm:block h-6 border-l-2 border-gray-300 mx-4"></div>
+                <div className="flex items-center sm:ml-4">
+                  <Link
+                    to="/privacy-policy"
+                    className="inline-flex items-center text-red-700 hover:text-red-500 transition-all duration-200 text-md mx-2"
+                  >
+                    Privacy Policy
+                  </Link>
+                  <Link to="/contributors">
+                    <button className="inline-flex items-center text-red-700 hover:text-red-500 transition-all duration-200 text-md mx-2">
+                      Contributors
+                    </button>
+                  </Link>
                 </div>
               </div>
 
-              <div className="flex items-center max-sm:flex-col-reverse">
-                <div className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+
+              <div className="flex items-center max-sm:flex-col mt-4 sm:mt-0 justify-start">
+                <div className="flex my-auto">
+                  <div className="sm:block h-6  mx-4 ml-0"></div>
+                  <GoogleTranslate />
+                </div>
+                <div className="flex mx-8">
                   <Link
                     to={"https://www.instagram.com/alfiya.17.siddiq/"}
-                    className="text-ref-500 text-red-700"
+                    className="text-red-700 text-3xl ml-8 hover:text-red-500 transition-colors duration-200"
                   >
                     <FontAwesomeIcon icon={faInstagramSquare} />
                   </Link>
                   <Link
-                    to={
-                      "https://www.linkedin.com/in/alfiya-siddique-987a59240/"
-                    }
-                    className="ml-3 text-red-700"
+                    to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
+                    className="ml-6 text-red-700 text-3xl hover:text-red-500 transition-colors duration-200"
                   >
-                    <FontAwesomeIcon icon={faLinkedinIn} className="" />
+                    <FontAwesomeIcon icon={faLinkedinIn} />
                   </Link>
                   <Link
                     to={"https://github.com/AlfiyaSiddique"}
-                    className="ml-3 text-red-700"
+                    className="ml-6 text-red-700 text-3xl hover:text-red-500 transition-colors duration-200"
                   >
                     <FontAwesomeIcon icon={faGithubSquare} />
                   </Link>
                 </div>
-                <div className="flex">
-                  <div className="translate flex ml-4 my-auto max-sm:ml-0">
-                    <GoogleTranslate />
-                  </div>
-
-                  <button
-                    onClick={openModal} // Call openModal when feedback button is clicked
-                    className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white"
-                  >
-                    Feedback
-                  </button>
-                </div>
+                <button
+                  onClick={openModal}  // Call openModal when feedback button is clicked
+                  className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white transition-all duration-200"
+                >
+                  Feedback
+                </button>
               </div>
+            </div>
+
+            {/* Copyright Row */}
+            <div className="text-center py-2">
+              <span className="text-sm text-gray-500">© {new Date().getFullYear()} TastyTrails Developer - </span>
+              <Link
+                to="https://twitter.com/A_l_f_i_y_a"
+                className="text-gray-600 ml-1 sm:text-center px-0"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                @A_l_f_i_y_A
+              </Link>
             </div>
           </footer>
 
-          {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
               <div className="bg-white p-6 rounded-lg w-full max-w-lg">
                 {submitStatus === null ? (
                   <>
-                    {}
                     <h2 className="text-2xl font-bold mb-4">Feedback</h2>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                       <div>
@@ -216,7 +203,6 @@ const Footer = () => {
                           placeholder="Your Message"
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
-                          
                           required
                         ></textarea>
                       </div>
@@ -227,11 +213,10 @@ const Footer = () => {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <span
                               key={star}
-                              className={`cursor-pointer ${
-                                rating >= star
-                                  ? "text-yellow-400"
-                                  : "text-gray-400"
-                              }`}
+                              className={`cursor-pointer ${rating >= star
+                                ? "text-yellow-400"
+                                : "text-gray-400"
+                                }`}
                               onClick={() => handleRating(star)}
                             >
                               {rating >= star ? "★" : "☆"}
