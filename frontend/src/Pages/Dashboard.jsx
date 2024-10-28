@@ -44,6 +44,21 @@ const Dashboard = () => {
             .finally(() => setLoading(false));
     };
 
+    function fetchUserImage(){
+        axios
+            .post(
+                `${backendURL}/api/user/fetch`,
+                { id: user._id },
+            )
+            .then((res) => {
+                setImagePreview(res.data.profile);
+            })
+            .catch((err) => {
+                // console.error("Error fetching recipes:", err);
+                setError("Failed to fetch recipes. Please try again.");
+            })
+    }
+
     useEffect(() => {
         if (user._id) {
             fetchRecipes(); // Only fetch recipes if user ID is available
@@ -127,20 +142,6 @@ const Dashboard = () => {
     };
 
 
-    function fetchUserImage(){
-        axios
-            .post(
-                `${backendURL}/api/user/fetch`,
-                { id: user._id },
-            )
-            .then((res) => {
-                setImagePreview(res.data.profile);
-            })
-            .catch((err) => {
-                // console.error("Error fetching recipes:", err);
-                setError("Failed to fetch recipes. Please try again.");
-            })
-    }
     return (
         <div id="userDashboard" className="border-gray-200 border-t-[1px]">
             <div className="grid md:grid-cols-[70%_30%] grid-cols-1 relative">
