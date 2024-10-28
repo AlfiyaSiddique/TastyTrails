@@ -34,7 +34,6 @@ router.post(
 
 router.post("/feedback", UserController.submitFeedback);
 
-router.post("/feedback", UserController.Sendcontactmail);
 router.post("/recipe/like", authenticateToken, RecipeController.addRecipeLike);
 router.post(
   "/recipe/unlike",

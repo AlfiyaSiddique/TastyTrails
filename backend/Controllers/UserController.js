@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
 import feedback from "../models/feedback.js";
-dotenv.config()
+dotenv.config();
 /**
  * @route {POST} /api/signup
  * @description Create a new user
@@ -51,7 +51,7 @@ const getAllUserName = async (req, res) => {
     names.forEach((val) => nameArr.push(val.username));
     res.status(200).json({ usernames: nameArr, success: true });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(404).json({ success: false, message: "Internal server error" });
   }
 };
@@ -85,13 +85,9 @@ const Login = async (req, res) => {
         .json({ success: false, message: "Incorrect Password" });
 
     // If the password is correct, generate a JWT token
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.SECRET,
-      {
-        expiresIn: "30d",
-      }
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
+      expiresIn: "30d",
+    });
     res.status(200).json({ success: true, user: user, token: token });
   } catch (error) {
     console.log(error);
@@ -108,16 +104,15 @@ const Login = async (req, res) => {
  */
 const verifyUserByToken = async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId)
-    return res.status(200).json({ success: true, user })
+    const user = await User.findById(req.user.userId);
+    return res.status(200).json({ success: true, user });
   } catch (error) {
     console.log(error);
     return res
       .status(404)
       .json({ success: false, message: "Internal Server Error" });
   }
-
-}
+};
 
 async function submitFeedback(req, res) {
   const { name, email, message, rating } = req.body; // Capture data from the request
@@ -134,10 +129,18 @@ async function submitFeedback(req, res) {
     // Save feedback to the database
     await newfeedback.save();
 
-    return res.status(200).json({ success: true, message: 'Feedback stored successfully!',  newfeedback }); 
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "Feedback stored successfully!",
+        newfeedback,
+      });
   } catch (error) {
-    console.error('Error storing feedback:', error);
-    return res.status(500).json({ success: false, message: 'Error storing feedback' });
+    console.error("Error storing feedback:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Error storing feedback" });
   }
 }
 
@@ -146,7 +149,7 @@ const UserController = {
   Login,
   getAllUserName,
   verifyUserByToken,
-  submitFeedback
+  submitFeedback,
 };
 
 export default UserController;
