@@ -134,7 +134,7 @@ const FetchUser = async (req, res) => {
 
 const UpdateImage = async (req, res) => {
   try {
-    const { id, name, profile} = req.body
+    const { id, profile} = req.body
     const update = await User.updateOne({ _id: id }, { $set: {profile: profile} }, { new: true })
     return res.status(200).json({ success: true, message: "Image Updates Successfully" })
   } catch (error) {

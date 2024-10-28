@@ -20,6 +20,10 @@ const Dashboard = () => {
     const [imagePreview, setImagePreview] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
     const inputFile = useRef(null)
     // Function to fetch all recipes for the user
+    const [form, setForm] = useState({
+      id: user._id,
+      profile: user.profile
+    })
   const fetchRecipes = () => {
     setLoading(true);
     setError(null); // Reset any previous errors
