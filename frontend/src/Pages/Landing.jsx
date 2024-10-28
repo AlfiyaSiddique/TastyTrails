@@ -8,7 +8,7 @@ import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
-
+import Testimonial from "../Components/Testimonial.jsx";
 
 const Landing = () => {
   const navigator = useNavigate();
@@ -195,6 +195,9 @@ const Landing = () => {
             />
           </div>
         </div>
+      </section>
+      <section>
+        <Testimonial />
       </section>
     </div>
   );
