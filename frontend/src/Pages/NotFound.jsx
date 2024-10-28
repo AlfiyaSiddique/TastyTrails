@@ -1,8 +1,14 @@
 import React from "react";
 import food from "../assets/Images/food404.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NotFound = () => {
+  const navigate = useNavigate(); // Hook to access the navigation function
+
+  const handleGoBack = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
   return (
     <div className="h-screen w-screen flex items-stretch">
       <div className="container flex flex-col items-center justify-center px-5 text-gray-700">
@@ -22,6 +28,12 @@ const NotFound = () => {
             >
               Back To Homepage
             </Link>
+            <button
+              onClick={handleGoBack}
+              className="inline-flex items-center hidden md:inline ml-4 bg-gray-300 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-black transition-all"
+            >
+              Go Back
+            </button>
           </div>
 
           <div className="md:ml-8">
@@ -34,16 +46,20 @@ const NotFound = () => {
           <p className="mt-8 mb-8">
             But don't worry, you can find plenty of other things on our homepage.
           </p>
-         <Link
+          <Link
             to="/"
             className="inline-flex items-center bg-red-700 border-0 py-1 px-3 focus:outline-none hover:bg-red-500 rounded text-white transition-all"
           >
             Back To Homepage
           </Link>
+          <button
+            onClick={handleGoBack}
+            className="inline-flex items-center mt-4 bg-gray-300 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-black transition-all"
+          >
+            Go Back
+          </button>
         </div>
-         
       </div>
-      
     </div>
   );
 };
