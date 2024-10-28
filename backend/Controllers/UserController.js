@@ -118,9 +118,38 @@ const verifyUserByToken = async (req, res) => {
 
 }
 
+const FetchUser = async (req, res) => {
+  try {
+    const {id} = req.body
+    if (!id) {
+      return res.status(400).json({ success: false, message: "Invalid request" })
+    }
+    const userData = await User.find({_id: id})
+    if (!userData) {
+      return res.status(400).json({ success: false, message: "User Not Found" })
+    }
+    return res.status(200).json(userData[0])
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ success: false, message: "Internal Server error" })
+  }
+  
+}
+
+const UpdateImage = async (req, res) => {
+  try {
+    const { id, name, profile} = req.body
+    const update = await User.updateOne({ _id: id }, { $set: {profile: profile} }, { new: true })
+    return res.status(200).json({ success: true, message: "Image Updates Successfully" })
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ success: false, message: "Internal server error" });
+  }
+}
+
+
 async function Sendcontactmail(req, res) {
   const { name, email, message, rating } = req.body; // Capture rating from the request
-  console.log(req.body);
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -164,13 +193,14 @@ async function Sendcontactmail(req, res) {
   }
 }
 
-
 const UserController = {
   Signup,
   Login,
   getAllUserName,
   verifyUserByToken,
-  Sendcontactmail
+  Sendcontactmail,
+  UpdateImage,
+  FetchUser
 };
 
 export default UserController;

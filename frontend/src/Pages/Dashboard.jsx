@@ -1,4 +1,4 @@
-
+// https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -15,13 +15,12 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [recipes, setRecipes] = useState([]);
     const [error, setError] = useState(null); // Track any errors
-    const [userImage, setUserImage] = useState(user.profile);
-    const [imagePreview, setImagePreview] = useState(user.profile);
+    const [imagePreview, setImagePreview] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
     const inputFile = useRef(null)
     // Function to fetch all recipes for the user
     const [form, setForm] = useState({
-      name: user.name,
-      image: user.image,
+      id: user._id,
+      profile: user.profile,
     })
     const fetchRecipes = () => {
         setLoading(true);
@@ -40,7 +39,7 @@ const Dashboard = () => {
                 setRecipes(res.data.recipes);
             })
             .catch((err) => {
-                console.error("Error fetching recipes:", err);
+                // console.error("Error fetching recipes:", err);
                 setError("Failed to fetch recipes. Please try again.");
             })
             .finally(() => setLoading(false));
@@ -49,6 +48,7 @@ const Dashboard = () => {
     useEffect(() => {
         if (user._id) {
             fetchRecipes(); // Only fetch recipes if user ID is available
+            fetchUserImage();
         } else {
             console.error("User ID is missing!");
             setError("User data is not available.");
@@ -86,25 +86,36 @@ const Dashboard = () => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    form.imagename = file.name;
-    console.log(file)
 
     if (file) {
-      setUserImage(file);
-
+      // setUserImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
-        form.image = reader.result;
       };
       reader.readAsDataURL(file);
       reader.onload = () => {
-        console.log('called:', reader);
-        setUserImage(reader.result)
+        changeImageBackend(reader.result);
       }
-      console.log(userImage)
     }
   };
+  
+  const changeImageBackend = (userImgBase64) => {
+      form.profile = userImgBase64;
+      axios
+        .post(`${backendURL}/api/user/imageUpdate`, form)
+        .then((res) => {
+          if (res.data.success) {
+            toast.success(res.data.message);
+          } else {
+            toast.error("Some Error occured please try again later.");
+          }
+        })
+        .catch((err) => {
+          toast.error("Some Error occured please try again later.");
+          // console.log(err);
+        });
+  }
 
   const uploadImage = async(e)=> {
     inputFile.current.click();
@@ -115,6 +126,21 @@ const Dashboard = () => {
         localStorage.removeItem("tastytoken");
         navigator("/");
     };
+
+    function fetchUserImage(){
+        axios
+            .post(
+                `${backendURL}/api/user/fetch`,
+                { id: user._id },
+            )
+            .then((res) => {
+                setImagePreview(res.data.profile);
+            })
+            .catch((err) => {
+                // console.error("Error fetching recipes:", err);
+                setError("Failed to fetch recipes. Please try again.");
+            })
+    }
 
     return (
         <div id="userDashboard" className="border-gray-200 border-t-[1px]">
