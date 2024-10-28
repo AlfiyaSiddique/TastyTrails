@@ -18,6 +18,8 @@ import UpdateRecipe from "./Pages/UpdateRecipe.jsx";
 import Contributors from "./Pages/Contributors.jsx"; // Import the Contributors component
 import PrivacyPolicy from "./Components/PrivacyPolicy.jsx";
 import NotFound from "./Pages/NotFound.jsx";
+import ResetPassword from "./Pages/ResetPassword.jsx";
+import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
 import RecipeOfTheDay from "./Components/RecipeOfTheDay.jsx"; // Import RecipeOfTheDay component
 
@@ -59,6 +61,8 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot_password" element={<ForgotPassword />} />
+          <Route path="/reset_password/:token" element={<ResetPassword />} />
           <Route
             path="/recipes"
             element={<Recipes key={"recipes"} type="" />}
