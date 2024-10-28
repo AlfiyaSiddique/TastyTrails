@@ -139,7 +139,15 @@ const Login = () => {
                 />{" "}
                 Sign in with Google
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
+                <Link
+                  to="/forgot_password"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:text-red-700"
+                >
+                  Forgot Password?{" "}
+                </Link>
+              </p>
+              <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
                 <Link
                   to="/signup"
