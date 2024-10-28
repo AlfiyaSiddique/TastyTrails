@@ -21,6 +21,25 @@ const allowedOrigins = [
   /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
 ];
 
+
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            // Allow requests with no `origin` (like from Postman or server-side scripts)
+            if (!origin || allowedOrigins.some((o) =>
+                typeof o === "string" ? o === origin : o.test(origin)
+            )) {
+                callback(null, true);
+            } else {
+                // Provide a more informative error message if necessary
+                callback(new Error("CORS policy: This origin is not allowed."));
+            }
+        },
+    })
+);
+
+// app.use(cors({origin:"http://localhost:5173"})) // for local use
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -42,6 +61,7 @@ app.use(
 
 // app.use(cors({ origin: "http://localhost:5173" })) // for local use
 
+
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
 collectDefaultMetrics({ register: client.register });
@@ -49,17 +69,17 @@ collectDefaultMetrics({ register: client.register });
 app.use("/api", router);
 
 app.get("/", (_, res) => {
-    res.send("TastyTrails Backend");
+  res.send("TastyTrails Backend");
 });
 
 app.get("/ping", async (_, res) => {
-    res.status(200).json({ message: "pong" });
+  res.status(200).json({ message: "pong" });
 });
 
 app.get("/metrics", async (_, res) => {
-    res.setHeader("Content-Type", client.register.contentType);
-    const metrics = await client.register.metrics();
-    res.send(metrics);
+  res.setHeader("Content-Type", client.register.contentType);
+  const metrics = await client.register.metrics();
+  res.send(metrics);
 });
 
 // Database Connection and server

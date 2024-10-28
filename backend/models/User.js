@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  likedRecipes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Recipe",
+    },
+  ],
   bio: {
     type: String,
     default: "",
