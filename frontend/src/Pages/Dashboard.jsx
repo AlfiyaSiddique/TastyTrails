@@ -1,4 +1,3 @@
-// https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -127,6 +126,7 @@ const Dashboard = () => {
         navigator("/");
     };
 
+
     function fetchUserImage(){
         axios
             .post(
@@ -141,7 +141,6 @@ const Dashboard = () => {
                 setError("Failed to fetch recipes. Please try again.");
             })
     }
-
     return (
         <div id="userDashboard" className="border-gray-200 border-t-[1px]">
             <div className="grid md:grid-cols-[70%_30%] grid-cols-1 relative">
