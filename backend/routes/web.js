@@ -5,7 +5,7 @@ import ChatbotController from "../Controllers/ChatbotController.js";
 import authenticateToken from "../middleware/auth.js";
 
 const router = Router();
-console.log("RecipeController:", RecipeController);
+
 // Get Requests
 router.get("/usernames", UserController.getAllUserName);
 router.get("/token", authenticateToken, UserController.verifyUserByToken);
@@ -15,6 +15,7 @@ router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
 // Post Requests
 router.post("/signup", UserController.Signup);
 router.post("/login", UserController.Login);
+router.post("/feedback", UserController.submitFeedback);
 router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);
 router.post("/recipe/update", authenticateToken, RecipeController.updateRecipe);
 router.post(
@@ -30,9 +31,7 @@ router.post(
   authenticateToken,
   RecipeController.addComment
 );
-router.post("/feedback", UserController.submitFeedback);
-router.post("/forgot_password", UserController.forgotPassword);
-router.post("/reset_password/:token", UserController.resetPassword);
+
 router.post("/recipe/like", authenticateToken, RecipeController.addRecipeLike);
 router.post(
   "/recipe/unlike",

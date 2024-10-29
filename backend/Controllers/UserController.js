@@ -55,7 +55,6 @@ const getAllUserName = async (req, res) => {
     res.status(200).json({ usernames: nameArr, success: true });
   } catch (error) {
     console.log(error);
-    console.log(error);
     res.status(404).json({ success: false, message: "Internal server error" });
   }
 };
@@ -151,11 +150,75 @@ const  submitFeedback = async (req, res) => {
   }
 }
 
+const forgotPassword = async function (req, res) {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  try {
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Email doesnt exist" });
+    } else {
+      const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
+        expiresIn: "5m",
+      });
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.SMTP_EMAIL,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      });
+      var userFullName = user.firstName + " " + user.lastName;
+      var mailOptions = {
+        from: process.env.SMTP_EMAIL,
+        to: email,
+        subject: "Password Reset | TastyTrails",
+        html: `<p>Hi <b> ${userFullName},</b><br>Use the below link to reset you password. Remember, the link will expire in 10 minutes.<br> ${process.env.FRONT_END_URL}/reset_password/${token}`,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Email not sent" });
+        } else {
+          return res
+            .status(200)
+            .json({ success: true, message: "Email sent succesfully" });
+        }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const resetPassword = async function (req, res) {
+  const { token } = req.params;
+  const { password } = req.body;
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    console.log(decoded);
+    const id = decoded.userId;
+    const hashPassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate({ _id: id }, { password: hashPassword });
+    return res
+      .status(200)
+      .json({ success: true, message: "Password reset succesfully" });
+  } catch (error) {
+    return res.status(400).json({ success: false, message: "Invalid token" });
+  }
+};
+
+
 const UserController = {
   Signup,
   Login,
   getAllUserName,
   verifyUserByToken,
+  forgotPassword,
+  resetPassword,
   submitFeedback,
 };
 

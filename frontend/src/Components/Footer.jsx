@@ -20,7 +20,7 @@ const Footer = () => {
   const [message, setMessage] = useState("");
   const [submitStatus, setSubmitStatus] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
-  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
   const path = useLocation().pathname;
 
   useEffect(() => {
