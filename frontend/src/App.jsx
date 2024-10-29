@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import Navbar from "./Components/Navbar.jsx";
 import ScrollToTop from "./Components/Scrolltotop.jsx";
@@ -85,10 +85,9 @@ function App() {
           <Route path="/recipe/:id" element={<OneRecipe />} />
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/recipe-suggestions" element={<RecipeSuggestions />} />
-          <Route path="*" element={<NotFound />} />
-          {/* Add Contributors route */}
+          {/* Redirect all unknown routes to home */}
+          <Route path="*" element={<NotFound/>} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          {/* Added Privacy-policy route */}
         </Routes>
         <Footer />
       </BrowserRouter>
