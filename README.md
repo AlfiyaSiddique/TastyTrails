@@ -1,4 +1,4 @@
-# 🍽️ **TastyTrails - Explore Culinary Delights Around the Globe!** 🌍
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Oxanium&weight=600&size=40&pause=1000&color=FF5C72&width=1200&height=100&lines=%F0%9F%8D%BD%EF%B8%8F+TastyTrails+-+Explore+Culinary+Delights+Around+the+Globe!+%F0%9F%8C%8D" alt="Typing SVG" /></a>
 
 **TastyTrails** is more than just recipes — it’s a vibrant social network where food lovers can connect, discover, and share the unique flavors of their cultures. A platform for passionate food enthusiasts to dive into a world of tastes!
 
