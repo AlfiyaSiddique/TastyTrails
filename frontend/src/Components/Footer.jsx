@@ -46,16 +46,16 @@ const Footer = () => {
               </p>
             </div>
 
-            <div className="flex flex-col text-gray-700  sm:ml-8 w-full sm:w-1/4 lg:w-1/4 mt-6">
+            <div className="flex flex-col text-gray-600  sm:ml-8 w-full sm:w-1/4 lg:w-1/4 mt-6">
               <ul className="space-y-1">
-              <h2 className="font-semibold text-gray-900 mb-2">About Us</h2>
+              <h2 className="font-semibold text-gray-900 mb-2">About</h2>
                 <li><a href="/privacy-policy">Privacy Policy</a></li>
                 <li><a href="/contributors">Contributors</a></li>
               </ul>
             </div>
 
             {/* Categories Section */}
-            <div className="flex flex-col text-gray-700 sm:ml-8 w-full sm:w-1/4 lg:w-1/4 mt-6">
+            <div className="flex flex-col text-gray-600 sm:ml-8 w-full sm:w-1/4 lg:w-1/4 mt-6">
               <ul className="space-y-1">
               <h2 className="font-semibold text-gray-900 mb-2">Links</h2>
                 <li><a href="/recipes">Recipes</a></li>
