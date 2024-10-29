@@ -96,7 +96,7 @@ const Footer = () => {
           </div>
 
           {/* Copyright Row */}
-          <div className="container bg-red-700 mx-auto flex flex-col sm:flex-row justify-center items-center mt-6 mb-0 p-2">
+          <div className="bg-red-700 w-full flex flex-col sm:flex-row justify-center items-center mt-6 mb-0 p-2">
             <span className="text-sm text-white">
               © {new Date().getFullYear()} TastyTrails Developer -
             </span>
