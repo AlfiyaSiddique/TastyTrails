@@ -19,13 +19,17 @@ const Dashboard = () => {
   const [viewingLikedRecipes, setViewingLikedRecipes] = useState(false); // Track if we are viewing liked recipes
   const [imagePreview, setImagePreview] = useState(
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-  );
-  const inputFile = useRef(null);
-  // Function to fetch all recipes for the user
+  ); // default image to preview
+
+  const inputFile = useRef(null); // for redirecting click to open input file
+  
+  // form to send image change request
   const [form, setForm] = useState({
     id: user._id,
     profile: user.profile,
   });
+  
+  // Function to fetch all recipes for the user
   const fetchRecipes = () => {
     setLoading(true);
     setError(null); // Reset any previous errors
@@ -48,6 +52,7 @@ const Dashboard = () => {
       })
       .finally(() => setLoading(false));
   };
+
   const fetchLikedRecipes = () => {
     axios
       .post(
@@ -65,6 +70,7 @@ const Dashboard = () => {
         setError("Failed to fetch liked recipes. Please try again.");
       });
   };
+
   const fetchUserImage = () => {
     axios
       .post(`${backendURL}/api/user/fetch`, { id: user._id })
@@ -75,10 +81,11 @@ const Dashboard = () => {
         console.error("Error fetching user data", err);
       });
   };
+
   useEffect(() => {
     if (user._id) {
       fetchRecipes(); // Only fetch recipes if user ID is available
-      fetchUserImage();
+      fetchUserImage(); // fetch user image if ID available
     } else {
       console.error("User ID is missing!");
       setError("User data is not available.");
@@ -114,11 +121,11 @@ const Dashboard = () => {
     }
   };
 
+  // called by input field, it will set imagePreview and call changeImageBackend
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
 
     if (file) {
-      // setUserImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -130,8 +137,9 @@ const Dashboard = () => {
     }
   };
 
+  // this convert image into Base64 format and send backend request to update profile field
   const changeImageBackend = (userImgBase64) => {
-    form.profile = userImgBase64;
+    form.profile = userImgBase64; //update profile value in form variable above
     axios
       .post(`${backendURL}/api/user/imageUpdate`, form)
       .then((res) => {
@@ -147,6 +155,7 @@ const Dashboard = () => {
       });
   };
 
+  // this will redirect click to inputFile
   const uploadImage = async () => {
     inputFile.current.click();
   };
@@ -256,12 +265,12 @@ const Dashboard = () => {
               <FontAwesomeIcon
                 icon={faPen}
                 className="relative bottom-6 right-12 bg-neutral-300 rounded-full h-3.5 p-1.5 cursor-pointer hover:bg-neutral-400 hover:rotate-[-12deg]"
-                onClick={uploadImage}
+                onClick={uploadImage} // this function will redirect click to input field below
               />
               <input
                 type="file"
                 accept=".jpg, .png, image/jpeg, image/png"
-                ref={inputFile}
+                ref={inputFile} // set the above inputFile variable's reference
                 className="hidden"
                 onChange={handleImageChange}
               ></input>
