@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,10 +5,11 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+
 import useGoogleAuth from "../../common/useGoogleAuth"
 import image from "../../public/newFoodSignup.jpeg"
 const Login = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [show, setShow] = useState(false); //Eye EyeSlash Toggle
   const [form, setForm] = useState({
@@ -24,7 +24,6 @@ const Login = () => {
       return { ...prev, [name]: value };
     });
   };
-  
 
   // Handle Login Submit
   const handleSubmit = (e) => {
@@ -36,7 +35,12 @@ const Login = () => {
           toast.success("Login Successful");
           localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
           // creating a token named "username" for storing logged in user's name for comment purposes
-          localStorage.setItem("username", JSON.stringify(res.data.user.username));
+          localStorage.setItem(
+            "username",
+            JSON.stringify(res.data.user.username)
+          );
+          localStorage.setItem("userData", JSON.stringify(res.data.user));
+
           navigate(`/user/${res.data.user._id}`, {
             state: { user: res.data.user },
           });
@@ -44,11 +48,9 @@ const Login = () => {
       })
       .catch((err) => {
         toast.error(err.response.data.message);
-        
       });
   };
 
-  
   // Reusable function
   const handleLogin = (formData) => {
     axios
@@ -64,13 +66,13 @@ const Login = () => {
       })
       .catch((err) => {
         toast.error(err.response.data.message);
-      
       });
   };
   // Using custom Google Auth hook
   const googleLogin = useGoogleAuth(handleLogin);
 
   return (
+
 
     <>
     <div className="w-full  min-h-screen flex justify-center items-center md:flex-row px-4">
@@ -91,7 +93,6 @@ const Login = () => {
               <li className="text-red-500 py-1">Share</li>
               <li className="py-1">Comments</li>
             </ul>
-
           </div>
         </div>
       </div>
