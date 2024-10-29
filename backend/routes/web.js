@@ -32,6 +32,8 @@ router.post(
   RecipeController.addComment
 );
 
+router.post("/forgot_password", UserController.forgotPassword);
+router.post("/reset_password/:token", UserController.resetPassword);
 router.post("/recipe/like", authenticateToken, RecipeController.addRecipeLike);
 router.post(
   "/recipe/unlike",
