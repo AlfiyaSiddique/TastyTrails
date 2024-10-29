@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -10,7 +10,6 @@ import {
   faGithubSquare,
 } from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
 import GoogleTranslate from "./GoogleTranslate";
 
 const Footer = () => {
@@ -20,155 +19,105 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [submitStatus, setSubmitStatus] = useState(null);
-  const [isSticky, setIsSticky] = useState(false);
-  const backendURL = import.meta.env.VITE_BACKEND_URL;
   const path = useLocation().pathname;
 
-  useEffect(() => {
-    const handleResize = () => {
-      const contentHeight = document.documentElement.scrollHeight;
-      const viewportHeight = window.innerHeight;
-      setIsSticky(contentHeight <= viewportHeight);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const handleRating = (rate) => {
-    setRating(rate);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!name || !email || !message || rating === 0 || message.length < 5) {   // Added check for message length
-      toast.error("Name, Email, Message (at least 5 characters), and Rating are mandatory fields!");  // Replaced alert with toast notification
-      return;
-    }
-
-    const formData = {
-      name,
-      email,
-      message,
-      rating,
-    };
-
-    try {
-      //This is the URL you can use if you are working on local machine if creating error in finding backendURL so use this in fetch request = 'http://localhost:8080/api/feedback
-      const response = await fetch(`${backendURL}/api/feedback`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        setSubmitStatus("success");
-      } else {
-        setSubmitStatus("error");
-      }
-    } catch (error) {
-      console.error("Error sending form data:", error);
-      setSubmitStatus("error");
-    }
-  };
+  const handleRating = (rate) => setRating(rate);
 
   const openModal = () => {
     setSubmitStatus(null);
     setShowModal(true);
-
     setName("");
     setEmail("");
     setMessage("");
     setRating(0);
-    setShowModal(true);
   };
 
   return (
     <div className={`w-full ${path !== "/user" ? "relative" : "fixed bottom-0"}`}>
       {path !== "/user" && (
-        <>
-          <footer className="text-gray-600 body-font w-full bg-[#fed4d4]">
-          <div className="container px-2 py-4 flex flex-col sm:flex-row items-center justify-between">
-              <div className="flex title-font font-bold items-center justify-center md:justify-start text-red-700 max-sm:flex-col">
-                <span className="ml-3 text-xl font-[Merriweather]">TastyTrails</span>
-                <div className="hidden sm:block h-6 border-l-2 border-gray-300 mx-4"></div>
-                <div className="flex items-center sm:ml-4">
-                  <Link
-                    to="/privacy-policy"
-                    className="inline-flex items-center text-red-700 hover:text-red-500 transition-all duration-200 text-md mx-2"
-                  >
-                    Privacy Policy
-                  </Link>
-                  <Link to="/contributors">
-                    <button className="inline-flex items-center text-red-700 hover:text-red-500 transition-all duration-200 text-md mx-2">
-                      Contributors
-                    </button>
-                  </Link>
-                </div>
-              </div>
+        <footer className="bg-[#fed4d4] w-full py-2">
+          <div className="container mx-auto flex flex-wrap sm:flex-nowrap justify-evenly items-start px-5">
+            
+            {/* Brand, Description, and Links */}
+            <div className="flex flex-col text-red-700 space-y-4 w-full sm:w-2/4 lg:w-2/4 ml-2 mt-6 mr-8">
+              <h1 className="text-xl font-bold">TastyTrails</h1>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                TastyTrails is more than just recipes — it’s a vibrant social network where food lovers can connect, discover, and share the unique flavors of their cultures. A platform for passionate food enthusiasts to dive into a world of tastes!
+              </p>
+            </div>
+
+            <div className="flex flex-col text-gray-700  sm:ml-8 w-full sm:w-1/4 lg:w-1/4 mt-6">
+              <ul className="space-y-1">
+              <h2 className="font-semibold text-gray-900 mb-2">About Us</h2>
+                <li><a href="/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/contributors">Contributors</a></li>
+              </ul>
+            </div>
+
+            {/* Categories Section */}
+            <div className="flex flex-col text-gray-700 sm:ml-8 w-full sm:w-1/4 lg:w-1/4 mt-6">
+              <ul className="space-y-1">
+              <h2 className="font-semibold text-gray-900 mb-2">Links</h2>
+                <li><a href="/recipes">Recipes</a></li>
+                <li><a href="/mainmeals">Main Meal</a></li>
+                <li><a href="/smallbites">Small Bites</a></li>
+                <li><a href="/healthy">Healthy</a></li>
+                <li><a href="/recipe-suggestions">Recipe Bot</a></li>
+              </ul>
+            </div>
 
 
-              <div className="flex items-center max-sm:flex-col mt-4 sm:mt-0 justify-start">
-                <div className="flex my-auto">
-                  <div className="sm:block h-6  mx-4 ml-0"></div>
+            {/* Google Translate (Optional Divider for Styling) */}
+            <div className="flex flex-col w-full mt-6 sm:w-1/4 lg:w-1/4 mr-8">
                   <GoogleTranslate />
-                </div>
-                <div className="flex mx-8">
-                  <Link
-                    to={"https://www.instagram.com/alfiya.17.siddiq/"}
-                    className="text-red-700 text-3xl ml-8 hover:text-red-500 transition-colors duration-200"
-                  >
-                    <FontAwesomeIcon icon={faInstagramSquare} />
-                  </Link>
-                  <Link
-                    to={"https://www.linkedin.com/in/alfiya-siddique-987a59240/"}
-                    className="ml-6 text-red-700 text-3xl hover:text-red-500 transition-colors duration-200"
-                  >
-                    <FontAwesomeIcon icon={faLinkedinIn} />
-                  </Link>
-                  <Link
-                    to={"https://github.com/AlfiyaSiddique"}
-                    className="ml-6 text-red-700 text-3xl hover:text-red-500 transition-colors duration-200"
-                  >
-                    <FontAwesomeIcon icon={faGithubSquare} />
-                  </Link>
-                </div>
-                <button
-                  onClick={openModal}  // Call openModal when feedback button is clicked
-                  className="ml-4 py-2 px-4 bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white transition-all duration-200"
-                >
-                  Feedback
-                </button>
               </div>
-            </div>
 
-            {/* Copyright Row */}
-            <div className="text-center py-2">
-              <span className="text-sm text-gray-500">© {new Date().getFullYear()} TastyTrails Developer - </span>
-              <Link
-                to="https://twitter.com/A_l_f_i_y_a"
-                className="text-gray-600 ml-1 sm:text-center px-0"
-                rel="noopener noreferrer"
-                target="_blank"
+            {/* Social Links and Feedback */}
+            <div className="flex flex-col text-gray-700 mt-6 w-full sm:w-1/4 lg:w-1/4">
+              <h2 className="font-semibold text-gray-900 mb-2">Connect</h2>
+              <div className="flex items-center space-x-4">
+                <Link to="https://www.instagram.com/alfiya.17.siddiq/" className="text-2xl text-red-700 hover:text-red-500">
+                  <FontAwesomeIcon icon={faInstagramSquare} />
+                </Link>
+                <Link to="https://www.linkedin.com/in/alfiya-siddique-987a59240/" className="text-2xl text-red-700 hover:text-red-500">
+                  <FontAwesomeIcon icon={faLinkedinIn} />
+                </Link>
+                <Link to="https://github.com/AlfiyaSiddique" className="text-2xl text-red-700 hover:text-red-500">
+                  <FontAwesomeIcon icon={faGithubSquare} />
+                </Link>
+              </div>
+              <button
+                onClick={openModal}
+                className="mt-4 py-2 px-2 inline-block bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white transition-all duration-200 max-w-[8rem] "
               >
-                @A_l_f_i_y_A
-              </Link>
+                Feedback
+              </button>
             </div>
-          </footer>
+          </div>
 
+          {/* Copyright Row */}
+          <div className="container bg-red-700 mx-auto flex flex-col sm:flex-row justify-center items-center mt-6 mb-0 p-2">
+            <span className="text-sm text-white">
+              © {new Date().getFullYear()} TastyTrails Developer -
+            </span>
+            <Link
+              to="https://twitter.com/A_l_f_i_y_a"
+              className="text-gray-200 ml-1"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @A_l_f_i_y_A
+            </Link>
+          </div>
+
+          {/* Feedback Modal */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
               <div className="bg-white p-6 rounded-lg w-full max-w-lg">
                 {submitStatus === null ? (
                   <>
                     <h2 className="text-2xl font-bold mb-4">Feedback</h2>
-                    <form className="space-y-4" onSubmit={handleSubmit}>
+                    <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                       <div>
                         <label className="block text-gray-700">Name</label>
                         <input
@@ -178,9 +127,6 @@ const Footer = () => {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           required
-                          pattern="[a-zA-Z ]+"
-                          oninvalid="this.setCustomValidity('Numbers and Symbols are not allowed')"
-                          oninput="this.setCustomValidity('')"
                         />
                       </div>
 
@@ -213,10 +159,7 @@ const Footer = () => {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <span
                               key={star}
-                              className={`cursor-pointer ${rating >= star
-                                ? "text-yellow-400"
-                                : "text-gray-400"
-                                }`}
+                              className={`cursor-pointer ${rating >= star ? "text-yellow-400" : "text-gray-400"}`}
                               onClick={() => handleRating(star)}
                             >
                               {rating >= star ? "★" : "☆"}
@@ -249,10 +192,7 @@ const Footer = () => {
                   </>
                 ) : submitStatus === "success" ? (
                   <div className="text-center">
-                    <FontAwesomeIcon
-                      icon={faCheckCircle}
-                      className="text-green-500 text-5xl mb-4"
-                    />
+                    <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 text-5xl mb-4" />
                     <h2 className="text-2xl font-bold mb-4">
                       Feedback sent successfully!
                     </h2>
@@ -265,10 +205,7 @@ const Footer = () => {
                   </div>
                 ) : (
                   <div className="text-center">
-                    <FontAwesomeIcon
-                      icon={faTimesCircle}
-                      className="text-red-500 text-5xl mb-4"
-                    />
+                    <FontAwesomeIcon icon={faTimesCircle} className="text-red-500 text-5xl mb-4" />
                     <h2 className="text-2xl font-bold mb-4">
                       Error in sending Feedback!
                     </h2>
@@ -283,7 +220,7 @@ const Footer = () => {
               </div>
             </div>
           )}
-        </>
+        </footer>
       )}
     </div>
   );
