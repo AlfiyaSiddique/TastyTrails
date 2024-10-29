@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,14 +5,16 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 import useGoogleAuth from "../../common/useGoogleAuth"
 import image from "../../public/registerimage.jpg"
+
 
 const Signup = () => {
   const navigator = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
-  const [passwordFocused,setPasswordFocused]=useState(false);
-  const [show, setShow] = useState(false); 
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     // Signup Form Data
     firstName: "",
@@ -44,10 +45,10 @@ const Signup = () => {
     // Handling Signup Form
     const { name, value } = e.target;
     let message = {};
-    
+
     // Trim trailing spaces for username
     const trimmedValue = name === "username" ? value.trim() : value;
-    
+
     if (name === "cpassword") {
       message = validate.cpasssword(trimmedValue, form.password);
     } else if (name === "username") {
@@ -55,16 +56,15 @@ const Signup = () => {
     } else {
       message = validate[name](trimmedValue);
     }
-    
+
     setError((prev) => {
       return { ...prev, ...message };
     });
-  
+
     setForm((prev) => {
       return { ...prev, [name]: trimmedValue };
     });
   };
-  
 
   // Get all the current username present
   const getUsernames = async () => {
@@ -103,7 +103,10 @@ const Signup = () => {
                 JSON.stringify(res.data.token)
               );
               // creating a token named "username" for storing logged in user's name for comment purposes
-              localStorage.setItem("username", JSON.stringify(res.data.user.username));
+              localStorage.setItem(
+                "username",
+                JSON.stringify(res.data.user.username)
+              );
               navigator(`/user/${res.data.user._id}`, {
                 state: { user: res.data.user },
               });
@@ -119,34 +122,38 @@ const Signup = () => {
   };
 
   const handleGoogleSignup = async (googleUser) => {
-  const googleForm = {
-    // Defining Google-specific form data here
-    firstName: googleUser.firstName,
-    lastName: googleUser.lastName,
-    email: googleUser.email,
-    profile: googleUser.profile, 
-    username: googleUser.username, 
-    password: googleUser.password,
-  };
-  try {
-    const res = await axios.post(`${backendURL}/api/signup`, googleForm);
-    if (res.data.success) {
-      toast.success("Google Signup Successful");
-      localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
-      // creating a token named "username" for storing logged in user's name for comment purposes
-      localStorage.setItem("username", JSON.stringify(res.data.user.username));
-      navigator(`/user/${res.data.user._id}`, {
-        state: { user: res.data.user },
-      });
+    const googleForm = {
+      // Defining Google-specific form data here
+      firstName: googleUser.firstName,
+      lastName: googleUser.lastName,
+      email: googleUser.email,
+      profile: googleUser.profile,
+      username: googleUser.username,
+      password: googleUser.password,
+    };
+    try {
+      const res = await axios.post(`${backendURL}/api/signup`, googleForm);
+      if (res.data.success) {
+        toast.success("Google Signup Successful");
+        localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+        // creating a token named "username" for storing logged in user's name for comment purposes
+        localStorage.setItem(
+          "username",
+          JSON.stringify(res.data.user.username)
+        );
+        navigator(`/user/${res.data.user._id}`, {
+          state: { user: res.data.user },
+        });
+      }
+    } catch (err) {
+      toast.error(err.response.data.message || "Google signup failed");
     }
-  } catch (err) {
-    toast.error(err.response.data.message || "Google signup failed");
-  }
-};
+  };
 
-const googleSignup = useGoogleAuth(handleGoogleSignup, true);
+  const googleSignup = useGoogleAuth(handleGoogleSignup, true);
 
   return (
+
    <div className="Container min-h-screen  bg-white flex justify-center items-center  px-4 sm:px-8 md:px-12 lg:px-16">
     <div className="InnerDiv  w-full max-w-[95vw] lg:max-w-[85vw]  xl:max-w-[75vw] md:w-[75vw] mb-8 flex flex-col md:flex-row justify-between items-center lg:flex-row  space-y-12 lg:space-y-0">
       {/* Left Section */}
