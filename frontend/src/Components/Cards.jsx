@@ -56,7 +56,7 @@ const Cards = ({ dish, setRecipes, recipes, index }) => {
 
         setRecipes(updatedRecipes);
         await navigator.clipboard.writeText(postURL);
-        toast.success("URL copied to clipboard successfully");
+        toast.success("Copied!");
       } else {
         toast.info(response.data.message || "Something went wrong");
       }
