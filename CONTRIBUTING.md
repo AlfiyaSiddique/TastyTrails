@@ -7,6 +7,7 @@ Welcome to the TastyTrails project! We're excited to have you contribute and hel
 ### 1. Getting Started
 - Fork the repository and clone it to your local machine.
 - Create a new branch for your feature or bug fix: `git checkout -b feature-name` or `git checkout -b bugfix-name`.
+- Run the command: `npm run seed` to seed you local database with dummy data, that reflects on the website.
 - Make sure to keep your fork updated by pulling from the `main` branch regularly.
 - You can follow the below video to setup your project locally (Instructions may vary for windows as i have set this up on Linux)
 - [How to setup project locally](https://youtu.be/cksPqPCRqfw) | [How to generate github API key](https://www.youtube.com/watch?v=iLrywUfs7yU)
