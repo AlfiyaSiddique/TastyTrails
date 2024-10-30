@@ -5,6 +5,9 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+import { MdDelete } from "react-icons/md";
+
+
 // Displays single Recipe
 const OneRecipe = () => {
 
@@ -56,7 +59,10 @@ const OneRecipe = () => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(`${backendURL}/api/recipe/getcomments/${recipe._id}`);
+<<<<<<< HEAD
         console.log(recipe._id)
+=======
+>>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
         setComments(response.data.comments);
       } catch (error) {
         console.error("Error fetching comments:", error);
@@ -92,6 +98,28 @@ const OneRecipe = () => {
       }
     }
   };
+<<<<<<< HEAD
+=======
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      // Send a DELETE request to the backend to remove the comment by ID
+
+      const response = await axios.delete(
+        `${backendURL}/api/recipe/deletecomment/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Use token for authentication
+          },
+        }
+      );
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (error) {
+      console.error("Error deleting comment:", error.message);
+    }
+  };
+
+>>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
   if (loading || (!recipe)) {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
@@ -100,10 +128,10 @@ const OneRecipe = () => {
     )
   }
   return (
-    <div className="w-[80vw] m-auto  my-12">
+    <div className="w-[80vw] m-auto  my-12 ">
       <h1 className="text-3xl font-extrabold text-red-700 my-8 text-center">{recipe.name}</h1>
       <form>
-        <div className="md:grid md:grid-cols-[50%_50%] space-x-4">
+        <div className="md:grid md:grid-cols-[50%_50%] space-x-4 image">
           <input
             type="image"
             src={recipe.image}
@@ -187,15 +215,34 @@ const OneRecipe = () => {
         <div className="mt-4">
           {comments && comments.length > 0 ? (
             comments.map((comment, index) => (
-              <div key={index} className="border border-gray-300 p-4 rounded-md mb-2">
-                <h3 className="font-semibold">{comment.username}</h3>
-                <p>{comment.content}</p>
+              <div
+              key={index}
+              className="border border-gray-300 p-4 rounded-md mb-2 flex justify-between  items-start"
+            >
+              <div>
+                <h3 className="font-semibold">{comment?.username}</h3>
+                <p>{comment?.content}</p>
                 <small className="text-gray-500">
+<<<<<<< HEAD
                   {new Date(comment.date).getFullYear()}-
                   {new Date(comment.date).getMonth() + 1}-
                   {new Date(comment.date).getDate()}
+=======
+                  {new Date(comment?.date).getFullYear()}-
+                  {new Date(comment?.date).getMonth() + 1}-
+                  {new Date(comment?.date).getDate()}
+>>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
                 </small>
               </div>
+              <div
+                className="cursor-pointer"
+                onClick={() => handleDeleteComment(comment?._id)}
+              >
+                <span className=" p-2 text-red-500 ">
+                  <MdDelete />
+                </span>
+              </div>
+            </div>
             ))
           ) : (
             <p className="text-gray-500">No comments yet.</p>
