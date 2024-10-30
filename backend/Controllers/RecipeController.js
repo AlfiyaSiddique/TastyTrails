@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-import Recipe from "../models/Recipe.js"
-import Comment from "../models/Comment.js"
-import axios from "axios"
-import User from "../models/User.js"
-import mongoose from "mongoose"
-import { Octokit } from '@octokit/rest';
-import { json } from "express"
-
-const g_owner = process.env.OWNER;
-const g_repo = process.env.REPO;
-const g_branch = process.env.BRANCH;
-const g_email = process.env.GITHUB_EMAIL;
-=======
 
 import Recipe from "../models/Recipe.js";
 import Comment from "../models/Comment.js";
@@ -20,7 +6,6 @@ import User from "../models/User.js";
 import mongoose from "mongoose";
 import { Octokit } from "@octokit/rest";
 import { json } from "express";
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
 const g_owner = process.env.OWNER;
 const g_repo = process.env.REPO;
@@ -35,12 +20,6 @@ const g_email = process.env.GITHUB_EMAIL;
 
 const addRecipe = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const { name, description, ingredients, steps, type, image, imagename, user, author } = req.body;
-
-    const lastDocument = await Recipe.findOne().sort({ _id: -1 });
-    const unique = lastDocument ? lastDocument._id.toString().slice(-4) : "0000";
-=======
     const {
       name,
       description,
@@ -57,7 +36,6 @@ const addRecipe = async (req, res) => {
     const unique = lastDocument
       ? lastDocument._id.toString().slice(-4)
       : "0000";
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
     // Upload the image to GitHub
     const imageUrl = await imageToGithub(image, imagename, unique);
@@ -102,13 +80,8 @@ const allRecipe = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-<<<<<<< HEAD
-    const search = req.query.search || '';
-    const type = req.query.type ? req.query.type.split(',') : [];
-=======
     const search = req.query.search || "";
     const type = req.query.type ? req.query.type.split(",") : [];
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
     const skip = (page - 1) * limit;
 
@@ -118,15 +91,9 @@ const allRecipe = async (req, res) => {
       searchQuery = {
         ...searchQuery,
         $or: [
-<<<<<<< HEAD
-          { name: { $regex: search, $options: 'i' } },
-          { description: { $regex: search, $options: 'i' } }
-        ]
-=======
           { name: { $regex: search, $options: "i" } },
           { description: { $regex: search, $options: "i" } },
         ],
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
       };
     }
 
@@ -176,15 +143,9 @@ const imageToGithub = async (fileImage, name, unique) => {
     return null;
   }
 
-<<<<<<< HEAD
-  console.log('Config:', { owner, repo, branch }); // Debug log
-  const base64Content = fileImage.split(';base64,').pop();
-  const fileContent = Buffer.from(base64Content, 'base64').toString('base64');
-=======
   console.log("Config:", { owner, repo, branch }); // Debug log
   const base64Content = fileImage.split(";base64,").pop();
   const fileContent = Buffer.from(base64Content, "base64").toString("base64");
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
   // Use the correct repository structure
   const path = `images/${unique}${name}`; // Make sure this directory exists in your repo
@@ -254,11 +215,7 @@ const imageToGithub = async (fileImage, name, unique) => {
 const getOneUserRecipes = async (req, res) => {
   try {
     const recipes = await Recipe.find({ user: req.body.id });
-<<<<<<< HEAD
-    return res.status(200).json({ success: true, recipes })
-=======
     return res.status(200).json({ success: true, recipes });
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
   } catch (error) {
     console.log(error);
     res.status(404).json({ success: false, message: "Internal server error" });
@@ -272,12 +229,8 @@ const getOneUserRecipes = async (req, res) => {
  */
 const updateRecipe = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const { name, description, ingredients, steps, type, user, author, id } = req.body
-=======
     const { name, description, ingredients, steps, type, user, author, id } =
       req.body;
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
     const data = {
       user,
       name,
@@ -285,12 +238,6 @@ const updateRecipe = async (req, res) => {
       ingredients,
       steps,
       author,
-<<<<<<< HEAD
-      type
-    }
-    const update = await Recipe.updateOne({ _id: id }, { $set: data }, { new: true })
-    return res.status(200).json({ success: true, message: "Recipe Updates Successfully" })
-=======
       type,
     };
     const update = await Recipe.updateOne(
@@ -301,7 +248,6 @@ const updateRecipe = async (req, res) => {
     return res
       .status(200)
       .json({ success: true, message: "Recipe Updates Successfully" });
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
   } catch (error) {
     console.log(error);
     res.status(404).json({ success: false, message: "Internal server error" });
@@ -347,31 +293,6 @@ const deleteRecipe = async (req, res) => {
     const fetchFileContent = async () => {
       try {
         // Make the request to the GitHub API
-<<<<<<< HEAD
-        const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-          owner: owner,
-          repo: repo,
-          path: result,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        });
-        // Getting the SHA key so that it can assist in deletion
-        const sha = response.data.sha;
-        await octokit.request('DELETE /repos/{owner}/{repo}/contents/{path}', {
-          owner: owner,
-          repo: repo,
-          path: result,
-          message: `deleted the image ${result.replace('TastyTrails/Recipe/', ' ')}`,
-          committer: {
-            name: recipe.author,
-            email: g_email
-          },
-          sha: sha,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-=======
         const response = await octokit.request(
           "GET /repos/{owner}/{repo}/contents/{path}",
           {
@@ -401,7 +322,6 @@ const deleteRecipe = async (req, res) => {
           headers: {
             "X-GitHub-Api-Version": "2022-11-28",
           },
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
         });
       } catch (error) {
         // Handle and log any errors
@@ -415,10 +335,6 @@ const deleteRecipe = async (req, res) => {
 
     // Try to delete the file from GitHub
     await fetchFileContent();
-<<<<<<< HEAD
-
-=======
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
     // If successful, delete the recipe from the database
     await Recipe.deleteOne({ _id: req.body.id });
@@ -486,11 +402,7 @@ const addComment = async (req, res) => {
 const getComments = async (req, res) => {
   try {
     const { recipeId } = req.params;
-<<<<<<< HEAD
-    console.log('Fetching comments for recipe:', recipeId);
-=======
     console.log("Fetching comments for recipe:", recipeId);
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
     // Ensure the recipe exists
     const recipe = await Recipe.findById(recipeId);
@@ -501,15 +413,10 @@ const getComments = async (req, res) => {
     }
 
     // Fetch all comments for this recipe
-<<<<<<< HEAD
-    const recipeObjectId=new mongoose.Types.ObjectId(recipeId)
-    const comments = await Comment.find({ recipe: recipeObjectId }).select('username content date').sort({ date: -1 });
-=======
     const recipeObjectId = new mongoose.Types.ObjectId(recipeId);
     const comments = await Comment.find({ recipe: recipeObjectId })
       .select("username content date")
       .sort({ date: -1 });
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
     return res.status(200).json({ success: true, comments });
   } catch (error) {
     console.log(error);
@@ -517,35 +424,6 @@ const getComments = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-/**
- * @PATCH /api/recipe/share/:recipeId
- * @description update the number of share of recipe id
- * @access private
- */
-//This function will update share count of any recipe
-const updateShareCount = async (req, res) => {
-  const { recipeId } = req.params
-  if (!recipeId) {
-    return res.status(400).json({ success: false, message: "Invalid request" })
-  }
-
-  try {
-    const recipe = await Recipe.findById(recipeId)
-    if (!recipe)
-      return res.status(404).json({ success: false, message: "Recipe Not found!!" })
-    const shareCount = recipe.share
-    const updateStatus = await Recipe.findByIdAndUpdate(recipeId, {
-      $set: {
-        share: shareCount + 1
-      }
-    }, {
-      new: true
-    })
-    if (!updateStatus)
-      return res.status(500).json({ success: false, message: "Internal Server error" })
-    return res.status(200).json({ success: true, updateStatus })
-=======
 const addRecipeLike = async (req, res) => {
   try {
     const { recipeId, userId } = req.body;
@@ -702,18 +580,11 @@ const updateShareCount = async (req, res) => {
         .status(500)
         .json({ success: false, message: "Internal Server error" });
     return res.status(200).json({ success: true, updateStatus });
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
   } catch (error) {
     // console.log(error)
     res.status(500).json({ success: false, message: "Internal server error" });
   }
-<<<<<<< HEAD
-
-}
-
-=======
 };
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
 //Function to get individual recipe by ID. This will be needed when we share our recipe so in order to ensure that link works we need to make function that will fetch individual recipe by id
 /**
@@ -723,26 +594,6 @@ const updateShareCount = async (req, res) => {
  */
 const getRecipeById = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const { recipeId } = req.params
-    if (!recipeId) {
-      return res.status(400).json({ success: false, message: "Invalid request" })
-    }
-    const recipeIdObejctId = new mongoose.Types.ObjectId(recipeId)
-    if (!recipeIdObejctId) {
-      return res.status(400).json({ success: false, message: "Invalid request" })
-    }
-    const recipe = await Recipe.findById(recipeIdObejctId)
-    if (!recipe) {
-      return res.status(400).json({ success: false, message: "Recipe Not Found" })
-    }
-    return res.status(200).json({ success: true, dish: recipe })
-  } catch (error) {
-    // console.log(error)
-    return res.status(500).json({ success: false, message: "Internal Server error" })
-  }
-}
-=======
     const { recipeId } = req.params;
     if (!recipeId) {
       return res
@@ -769,7 +620,6 @@ const getRecipeById = async (req, res) => {
       .json({ success: false, message: "Internal Server error" });
   }
 };
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
 const RecipeController = {
   addRecipe,
@@ -779,11 +629,6 @@ const RecipeController = {
   deleteRecipe,
   addComment,
   getComments,
-<<<<<<< HEAD
-  updateShareCount,
-  getRecipeById
-}
-=======
   addRecipeLike,
   removeRecipeLike,
   getLikedRecipe,
@@ -791,6 +636,5 @@ const RecipeController = {
   getRecipeById,
   deleteComment,
 };
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
 export default RecipeController;

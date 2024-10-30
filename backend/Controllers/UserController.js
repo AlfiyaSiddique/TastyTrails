@@ -54,11 +54,7 @@ const getAllUserName = async (req, res) => {
     names.forEach((val) => nameArr.push(val.username));
     res.status(200).json({ usernames: nameArr, success: true });
   } catch (error) {
-<<<<<<< HEAD
-    console.log(error)
-=======
     console.log(error);
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
     res.status(404).json({ success: false, message: "Internal server error" });
   }
 };
@@ -92,20 +88,10 @@ const Login = async (req, res) => {
         .json({ success: false, message: "Incorrect Password" });
 
     // If the password is correct, generate a JWT token
-<<<<<<< HEAD
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.SECRET,
-      {
-        expiresIn: "30d",
-      }
-    );
-=======
     const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
       expiresIn: "30d",
     });
   
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
     res.status(200).json({ success: true, user: user, token: token });
   } catch (error) {
     console.log(error);
@@ -122,30 +108,20 @@ const Login = async (req, res) => {
  */
 const verifyUserByToken = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const user = await User.findById(req.user.userId)
-    return res.status(200).json({ success: true, user })
-=======
     const user = await User.findById(req.user.userId);
     return res.status(200).json({ success: true, user });
   
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
   } catch (error) {
     console.log(error);
     return res
       .status(404)
       .json({ success: false, message: "Internal Server Error" });
   }
-<<<<<<< HEAD
-
-}
-=======
 };
 
 
 const  submitFeedback = async (req, res) => {
   const { name, email, message, rating } = req.body; // Capture data from the request
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
 
   try {
     // Create a new feedback document

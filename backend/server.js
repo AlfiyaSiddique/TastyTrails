@@ -61,11 +61,7 @@ app.use(
   })
 );
 
-// app.use(cors({ origin: "http://localhost:5173" })) // for local use
-<<<<<<< HEAD
-=======
-
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
+app.use(cors({ origin: "http://localhost:5173" })) // for local use
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 

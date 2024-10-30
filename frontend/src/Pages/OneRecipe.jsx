@@ -59,10 +59,6 @@ const OneRecipe = () => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(`${backendURL}/api/recipe/getcomments/${recipe._id}`);
-<<<<<<< HEAD
-        console.log(recipe._id)
-=======
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
         setComments(response.data.comments);
       } catch (error) {
         console.error("Error fetching comments:", error);
@@ -98,8 +94,6 @@ const OneRecipe = () => {
       }
     }
   };
-<<<<<<< HEAD
-=======
 
   const handleDeleteComment = async (commentId) => {
     try {
@@ -119,7 +113,6 @@ const OneRecipe = () => {
     }
   };
 
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
   if (loading || (!recipe)) {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
@@ -223,15 +216,9 @@ const OneRecipe = () => {
                 <h3 className="font-semibold">{comment?.username}</h3>
                 <p>{comment?.content}</p>
                 <small className="text-gray-500">
-<<<<<<< HEAD
-                  {new Date(comment.date).getFullYear()}-
-                  {new Date(comment.date).getMonth() + 1}-
-                  {new Date(comment.date).getDate()}
-=======
                   {new Date(comment?.date).getFullYear()}-
                   {new Date(comment?.date).getMonth() + 1}-
                   {new Date(comment?.date).getDate()}
->>>>>>> e884cdbd79786649cd861c6e63c45601b5e0e3e5
                 </small>
               </div>
               <div
