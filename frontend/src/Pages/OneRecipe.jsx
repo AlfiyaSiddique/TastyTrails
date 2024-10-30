@@ -12,7 +12,7 @@ const OneRecipe = () => {
 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const token = JSON.parse(localStorage.getItem("tastytoken"));
-  const recipeId = useParams().id
+  const recipeId  = useParams().id;
   const [loading, setLoading] = useState(true)
   const [recipe, setRecipe] = useState({});
   const location = useLocation();
@@ -70,29 +70,43 @@ const OneRecipe = () => {
 
   // Function to handle posting a comment
   const handlePostComment = async () => {
-    // getting username from token named "username" created during login
-    const username = JSON.parse(localStorage.getItem("username"));
+    const token = localStorage.getItem("tastytoken"); // Retrieve token from localStorage
+    if (!token) {
+      console.error("No authorization token found.");
+      return;
+    }
+  
     if (commentInput.trim()) {
       try {
-        await axios.post(`${backendURL}/api/recipe/addcomment`, {
-          recipeId: recipe._id,
-          username: username,  // Assuming the user is already logged in
-          content: commentInput,
-        },
+        await axios.post(
+          `${backendURL}/api/recipe/addcomment`,
+          {
+            recipeId : recipe._id,
+            content: commentInput, // Only send content and recipeId
+          },
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`, // Send token in the header
             },
           }
         );
-
-        setComments([...comments, { username: username, content: commentInput, date: new Date() }]);
+  
+        // Add the new comment to the comments state
+        setComments([
+          ...comments,
+          {
+            username: userId, // Display username locally for UI purposes
+            content: commentInput,
+            date: new Date(),
+          },
+        ]);
         setCommentInput("");
       } catch (error) {
         console.error("Error posting comment:", error);
       }
     }
   };
+  
 
   const handleDeleteComment = async (commentId) => {
     try {

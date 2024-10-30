@@ -363,20 +363,20 @@ const deleteRecipe = async (req, res) => {
  */
 const addComment = async (req, res) => {
   try {
-    const { recipeId, username, content } = req.body;
+    const { recipeId, content, username } = req.body;
+    const userId = req.user.userId; // Get the user's ID from the authenticated request
 
     // Ensure the recipe exists
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Recipe not found" });
+      return res.status(404).json({ success: false, message: "Recipe not found" });
     }
 
     // Create a new comment
     const newComment = new Comment({
       recipe: recipeId,
-      username: username,
+      user: userId, 
+      username,
       content,
     });
 
@@ -529,18 +529,25 @@ const deleteComment = async (req, res) => {
   try {
     // Extract comment ID from the request parameters
     const { commentId } = req.params;
+    const userId = req.user.userId; // Get the user's ID from the authenticated request
 
-    // Find the comment by ID and delete it
-    const deletedComment = await Comment.findByIdAndDelete(commentId);
-
-    if (!deletedComment) {
+    // Find the comment by ID
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
+
+    // Check if the comment was created by the user
+    if (!comment.user.equals(userId)) {
+      return res.status(403).json({ message: "You do not have permission to delete this comment" });
+    }
+
+    // Delete the comment
+    await Comment.findByIdAndDelete(commentId);
 
     // Return success response
     res.status(200).json({
       message: "Comment deleted successfully",
-      deletedComment, // Optional: You can return the deleted comment data if needed
     });
   } catch (error) {
     // Handle any errors that occur during the process
@@ -550,6 +557,7 @@ const deleteComment = async (req, res) => {
     });
   }
 };
+
 
 const updateShareCount = async (req, res) => {
   const { recipeId } = req.params;
