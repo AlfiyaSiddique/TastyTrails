@@ -22,6 +22,7 @@
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
+    "mongosh": "^2.3.2",
     "nodemailer": "^6.9.15",
     "openai": "^4.68.1",
     "prom-client": "^15.1.3"
