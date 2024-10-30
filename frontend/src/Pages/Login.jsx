@@ -6,7 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
+
 import useGoogleAuth from "../../common/useGoogleAuth"
+
 
 
 const Login = () => {
@@ -17,7 +19,7 @@ const Login = () => {
     searchTerm: "",
     password: "",
   });
-
+  const [loading, setLoading] = useState(false)
   // Handling Login Form
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -29,10 +31,12 @@ const Login = () => {
   // Handle Login Submit
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true)
     axios
       .post(`${backendURL}/api/login`, form)
       .then((res) => {
         if (res.data.success) {
+          setLoading(true)
           toast.success("Login Successful");
           localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
           // creating a token named "username" for storing logged in user's name for comment purposes
@@ -48,16 +52,19 @@ const Login = () => {
         }
       })
       .catch((err) => {
+        setLoading(false)
         toast.error(err.response.data.message);
       });
   };
 
   // Reusable function
   const handleLogin = (formData) => {
+    setLoading(true)
     axios
       .post(`${backendURL}/api/login`, formData)
       .then((res) => {
         if (res.data.success) {
+          setLoading(false)
           toast.success("Login Successful");
           localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
           navigate(`/user/${res.data.user._id}`, {
@@ -66,6 +73,7 @@ const Login = () => {
         }
       })
       .catch((err) => {
+        setLoading(false)
         toast.error(err.response.data.message);
       });
   };
@@ -73,7 +81,11 @@ const Login = () => {
   const googleLogin = useGoogleAuth(handleLogin);
 
   return (
-    <div>
+
+
+
+    <>
+   <div>
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -164,6 +176,7 @@ const Login = () => {
         </div>
       </section>
     </div>
+  </>
   );
 };
 

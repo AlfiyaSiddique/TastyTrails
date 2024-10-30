@@ -7,14 +7,18 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import useGoogleAuth from "../../common/useGoogleAuth"
+
 import image from "../../public/registerimage.jpg"
 
 
+
 const Signup = () => {
+
   const navigator = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     // Signup Form Data
     firstName: "",
@@ -79,6 +83,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     // Handle Signup Submit
     e.preventDefault();
+    setLoading(true)
     let submitable = true;
 
     Object.values(error).forEach((val) => {
@@ -91,12 +96,14 @@ const Signup = () => {
     if (submitable) {
       const usernames = await getUsernames();
       if (usernames.includes(form.username)) {
+        setLoading(false)
         toast.error("Username already exist please try another.");
       } else {
         axios
           .post(`${backendURL}/api/signup`, form)
           .then((res) => {
             if (res.data.success) {
+              setLoading(false)
               toast.success("User Created Successfully");
               localStorage.setItem(
                 "tastytoken",
@@ -113,15 +120,18 @@ const Signup = () => {
             }
           })
           .catch((err) => {
+            setLoading(false)
             toast.error(err.response.data.message);
           });
       }
     } else {
+      setLoading(false)
       toast.error("Fill all fields with valid values");
     }
   };
 
   const handleGoogleSignup = async (googleUser) => {
+    setLoading(true)
     const googleForm = {
       // Defining Google-specific form data here
       firstName: googleUser.firstName,
@@ -134,6 +144,7 @@ const Signup = () => {
     try {
       const res = await axios.post(`${backendURL}/api/signup`, googleForm);
       if (res.data.success) {
+        setLoading(false)
         toast.success("Google Signup Successful");
         localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
         // creating a token named "username" for storing logged in user's name for comment purposes
@@ -146,11 +157,12 @@ const Signup = () => {
         });
       }
     } catch (err) {
+      setLoading(false)
       toast.error(err.response.data.message || "Google signup failed");
     }
   };
 
-  const googleSignup = useGoogleAuth(handleGoogleSignup, true);
+
 
   return (
 
@@ -364,4 +376,6 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signup
+
+

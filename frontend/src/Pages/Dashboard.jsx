@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +17,18 @@ const Dashboard = () => {
   const [error, setError] = useState(null); // Track any errors
   const [likedRecipes, setLikedRecipes] = useState([]);
   const [viewingLikedRecipes, setViewingLikedRecipes] = useState(false); // Track if we are viewing liked recipes
+  const [imagePreview, setImagePreview] = useState(
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+  ); // default image to preview
 
+  const inputFile = useRef(null); // for redirecting click to open input file
+  
+  // form to send image change request
+  const [form, setForm] = useState({
+    id: user._id,
+    profile: user.profile,
+  });
+  
   // Function to fetch all recipes for the user
   const fetchRecipes = () => {
     setLoading(true);
@@ -41,6 +52,7 @@ const Dashboard = () => {
       })
       .finally(() => setLoading(false));
   };
+
   const fetchLikedRecipes = () => {
     axios
       .post(
@@ -59,9 +71,21 @@ const Dashboard = () => {
       });
   };
 
+  const fetchUserImage = () => {
+    axios
+      .post(`${backendURL}/api/user/fetch`, { id: user._id })
+      .then((res) => {
+        setImagePreview(res.data.profile);
+      })
+      .catch((err) => {
+        console.error("Error fetching user data", err);
+      });
+  };
+
   useEffect(() => {
     if (user._id) {
       fetchRecipes(); // Only fetch recipes if user ID is available
+      fetchUserImage(); // fetch user image if ID available
     } else {
       console.error("User ID is missing!");
       setError("User data is not available.");
@@ -95,6 +119,45 @@ const Dashboard = () => {
           toast.error(`Error deleting the recipe: ${err.message}`);
         });
     }
+  };
+
+  // called by input field, it will set imagePreview and call changeImageBackend
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        changeImageBackend(reader.result);
+      };
+    }
+  };
+
+  // this convert image into Base64 format and send backend request to update profile field
+  const changeImageBackend = (userImgBase64) => {
+    form.profile = userImgBase64; //update profile value in form variable above
+    axios
+      .post(`${backendURL}/api/user/imageUpdate`, form)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success(res.data.message);
+        } else {
+          toast.error("Some Error occured please try again later.");
+        }
+      })
+      .catch((err) => {
+        toast.error("Some Error occured please try again later.");
+        // console.log(err);
+      });
+  };
+
+  // this will redirect click to inputFile
+  const uploadImage = async () => {
+    inputFile.current.click();
   };
 
   // Function to Logout
@@ -131,7 +194,6 @@ const Dashboard = () => {
               Liked Recipe
             </span>
           </nav>
-
           <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-4 py-8 mx-auto">
               {loading ? (
@@ -140,7 +202,8 @@ const Dashboard = () => {
                 <div className="-my-8 divide-y-2 divide-gray-100">
                   {viewingLikedRecipes
                     ? likedRecipes.map((recipe) => (
-                        <Cards key={recipe._id} dish={recipe} /> // Ensure recipe._id is unique
+                        <Cards key={recipe._id} dish={recipe} />
+                        // Ensure recipe._id is unique
                       ))
                     : recipes.map((recipe) => (
                         <div
@@ -171,13 +234,15 @@ const Dashboard = () => {
                                   })
                                 }
                               >
-                                <FontAwesomeIcon icon={faPen} /> Update
+                                <FontAwesomeIcon icon={faPen} />
+                                Update
                               </span>
                               <span
                                 onClick={() => handleDelete(recipe._id)}
                                 className="mx-4 text-red-500"
                               >
-                                <FontAwesomeIcon icon={faTrash} /> Delete
+                                <FontAwesomeIcon icon={faTrash} />
+                                Delete
                               </span>
                             </span>
                           </div>
@@ -192,11 +257,23 @@ const Dashboard = () => {
           <section className="text-gray-600 body-font">
             <div className="container mx-auto flex px-5 py-20 items-center justify-center flex-col">
               <img
-                className="lg:w-2/5 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded-[100%]"
+                className="w-40 h-40 bg-gray-200 object-cover object-center rounded-[100%]"
                 alt="profile"
-                src={user.profile}
+                src={imagePreview}
                 loading="lazy"
               />
+              <FontAwesomeIcon
+                icon={faPen}
+                className="relative bottom-6 right-12 bg-neutral-300 rounded-full h-3.5 p-1.5 cursor-pointer hover:bg-neutral-400 hover:rotate-[-12deg]"
+                onClick={uploadImage} // this function will redirect click to input field below
+              />
+              <input
+                type="file"
+                accept=".jpg, .png, image/jpeg, image/png"
+                ref={inputFile} // set the above inputFile variable's reference
+                className="hidden"
+                onChange={handleImageChange}
+              ></input>
               <div className="text-center lg:w-2/3 w-full">
                 <h1>
                   {user.firstName} {user.lastName}
@@ -205,11 +282,13 @@ const Dashboard = () => {
                   Followers: {user.followers.length} Following:{" "}
                   {user.following.length}
                 </h1>
-                {/* <p className="mb-8 leading-relaxed">
-                  Meggings kinfolk echo park stumptown DIY, kale chips beard
-                  jianbing tousled. Chambray dreamcatcher trust fund, kitsch
-                  vice godard disrupt ramps
-                </p> */}
+                {/* 
+                      <p className="mb-8 leading-relaxed">
+                        Meggings kinfolk echo park stumptown DIY, kale chips beard
+                        jianbing tousled. Chambray dreamcatcher trust fund, kitsch
+                        vice godard disrupt ramps
+                      </p>
+                      */}
                 <div className="flex justify-center">
                   <button
                     className="inline-flex text-white bg-red-700 border-0 py-2 px-3 focus:outline-none hover:bg-red-500 rounded text-md m-2"
