@@ -113,6 +113,12 @@
 }
 
 
+  /* responsive style for recipe images */
+  @media (max-width: 768px) {
+      .recipe-card-img {
+          height: 9rem;
+      }
+  }
 
 
 
