@@ -46,4 +46,6 @@ router.delete(
   authenticateToken,
   RecipeController.deleteComment
 );
+
+router.patch("/recipe/share/:recipeId", authenticateToken, RecipeController.updateShareCount);
 export default router;
