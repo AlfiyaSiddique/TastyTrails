@@ -33,34 +33,38 @@ const Recipes = ({ type }) => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      try {
-        const response = await axios.get(`${backendURL}/api/recipes`, {
-          params: {
-            page: pagination.currentPage,
-            limit,
-            type,
-            search: debouncedSearchTerm,
-          },
-        });
+        
+        try {
+            const response = await axios.get(`${backendURL}/api/recipes`, {
+                params: {
+                    page: pagination.currentPage,
+                    limit,
+                    type,
+                    search: debouncedSearchTerm,
+                },
+            });
 
-        const { recipes, pagination: paginationData } = response.data;
+            console.log("Response data:", response.data); // Add this line
 
-        setRecipes(recipes);
+            const { recipes, pagination: paginationData } = response.data;
 
-        setPagination((prev) => ({
-          ...prev,
-          totalRecipes: paginationData.totalRecipes,
-          totalPages: paginationData.totalPages
-        }));
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+            setRecipes(recipes);
+
+            setPagination((prev) => ({
+                ...prev,
+                totalRecipes: paginationData.totalRecipes,
+                totalPages: paginationData.totalPages
+            }));
+        } catch (err) {
+            console.error("Error fetching recipes:", err); 
+        } finally {
+            setLoading(false);
+        }
     };
 
     fetchRecipes();
-  }, [pagination.currentPage, type, debouncedSearchTerm]);
+}, [pagination.currentPage, type, debouncedSearchTerm]);
+
 
   const handleSearch = (e) => {
     const value = e.target.value;
