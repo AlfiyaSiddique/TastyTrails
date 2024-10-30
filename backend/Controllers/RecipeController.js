@@ -553,6 +553,13 @@ const deleteComment = async (req, res) => {
 };
 
 
+/**
+ * @PATCH /api/recipe/share/:recipeId
+ * @description update the number of share of recipe id
+ * @access private
+ */
+//This function will update share count of any recipe
+
 const updateShareCount = async (req, res) => {
   const { recipeId } = req.params;
   if (!recipeId) {
