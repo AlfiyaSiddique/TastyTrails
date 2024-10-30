@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
-import { toast } from "react-toastify"; // Ensure you import toast if you're using it
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 
 // Displays single Recipe
 const OneRecipe = () => {
@@ -117,8 +120,15 @@ const OneRecipe = () => {
       setComments(comments.filter((comment) => comment._id !== commentId));
     } catch (error) {
       console.error("Error deleting comment:", error.message);
+      
+      if (error.response && error.response.status === 403) {
+        toast.error("You are not allowed to delete this comment.");
+      } else {
+        toast.error("An error occurred while trying to delete the comment.");
+      }
     }
   };
+  
 
   if (loading) {
     return (

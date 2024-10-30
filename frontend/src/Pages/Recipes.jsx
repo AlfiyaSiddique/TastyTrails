@@ -47,7 +47,7 @@ const Recipes = ({ type }) => {
             console.log("Response data:", response.data); // Add this line
 
             const { recipes, pagination: paginationData } = response.data;
-            const { recipes, pagination: paginationData } = response.data;
+      
 
             setRecipes(recipes);
             setRecipes(recipes);
@@ -62,21 +62,10 @@ const Recipes = ({ type }) => {
         } finally {
             setLoading(false);
         }
-            setPagination((prev) => ({
-                ...prev,
-                totalRecipes: paginationData.totalRecipes,
-                totalPages: paginationData.totalPages
-            }));
-        } catch (err) {
-            console.error("Error fetching recipes:", err); 
-        } finally {
-            setLoading(false);
-        }
+            
     };
 
     fetchRecipes();
-}, [pagination.currentPage, type, debouncedSearchTerm]);
-
 }, [pagination.currentPage, type, debouncedSearchTerm]);
 
 
