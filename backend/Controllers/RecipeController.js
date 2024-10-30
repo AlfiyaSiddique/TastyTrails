@@ -518,12 +518,6 @@ const getLikedRecipe = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-/**
- * @PATCH /api/recipe/share/:recipeId
- * @description update the number of share of recipe id
- * @access private
- */
-//This function will update share count of any recipe
 
 const deleteComment = async (req, res) => {
   try {
