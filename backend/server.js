@@ -20,7 +20,6 @@ const allowedOrigins = [
   "https://delightful-daifuku-a9f6ea.netlify.app",
   /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
   
-  
 ];
 
 

@@ -6,8 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
+
 import useGoogleAuth from "../../common/useGoogleAuth"
 import image from "../../public/newFoodSignup.jpeg"
+
 const Login = () => {
   const navigate = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
@@ -16,7 +18,7 @@ const Login = () => {
     searchTerm: "",
     password: "",
   });
-
+  const [loading, setLoading] = useState(false)
   // Handling Login Form
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -28,10 +30,12 @@ const Login = () => {
   // Handle Login Submit
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true)
     axios
       .post(`${backendURL}/api/login`, form)
       .then((res) => {
         if (res.data.success) {
+          setLoading(true)
           toast.success("Login Successful");
           localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
           // creating a token named "username" for storing logged in user's name for comment purposes
@@ -47,16 +51,19 @@ const Login = () => {
         }
       })
       .catch((err) => {
+        setLoading(false)
         toast.error(err.response.data.message);
       });
   };
 
   // Reusable function
   const handleLogin = (formData) => {
+    setLoading(true)
     axios
       .post(`${backendURL}/api/login`, formData)
       .then((res) => {
         if (res.data.success) {
+          setLoading(false)
           toast.success("Login Successful");
           localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
           navigate(`/user/${res.data.user._id}`, {
@@ -65,6 +72,7 @@ const Login = () => {
         }
       })
       .catch((err) => {
+        setLoading(false)
         toast.error(err.response.data.message);
       });
   };
@@ -72,6 +80,7 @@ const Login = () => {
   const googleLogin = useGoogleAuth(handleLogin);
 
   return (
+
 
 
     <>
@@ -86,6 +95,7 @@ const Login = () => {
         <div className="content flex flex-col md:flex-row items-center md:items-start mt-5 gap-6">
           <div className="img w-full md:w-1/2  lg:w-[20vw] h-auto  ">
             <img className="h-full w-full rounded-3xl object-cover" src={image} alt="Dish illustration" />
+
           </div>
           <div className="innerContent mt-4 md:mt-8 ">
             <ul className="font-bold text-xl sm:text-2xl md:text-2xl ml-0 md:ml-6 px-5">
