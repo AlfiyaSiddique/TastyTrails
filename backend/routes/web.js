@@ -15,6 +15,7 @@ router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
 // Post Requests
 router.post("/signup", UserController.Signup);
 router.post("/login", UserController.Login);
+router.post("/feedback", UserController.submitFeedback);
 router.post("/user/imageUpdate", UserController.UpdateImage);
 router.post("/user/fetch", UserController.FetchUser);
 router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);
@@ -32,7 +33,7 @@ router.post(
   authenticateToken,
   RecipeController.addComment
 );
-router.post("/feedback", UserController.Sendcontactmail);
+
 router.post("/forgot_password", UserController.forgotPassword);
 router.post("/reset_password/:token", UserController.resetPassword);
 router.post("/recipe/like", authenticateToken, RecipeController.addRecipeLike);
@@ -47,4 +48,6 @@ router.delete(
   authenticateToken,
   RecipeController.deleteComment
 );
+
+router.patch("/recipe/share/:recipeId", authenticateToken, RecipeController.updateShareCount);
 export default router;
