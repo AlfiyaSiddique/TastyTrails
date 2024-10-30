@@ -154,7 +154,7 @@ const Signup = () => {
 
   return (
 
-   <div className="Container min-h-screen  bg-white flex justify-center items-center  px-4 sm:px-8 md:px-12 lg:px-16">
+   <div className="Container min-h-screen mt-16 bg-white flex justify-center items-center  px-4 sm:px-8 md:px-12 lg:px-16">
     <div className="InnerDiv  w-full max-w-[95vw] lg:max-w-[85vw]  xl:max-w-[75vw] md:w-[75vw] mb-8 flex flex-col md:flex-row justify-between items-center lg:flex-row  space-y-12 lg:space-y-0">
       {/* Left Section */}
       <div className="left w-full md:w-[45%] lg:w-[40%] text-center lg:text-left space-y-8">
@@ -178,8 +178,8 @@ const Signup = () => {
       </div>
   
       {/* Right Section (Form) */}
-      <div className="right w-full md:w-[50%] lg:w-[50%] flex justify-center">
-        <div className="form w-full max-w-[90%]  md:w-[80%] lg:max-w-[80%] h-auto p-6  shadow-md rounded-xl ">
+      <div className="right w-full  md:w-[50%] lg:w-[50%] flex justify-center">
+        <div className="form w-full max-w-[90%]  md:w-[80%] lg:max-w-[80%] h-auto p-6 border-2 shadow-md rounded-xl ">
           <h1 className="text-black text-xl lg:text-2xl text-center mb-6">Register</h1>
           <form className="space-y-4" onSubmit={handleSubmit}>
             {/* First and Last Name */}
