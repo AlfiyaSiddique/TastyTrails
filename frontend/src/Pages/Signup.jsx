@@ -6,12 +6,14 @@ import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
 import useGoogleAuth from "../../common/useGoogleAuth";
+import Loader from "../Components/Loader.jsx";
 
 const Signup = () => {
   const navigator = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     // Signup Form Data
     firstName: "",
@@ -76,6 +78,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     // Handle Signup Submit
     e.preventDefault();
+    setLoading(true)
     let submitable = true;
 
     Object.values(error).forEach((val) => {
@@ -88,12 +91,14 @@ const Signup = () => {
     if (submitable) {
       const usernames = await getUsernames();
       if (usernames.includes(form.username)) {
+        setLoading(false)
         toast.error("Username already exist please try another.");
       } else {
         axios
           .post(`${backendURL}/api/signup`, form)
           .then((res) => {
             if (res.data.success) {
+              setLoading(false)
               toast.success("User Created Successfully");
               localStorage.setItem(
                 "tastytoken",
@@ -110,15 +115,18 @@ const Signup = () => {
             }
           })
           .catch((err) => {
+            setLoading(false)
             toast.error(err.response.data.message);
           });
       }
     } else {
+      setLoading(false)
       toast.error("Fill all fields with valid values");
     }
   };
 
   const handleGoogleSignup = async (googleUser) => {
+    setLoading(true)
     const googleForm = {
       // Defining Google-specific form data here
       firstName: googleUser.firstName,
@@ -131,6 +139,7 @@ const Signup = () => {
     try {
       const res = await axios.post(`${backendURL}/api/signup`, googleForm);
       if (res.data.success) {
+        setLoading(false)
         toast.success("Google Signup Successful");
         localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
         // creating a token named "username" for storing logged in user's name for comment purposes
@@ -143,6 +152,7 @@ const Signup = () => {
         });
       }
     } catch (err) {
+      setLoading(false)
       toast.error(err.response.data.message || "Google signup failed");
     }
   };
@@ -151,6 +161,7 @@ const Signup = () => {
 
   return (
     <div>
+      {loading && <Loader />}
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
