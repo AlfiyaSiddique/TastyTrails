@@ -119,6 +119,36 @@ const verifyUserByToken = async (req, res) => {
   }
 };
 
+const FetchUser = async (req, res) => {
+  try {
+    const {id} = req.body
+    if (!id) {
+      return res.status(400).json({ success: false, message: "Invalid request" })
+    }
+    const userData = await User.find({_id: id})
+    if (!userData) {
+      return res.status(400).json({ success: false, message: "User Not Found" })
+    }
+    return res.status(200).json(userData[0])
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ success: false, message: "Internal Server error" })
+  }
+  
+}
+
+const UpdateImage = async (req, res) => {
+  try {
+    const { id, profile} = req.body
+    const update = await User.updateOne({ _id: id }, { $set: {profile: profile} }, { new: true })
+    return res.status(200).json({ success: true, message: "Image Updates Successfully" })
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ success: false, message: "Internal server error" });
+  }
+}
+
+
 
 const  submitFeedback = async (req, res) => {
   const { name, email, message, rating } = req.body; // Capture data from the request
@@ -219,7 +249,9 @@ const UserController = {
   verifyUserByToken,
   forgotPassword,
   resetPassword,
-  submitFeedback,
+  UpdateImage,
+  FetchUser,
+  submitFeedback
 };
 
 export default UserController;

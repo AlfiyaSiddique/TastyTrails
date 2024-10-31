@@ -44,8 +44,6 @@ const Recipes = ({ type }) => {
                 },
             });
 
-            console.log("Response data:", response.data); // Add this line
-
             const { recipes, pagination: paginationData } = response.data;
       
 
