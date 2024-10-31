@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import dotenv from "dotenv";
 import router from "./routes/web.js";
 import mongoose from "mongoose";
@@ -14,12 +15,12 @@ const port = process.env.PORT;
 // Middleware to parse incoming JSON requests
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(helmet());
 
 // CORS configuration
 const allowedOrigins = [
   "https://delightful-daifuku-a9f6ea.netlify.app",
   /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
-  
   
 ];
 

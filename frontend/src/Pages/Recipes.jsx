@@ -45,7 +45,9 @@ const Recipes = ({ type }) => {
             });
 
             const { recipes, pagination: paginationData } = response.data;
+      
 
+            setRecipes(recipes);
             setRecipes(recipes);
 
             setPagination((prev) => ({
@@ -58,6 +60,7 @@ const Recipes = ({ type }) => {
         } finally {
             setLoading(false);
         }
+            
     };
 
     fetchRecipes();
