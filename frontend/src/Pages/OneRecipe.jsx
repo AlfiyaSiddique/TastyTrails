@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
-import { toast } from "react-toastify"; // Ensure you import toast if you're using it
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // Displays single Recipe
 const OneRecipe = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const token = JSON.parse(localStorage.getItem("tastytoken"));
-  const recipeId = useParams().id;
-  const [loading, setLoading] = useState(true);
+  const recipeId  = useParams().id;
+  const [loading, setLoading] = useState(true)
   const [recipe, setRecipe] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
@@ -69,28 +71,47 @@ const OneRecipe = () => {
   }, [recipe.date]);
 
   const handlePostComment = async () => {
-    const username = JSON.parse(localStorage.getItem("username"));
+    const username = localStorage.getItem("username");
+    if (!token) {
+      console.error("No authorization token found.");
+      return;
+    }
+  
     if (commentInput.trim()) {
       try {
-        await axios.post(`${backendURL}/api/recipe/addcomment`, {
-          recipeId: recipe._id,
-          username: username,
-          content: commentInput,
-        }, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        await axios.post(
+          `${backendURL}/api/recipe/addcomment`,
+          {
+            recipeId : recipe._id,
+            username : username,
+            content: commentInput, // Only send content and recipeId
           },
-        });
-
-        setComments([...comments, { username: username, content: commentInput, date: new Date() }]);
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Send token in the header
+            },
+          }
+        );
+  
+        // Add the new comment to the comments state
+        setComments([
+          ...comments,
+          {
+            username: username, // Display username locally for UI purposes
+            content: commentInput,
+            date: new Date(),
+          },
+        ]);
         setCommentInput("");
       } catch (error) {
         console.error("Error posting comment:", error);
       }
     }
   };
+  
 
   const handleDeleteComment = async (commentId) => {
+    
     try {
       await axios.delete(`${backendURL}/api/recipe/deletecomment/${commentId}`, {
         headers: {
@@ -100,8 +121,15 @@ const OneRecipe = () => {
       setComments(comments.filter((comment) => comment._id !== commentId));
     } catch (error) {
       console.error("Error deleting comment:", error.message);
+      
+      if (error.response && error.response.status === 403) {
+        toast.error("You are not allowed to delete this comment.");
+      } else {
+        toast.error("An error occurred while trying to delete the comment.");
+      }
     }
   };
+  
 
   if (loading) {
     return (
@@ -195,7 +223,9 @@ const OneRecipe = () => {
                     {new Date(comment.date).toLocaleDateString()}
                   </small>
                 </div>
-                <div className="cursor-pointer" onClick={() => handleDeleteComment(comment._id)}>
+                <div className="cursor-pointer" onClick={() =>{
+                   handleDeleteComment(comment._id);
+                }}>
                   <span className="p-2 text-red-500">
                     <MdDelete />
                   </span>

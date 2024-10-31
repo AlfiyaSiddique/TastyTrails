@@ -68,7 +68,7 @@ const Login = async (req, res) => {
   try {
     const user = await User.findOne({
       $or: [
-        { email: req.body.searchTerm }, // Search by email
+        { email: req.body.email }, // Search by email
         { username: req.body.searchTerm }, // Search by username
       ],
     });
@@ -88,7 +88,7 @@ const Login = async (req, res) => {
         .json({ success: false, message: "Incorrect Password" });
 
     // If the password is correct, generate a JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
+    const token = jwt.sign({ userId: user._id  }, process.env.SECRET, {
       expiresIn: "30d",
     });
   
