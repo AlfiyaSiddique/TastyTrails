@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-const helmet = require('helmet');
+import helmet from "helmet";
 import dotenv from "dotenv";
 import router from "./routes/web.js";
 import mongoose from "mongoose";
