@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+const helmet = require('helmet');
 import dotenv from "dotenv";
 import router from "./routes/web.js";
 import mongoose from "mongoose";
@@ -14,6 +15,7 @@ const port = process.env.PORT;
 // Middleware to parse incoming JSON requests
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(helmet());
 
 // CORS configuration
 const allowedOrigins = [
