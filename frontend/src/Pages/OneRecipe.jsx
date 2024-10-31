@@ -5,7 +5,6 @@ import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
 
 
 // Displays single Recipe
@@ -72,7 +71,7 @@ const OneRecipe = () => {
   }, [recipe.date]);
 
   const handlePostComment = async () => {
-    const token = localStorage.getItem("tastytoken"); // Retrieve token from localStorage
+    const username = localStorage.getItem("username");
     if (!token) {
       console.error("No authorization token found.");
       return;
@@ -84,6 +83,7 @@ const OneRecipe = () => {
           `${backendURL}/api/recipe/addcomment`,
           {
             recipeId : recipe._id,
+            username : username,
             content: commentInput, // Only send content and recipeId
           },
           {
@@ -97,7 +97,7 @@ const OneRecipe = () => {
         setComments([
           ...comments,
           {
-            username: userId, // Display username locally for UI purposes
+            username: username, // Display username locally for UI purposes
             content: commentInput,
             date: new Date(),
           },
@@ -111,6 +111,7 @@ const OneRecipe = () => {
   
 
   const handleDeleteComment = async (commentId) => {
+    
     try {
       await axios.delete(`${backendURL}/api/recipe/deletecomment/${commentId}`, {
         headers: {
@@ -222,7 +223,9 @@ const OneRecipe = () => {
                     {new Date(comment.date).toLocaleDateString()}
                   </small>
                 </div>
-                <div className="cursor-pointer" onClick={() => handleDeleteComment(comment._id)}>
+                <div className="cursor-pointer" onClick={() =>{
+                   handleDeleteComment(comment._id);
+                }}>
                   <span className="p-2 text-red-500">
                     <MdDelete />
                   </span>
