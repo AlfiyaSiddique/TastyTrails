@@ -60,6 +60,7 @@ const Footer = () => {
     e.preventDefault();
     let userId;
     if(!user){
+      setSubmitStatus("Please Login to submit Feedback");
       throw new Error("Please Login to submit Feedback");
 
     }
@@ -98,7 +99,7 @@ const Footer = () => {
       }
     } catch (error) {
       console.error("Error submitting feedback:", error);
-      setSubmitStatus("error");
+      setSubmitStatus("Error submitting Feedback");
     }
   };
   
@@ -278,7 +279,7 @@ const Footer = () => {
         <div className="text-center">
           <FontAwesomeIcon icon={faTimesCircle} className="text-red-500 text-5xl mb-4" />
           <h2 className="text-2xl font-bold mb-4">
-            Error in sending Feedback!
+            {submitStatus}
           </h2>
           <button
             className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700"
