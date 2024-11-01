@@ -50,10 +50,10 @@ const Footer = () => {
   const openModal = () => {
     setSubmitStatus(null);
     setShowModal(true);
-    // setRole("")
-    // setQuote("")
-    // setReview("");
-    // setRating(0);
+    setRole("")
+    setQuote("")
+    setReview("");
+    setRating(0);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
