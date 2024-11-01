@@ -47,7 +47,6 @@ const Footer = () => {
       setUser(null);
     }
   }, [path]);
-  console.log(user);
   const openModal = () => {
     setSubmitStatus(null);
     setShowModal(true);
