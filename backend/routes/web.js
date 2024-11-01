@@ -15,7 +15,8 @@ router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
 // Post Requests
 router.post("/signup", UserController.Signup);
 router.post("/login", UserController.Login);
-router.post("/feedback", UserController.submitFeedback);
+router.post("/submitFeedback", UserController.submitFeedback);
+router.get('/getFeedback', UserController.getAllFeedback);
 router.post("/user/imageUpdate", UserController.UpdateImage);
 router.post("/user/fetch", UserController.FetchUser);
 router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);

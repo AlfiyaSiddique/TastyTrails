@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import feedback from "../models/feedback.js";
+import Feedback from "../models/feedback.js";
 
 dotenv.config();
 
@@ -148,38 +148,6 @@ const UpdateImage = async (req, res) => {
   }
 }
 
-
-
-const  submitFeedback = async (req, res) => {
-  const { name, email, message, rating } = req.body; // Capture data from the request
-
-  try {
-    // Create a new feedback document
-    const newfeedback = new feedback({
-      name,
-      email,
-      message,
-      rating,
-    });
-
-    // Save feedback to the database
-    await newfeedback.save();
-
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Feedback stored successfully!",
-        newfeedback,
-      });
-  } catch (error) {
-    console.error("Error storing feedback:", error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Error storing feedback" });
-  }
-}
-
 const forgotPassword = async function (req, res) {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -240,7 +208,54 @@ const resetPassword = async function (req, res) {
     return res.status(400).json({ success: false, message: "Invalid token" });
   }
 };
+const submitFeedback = async (req, res) => {
+  const { userId, role, review, rating, quote } = req.body; // Capture data from the request
 
+  try {
+    // Create a new feedback document
+    const newFeedback = new Feedback({
+      userId,
+      role,
+      review,
+      rating,
+      quote,
+    });
+
+    // Save feedback to the database
+    await newFeedback.save();
+
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "Feedback stored successfully!",
+        newFeedback,
+      });
+  } catch (error) {
+    console.error("Error storing feedback:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Error storing feedback" });
+  }
+}
+const getAllFeedback = async (req, res) => {
+  try {
+    // Retrieve all feedback, populating the user details
+    const feedbackEntries = await Feedback.find().populate('userId', 'firstName lastName profile'); // Adjust fields as needed
+
+    return res.status(200).json({
+      success: true,
+      message: "Feedback retrieved successfully!",
+      data: feedbackEntries,
+    });
+  } catch (error) {
+    console.error("Error retrieving feedback:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error retrieving feedback",
+    });
+  }
+}
 
 const UserController = {
   Signup,
@@ -251,7 +266,9 @@ const UserController = {
   resetPassword,
   UpdateImage,
   FetchUser,
-  submitFeedback
+  submitFeedback,
+  getAllFeedback
 };
+
 
 export default UserController;
