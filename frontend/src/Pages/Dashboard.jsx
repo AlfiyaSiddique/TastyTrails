@@ -13,6 +13,7 @@ const Dashboard = () => {
   const token = JSON.parse(localStorage.getItem("tastytoken"));
   const user = useLocation().state.user;
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState(null); // Track any errors
   const [likedRecipes, setLikedRecipes] = useState([]);
@@ -165,7 +166,22 @@ const Dashboard = () => {
     localStorage.removeItem("tastytoken");
     navigator("/");
   };
-
+  const handleAccountDelete = async () => {
+    try {
+      const response = await axios.delete(`${backendURL}/api/user/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token if required
+        },
+      });
+      if (response.data.success) {
+        logout();
+      }
+    } catch (error) {
+      console.error("error deleting account", error);
+      toast.error("Error! Account Deletion Failed")
+    }
+  };
+  
   return (
     <div id="userDashboard" className="border-gray-200 border-t-[1px]">
       <div className="grid md:grid-cols-[70%_30%] grid-cols-1 relative">
@@ -299,7 +315,21 @@ const Dashboard = () => {
                   <button className="ml-4 inline-flex text-gray-700 bg-gray-100 py-2 px-3 focus:outline-none hover:bg-gray-200 rounded text-md border border-red-600 m-2">
                     Follow
                   </button>
+                  
                 </div>
+                <button className="ml-4 inline-flex text-gray-700 bg-gray-100 py-2 px-3 focus:outline-none hover:bg-gray-200 rounded text-sm border border-red-600 m-2"
+                onClick={() => setModalOpen(true)}>
+                    Delete Account
+                  </button>
+                  <ConfirmationModal
+        isOpen={isModalOpen}
+        username={user.username}
+        onClose={() => setModalOpen(false)}
+        onConfirm={() => {
+          handleAccountDelete();
+          setModalOpen(false);
+        }}
+      />
               </div>
             </div>
           </section>
@@ -308,5 +338,41 @@ const Dashboard = () => {
     </div>
   );
 };
+
+
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, username }) => {
+  const [inputValue, setInputValue] = useState("");
+
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+      <div className="bg-white rounded p-5 shadow-lg">
+        <h2 className="text-lg font-semibold">Are you sure?</h2>
+        <p className="mt-2">This action will permanently delete your account.</p>
+        <p className="mt-2">Type <span className="bg-gray-200 font-bold rounded px-2">{username}</span> to confirm:</p>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="border border-gray-300 rounded px-2 py-1 mt-2 w-full"
+          placeholder="Enter your username"
+        />
+        <div className="mt-4 flex justify-between">
+          <button onClick={onClose} className="text-gray-600 border border-red-500 px-4 py-2 rounded">Cancel</button>
+          <button
+            onClick={onConfirm}
+            className={`bg-red-500 text-white px-4 py-2 rounded ${inputValue === username ? '' : 'opacity-50 cursor-not-allowed'}`}
+            disabled={inputValue !== username} // Disable button if username does not match
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 export default Dashboard;
