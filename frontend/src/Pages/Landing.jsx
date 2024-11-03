@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
 import Testimonial from "../Components/Testimonial.jsx";
+import RecipeOfTheDay from '../Components/RecipeOfTheDay.jsx';
 
 const Landing = () => {
   const navigator = useNavigate();
@@ -186,6 +187,14 @@ const Landing = () => {
             </div>
         )}
       </section>
+
+{/* -------------------------- Recipe of the Day Section ----------------------  */}
+<section id="RecipeOfTheDay" className="py-4 my-20 mx-8">
+  <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
+    Recipe of the Day
+  </h1>
+  <RecipeOfTheDay />
+</section>
 
       {/* -------------------------- About Section ----------------------  */}
       <section

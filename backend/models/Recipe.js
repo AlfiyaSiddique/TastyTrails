@@ -48,6 +48,14 @@ const recipeSchema = new mongoose.Schema({
   type: {
     type: [String],
   required: true
+  },
+  featured: {
+    type: Boolean,
+    default: false
+  },
+  lastFeatured: {
+    type: Date,
+    default: null
   }
 });
 

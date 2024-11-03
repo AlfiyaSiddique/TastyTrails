@@ -52,3 +52,5 @@ router.delete(
 
 router.patch("/recipe/share/:recipeId", authenticateToken, RecipeController.updateShareCount);
 export default router;
+
+router.get('/recipe-of-the-day', getRecipeOfTheDay);
