@@ -200,7 +200,7 @@ const Landing = () => {
       ))}
     </div>
   ) :
-    {/*integrating slider for landing page */}
+   
   (
   
     <Slider {...sliderSettings}>
