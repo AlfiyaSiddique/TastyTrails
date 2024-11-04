@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 
 import useGoogleAuth from "../../common/useGoogleAuth"
+
 import image from "../../public/newFoodSignup.jpeg"
+
 
 const Login = () => {
   const navigate = useNavigate();
