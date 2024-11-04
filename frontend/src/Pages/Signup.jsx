@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,14 +5,17 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import validate from "../../common/validation.js";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 import useGoogleAuth from "../../common/useGoogleAuth"
 import image from "../../public/registerimage.jpg"
 
 const Signup = () => {
+
   const navigator = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
-  const [passwordFocused,setPasswordFocused]=useState(false);
-  const [show, setShow] = useState(false); 
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     // Signup Form Data
     firstName: "",
@@ -44,10 +46,10 @@ const Signup = () => {
     // Handling Signup Form
     const { name, value } = e.target;
     let message = {};
-    
+
     // Trim trailing spaces for username
     const trimmedValue = name === "username" ? value.trim() : value;
-    
+
     if (name === "cpassword") {
       message = validate.cpasssword(trimmedValue, form.password);
     } else if (name === "username") {
@@ -55,16 +57,15 @@ const Signup = () => {
     } else {
       message = validate[name](trimmedValue);
     }
-    
+
     setError((prev) => {
       return { ...prev, ...message };
     });
-  
+
     setForm((prev) => {
       return { ...prev, [name]: trimmedValue };
     });
   };
-  
 
   // Get all the current username present
   const getUsernames = async () => {
@@ -79,6 +80,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     // Handle Signup Submit
     e.preventDefault();
+    setLoading(true)
     let submitable = true;
 
     Object.values(error).forEach((val) => {
@@ -91,60 +93,73 @@ const Signup = () => {
     if (submitable) {
       const usernames = await getUsernames();
       if (usernames.includes(form.username)) {
+        setLoading(false)
         toast.error("Username already exist please try another.");
       } else {
         axios
           .post(`${backendURL}/api/signup`, form)
           .then((res) => {
             if (res.data.success) {
+              setLoading(false)
               toast.success("User Created Successfully");
               localStorage.setItem(
                 "tastytoken",
                 JSON.stringify(res.data.token)
               );
               // creating a token named "username" for storing logged in user's name for comment purposes
-              localStorage.setItem("username", JSON.stringify(res.data.user.username));
+              localStorage.setItem(
+                "username",
+                JSON.stringify(res.data.user.username)
+              );
               navigator(`/user/${res.data.user._id}`, {
                 state: { user: res.data.user },
               });
             }
           })
           .catch((err) => {
+            setLoading(false)
             toast.error(err.response.data.message);
           });
       }
     } else {
+      setLoading(false)
       toast.error("Fill all fields with valid values");
     }
   };
 
   const handleGoogleSignup = async (googleUser) => {
-  const googleForm = {
-    // Defining Google-specific form data here
-    firstName: googleUser.firstName,
-    lastName: googleUser.lastName,
-    email: googleUser.email,
-    profile: googleUser.profile, 
-    username: googleUser.username, 
-    password: googleUser.password,
-  };
-  try {
-    const res = await axios.post(`${backendURL}/api/signup`, googleForm);
-    if (res.data.success) {
-      toast.success("Google Signup Successful");
-      localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
-      // creating a token named "username" for storing logged in user's name for comment purposes
-      localStorage.setItem("username", JSON.stringify(res.data.user.username));
-      navigator(`/user/${res.data.user._id}`, {
-        state: { user: res.data.user },
-      });
+    setLoading(true)
+    const googleForm = {
+      // Defining Google-specific form data here
+      firstName: googleUser.firstName,
+      lastName: googleUser.lastName,
+      email: googleUser.email,
+      profile: googleUser.profile,
+      username: googleUser.username,
+      password: googleUser.password,
+    };
+    try {
+      const res = await axios.post(`${backendURL}/api/signup`, googleForm);
+      if (res.data.success) {
+        setLoading(false)
+        toast.success("Google Signup Successful");
+        localStorage.setItem("tastytoken", JSON.stringify(res.data.token));
+        // creating a token named "username" for storing logged in user's name for comment purposes
+        localStorage.setItem(
+          "username",
+          JSON.stringify(res.data.user.username)
+        );
+        navigator(`/user/${res.data.user._id}`, {
+          state: { user: res.data.user },
+        });
+      }
+    } catch (err) {
+      setLoading(false)
+      toast.error(err.response.data.message || "Google signup failed");
     }
-  } catch (err) {
-    toast.error(err.response.data.message || "Google signup failed");
-  }
-};
+  };
 
-const googleSignup = useGoogleAuth(handleGoogleSignup, true);
+
 
   return (
    <div className="Container min-h-screen  bg-white flex justify-center items-center  px-4 sm:px-8 md:px-12 lg:px-16">
@@ -359,4 +374,5 @@ const googleSignup = useGoogleAuth(handleGoogleSignup, true);
   );
 };
 
-export default Signup;
+ 
+export default Signup

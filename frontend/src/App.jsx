@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import Navbar from "./Components/Navbar.jsx";
 import ScrollToTop from "./Components/Scrolltotop.jsx";
@@ -19,6 +19,8 @@ import UpdateRecipe from "./Pages/UpdateRecipe.jsx";
 import Contributors from "./Pages/Contributors.jsx"; // Import the Contributors component
 import PrivacyPolicy from "./Components/PrivacyPolicy.jsx";
 import NotFound from "./Pages/NotFound.jsx";
+import ResetPassword from "./Pages/ResetPassword.jsx";
+import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
 
 function App() {
@@ -59,6 +61,8 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot_password" element={<ForgotPassword />} />
+          <Route path="/reset_password/:token" element={<ResetPassword />} />
           <Route
             path="/recipes"
             element={<Recipes key={"recipes"} type="" />}
@@ -81,10 +85,9 @@ function App() {
           <Route path="/recipe/:id" element={<OneRecipe />} />
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/recipe-suggestions" element={<RecipeSuggestions />} />
-          <Route path="*" element={<NotFound />} />
-          {/* Add Contributors route */}
+          {/* Redirect all unknown routes to home */}
+          <Route path="*" element={<NotFound/>} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          {/* Added Privacy-policy route */}
         </Routes>
         <Footer />
       </BrowserRouter>

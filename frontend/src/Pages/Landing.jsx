@@ -8,15 +8,18 @@ import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
+
 /*import React Slick */
 import Slider from 'react-slick'
 /* slick-carousel CSS */
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
   const [loading, setLoading] = useState(true);
+
    const backendURL = import.meta.env.VITE_BACKEND_URL;
    {/*Slider Configuration */}
    const sliderSettings = {
@@ -57,6 +60,7 @@ const Landing = () => {
     ]
   };
 
+
   useEffect(()=>{
     let token = localStorage.getItem("tastytoken");
    if(token){
@@ -75,6 +79,7 @@ const Landing = () => {
       console.log(err)
      })
    }
+   fetchFeedbacks();
   }, [])
 
   
@@ -238,6 +243,12 @@ const Landing = () => {
             />
           </div>
         </div>
+      </section>
+      <section>
+        {reviews &&(
+
+        <Testimonial infiniteReviews={reviews} />
+        )}
       </section>
     </div>
   );

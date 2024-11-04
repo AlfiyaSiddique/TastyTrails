@@ -12,10 +12,13 @@ router.get("/token", authenticateToken, UserController.verifyUserByToken);
 router.get("/recipes", RecipeController.allRecipe);
 // added route to get previous comments
 router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
-
 // Post Requests
 router.post("/signup", UserController.Signup);
 router.post("/login", UserController.Login);
+router.post("/submitFeedback", UserController.submitFeedback);
+router.get('/getFeedback', UserController.getAllFeedback);
+router.post("/user/imageUpdate", UserController.UpdateImage);
+router.post("/user/fetch", UserController.FetchUser);
 router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);
 router.post("/recipe/update", authenticateToken, RecipeController.updateRecipe);
 router.post(
@@ -31,7 +34,21 @@ router.post(
   authenticateToken,
   RecipeController.addComment
 );
-router.delete("/recipe/deletecomment/:commentId",authenticateToken,RecipeController.deleteComment)
-router.post("/feedback", UserController.Sendcontactmail);
 
+router.post("/forgot_password", UserController.forgotPassword);
+router.post("/reset_password/:token", UserController.resetPassword);
+router.post("/recipe/like", authenticateToken, RecipeController.addRecipeLike);
+router.post(
+  "/recipe/unlike",
+  authenticateToken,
+  RecipeController.removeRecipeLike
+);
+router.post("/recipe/liked_recipes", RecipeController.getLikedRecipe);
+router.delete(
+  "/recipe/deletecomment/:commentId",
+  authenticateToken,
+  RecipeController.deleteComment
+);
+
+router.patch("/recipe/share/:recipeId", authenticateToken, RecipeController.updateShareCount);
 export default router;
