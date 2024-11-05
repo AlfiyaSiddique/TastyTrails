@@ -8,15 +8,33 @@ import massa from "../assets/Images/Massaman.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
-
+import Testimonial from "../Components/Testimonial.jsx";
 
 const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
   const [loading, setLoading] = useState(true);
-   const backendURL = import.meta.env.VITE_BACKEND_URL;
-   
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const [reviews, setReviews] = useState(null);
+  const fetchFeedbacks = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/getFeedback`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const feedbacks = await response.json();
+      const reviews = feedbacks.data;
 
+      // Set infiniteReviews only after ensuring the data is valid
+      if (reviews.length > 0) {
+        setReviews(reviews);
+      }
+    } catch (error) {
+      console.error('Error fetching feedbacks:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(()=>{
     let token = localStorage.getItem("tastytoken");
    if(token){
@@ -35,6 +53,7 @@ const Landing = () => {
       console.log(err)
      })
    }
+   fetchFeedbacks();
   }, [])
 
   
@@ -195,6 +214,12 @@ const Landing = () => {
             />
           </div>
         </div>
+      </section>
+      <section>
+        {reviews &&(
+
+        <Testimonial infiniteReviews={reviews} />
+        )}
       </section>
     </div>
   );
