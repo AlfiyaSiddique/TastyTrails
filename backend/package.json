@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "concurrently \"node server.js\" \"node ./socket/socket.js\"",
     "dev": "nodemon server.js",
+    "socket": "nodemon ./socket/socket.js",
     "seed": "node seed.js"
   },
   "author": "Alfiya Siddique",
@@ -25,10 +26,12 @@
     "mongoose": "^8.0.3",
     "mongosh": "^2.3.2",
     "nodemailer": "^6.9.15",
-    "openai": "^4.68.1",
-    "prom-client": "^15.1.3"
+    "prom-client": "^15.1.3",
+    "socket.io": "^4.8.0",
+    "openai": "^4.68.1"
   },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "nodemon": "^3.1.7"
   }
 }

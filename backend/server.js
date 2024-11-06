@@ -9,7 +9,7 @@ import client from "prom-client";
 dotenv.config();
 
 const app = express();
-app.use(rateLimit(120, 60 * 1000));
+app.use(rateLimit(3000, 60 * 1000));
 const port = process.env.PORT;
 
 // Middleware to parse incoming JSON requests
@@ -20,8 +20,7 @@ app.use(helmet());
 // CORS configuration
 const allowedOrigins = [
   "https://delightful-daifuku-a9f6ea.netlify.app",
-  /https:\/\/deploy-preview-\d+--delightful-daifuku-a9f6ea\.netlify\.app/,
-  
+  new RegExp("https://deploy-preview-\\d+--delightful-daifuku-a9f6ea\\.netlify\\.app"),
 ];
 
 

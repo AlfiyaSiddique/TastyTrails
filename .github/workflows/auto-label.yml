@@ -18,12 +18,20 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+<<<<<<< HEAD
+            const issue = context.payload.issue;
+            const issueBody = issue.body ? issue.body.toLowerCase() : '';
+            const issueTitle = issue.title.toLowerCase();
+
+            // Add gssoc label to all issues
+=======
             const isIssue = context.payload.issue !== undefined;
             const item = isIssue ? context.payload.issue : context.payload.pull_request;
             const itemBody = item.body ? item.body.toLowerCase() : '';
             const itemTitle = item.title.toLowerCase();
 
             // Add labels to both issues and pull requests
+>>>>>>> acb0156e716581bdeabbb4c9a21a5ba8b16b29ee
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
