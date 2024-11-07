@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /private
+Allow: /
+Sitemap: https://delightful-daifuku-a9f6ea.netlify.app/sitemap.xml
