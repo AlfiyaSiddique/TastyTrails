@@ -18,7 +18,8 @@ const Signup = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     // Signup Form Data
     firstName: "",
@@ -83,9 +84,9 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     // Handle Signup Submit
     e.preventDefault();
-    setLoading(true)
+    setSubmitting(true)
     let submitable = true;
-
+    console.log(form)
     Object.values(error).forEach((val) => {
       if (val) {
         submitable = false;
@@ -96,36 +97,25 @@ const Signup = () => {
     if (submitable) {
       const usernames = await getUsernames();
       if (usernames.includes(form.username)) {
-        setLoading(false)
+        setSubmitting(false)
         toast.error("Username already exist please try another.");
       } else {
         axios
           .post(`${backendURL}/api/signup`, form)
           .then((res) => {
             if (res.data.success) {
-              setLoading(false)
-              toast.success("User Created Successfully");
-              localStorage.setItem(
-                "tastytoken",
-                JSON.stringify(res.data.token)
-              );
-              // creating a token named "username" for storing logged in user's name for comment purposes
-              localStorage.setItem(
-                "username",
-                JSON.stringify(res.data.user.username)
-              );
-              navigator(`/user/${res.data.user._id}`, {
-                state: { user: res.data.user },
-              });
+              setSubmitting(false)
+              toast.success("Please check your Email to verify your account");
+              
             }
           })
           .catch((err) => {
-            setLoading(false)
+            setSubmitting(false)
             toast.error(err.response.data.message);
           });
       }
     } else {
-      setLoading(false)
+      setSubmitting(false)
       toast.error("Fill all fields with valid values");
     }
   };
@@ -369,6 +359,16 @@ const Signup = () => {
               </Link>
             </p>
           </form>
+          {submitting && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <div className="flex justify-center items-center space-x-2">
+            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-t-transparent border-blue-500" role="status"></div>
+            <p className="text-lg font-semibold text-gray-800">Processing Sign-Up... Please Wait</p>
+          </div>
+        </div>
+      </div>
+      )}
         </div>
       </div>
     </div>
