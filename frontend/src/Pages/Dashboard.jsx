@@ -6,7 +6,7 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import Cards from "../Components/Cards"; // Import Cards component
 import { Star } from "lucide-react";
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrash  } from 'react-icons/fa';
 const Dashboard = () => {
   // Routes hooks and passed data
   const navigator = useNavigate();
