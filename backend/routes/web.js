@@ -16,9 +16,12 @@ router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
 router.post("/signup", UserController.Signup);
 router.post("/login", UserController.Login);
 router.post("/submitFeedback", UserController.submitFeedback);
-router.get('/getFeedback', UserController.getAllFeedback);
+router.get('/feedback', UserController.getAllFeedback);
+router.get('/feedback/:id', UserController.getFeedbackByUserId);
+router.post("/feedback/delete", UserController.deleteFeedbackById);
 router.post("/user/imageUpdate", UserController.UpdateImage);
 router.post("/user/fetch", UserController.FetchUser);
+router.delete("/user/:id", UserController.deleteUserById);
 router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);
 router.post("/recipe/update", authenticateToken, RecipeController.updateRecipe);
 router.post(

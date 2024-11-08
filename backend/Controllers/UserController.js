@@ -3,7 +3,8 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import Feedback from "../models/feedback.js";
-
+import Recipe from "../models/Recipe.js";
+import Comment from "../models/Comment.js";
 dotenv.config();
 
 
@@ -256,18 +257,116 @@ const getAllFeedback = async (req, res) => {
     });
   }
 }
+const getFeedbackByUserId = async (req, res) => {
+  const { userId } = req.params; // Extract userId from params
+
+  try {
+    // Find all feedback entries by userId and populate user details
+    const feedbackEntries = await Feedback.find({ 'userId._id': userId }).populate('userId', 'firstName lastName profile');
+
+    // Check if feedback entries were found
+    if (!feedbackEntries.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No feedback found for this user",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Feedback retrieved successfully!",
+      data: feedbackEntries,
+    });
+  } catch (error) {
+    console.error("Error retrieving feedback by userId:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error retrieving feedback",
+    });
+  }
+};
+// Feedback deletion controller
+const deleteFeedbackById = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    // Find and delete the feedback by ID
+    const deletedFeedback = await Feedback.findByIdAndDelete(id);
+
+    // Check if feedback was found and deleted
+    if (!deletedFeedback) {
+      return res.status(404).json({
+        success: false,
+        message: "Feedback not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Feedback deleted successfully!",
+    });
+  } catch (error) {
+    console.error("Error deleting feedback:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting feedback",
+    });
+  }
+};
+
+
+
+
+const deleteUserById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find the user by ID and delete
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    // Check if the user was found and deleted
+    if (!deletedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    
+    await Recipe.deleteMany({ user: id });
+    await Comment.deleteMany({ user: id });
+    await Feedback.deleteMany({ userId: id });
+
+
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully!",
+      data: deletedUser,
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting user",
+    });
+  }
+};
+
 
 const UserController = {
   Signup,
   Login,
   getAllUserName,
+  deleteUserById,
   verifyUserByToken,
   forgotPassword,
   resetPassword,
   UpdateImage,
   FetchUser,
   submitFeedback,
-  getAllFeedback
+  getAllFeedback,
+  getFeedbackByUserId,
+  deleteFeedbackById
 };
 
 
