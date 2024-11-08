@@ -19,6 +19,7 @@ router.post("/submitFeedback", UserController.submitFeedback);
 router.get('/getFeedback', UserController.getAllFeedback);
 router.post("/user/imageUpdate", UserController.UpdateImage);
 router.post("/user/fetch", UserController.FetchUser);
+router.delete("/user/:id", UserController.deleteUserById);
 router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);
 router.post("/recipe/update", authenticateToken, RecipeController.updateRecipe);
 router.post(
