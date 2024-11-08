@@ -38,14 +38,10 @@ const addRecipe = async (req, res) => {
       : "0000";
 
     // Upload the image to GitHub
-    const imageUrl = await imageToGithub(image, imagename, unique);
+    
 
     // If image upload fails, return an error
-    if (!imageUrl) {
-      return res
-        .status(422)
-        .json({ success: false, message: "Image upload failed" });
-    }
+    
 
     // Prepare the recipe data
     const data = {
@@ -54,7 +50,8 @@ const addRecipe = async (req, res) => {
       description,
       ingredients,
       steps,
-      image: imageUrl, // Save the URL of the uploaded image
+      image,
+      imagename, 
       author,
       type,
     };
@@ -132,81 +129,7 @@ const allRecipe = async (req, res) => {
  * @access private
  */
 
-const imageToGithub = async (fileImage, name, unique) => {
-  const owner = process.env.OWNER;
-  const repo = process.env.REPO;
-  const branch = process.env.BRANCH;
 
-  // Validate environment variables
-  if (!owner || !repo || !branch || !process.env.TOKEN) {
-    console.error("Missing required environment variables");
-    return null;
-  }
-
-  console.log("Config:", { owner, repo, branch }); // Debug log
-  const base64Content = fileImage.split(";base64,").pop();
-  const fileContent = Buffer.from(base64Content, "base64").toString("base64");
-
-  // Use the correct repository structure
-  const path = `images/${unique}${name}`; // Make sure this directory exists in your repo
-  const message = `Add ${unique} ${name} via API`;
-  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-
-  console.log("Request URL:", url); // Debug log
-
-  try {
-    // Correct GitHub token format
-    const headers = {
-      Authorization: `token ${process.env.TOKEN}`, // Changed from Bearer to token
-      "X-GitHub-Api-Version": "2022-11-28",
-      "Content-Type": "application/json",
-    };
-
-    // Check if file exists
-    let fileExists = false;
-    try {
-      const response = await axios.get(url, { headers });
-      fileExists = response.status === 200;
-      console.log("File exists check:", fileExists); // Debug log
-    } catch (error) {
-      if (error.response && error.response.status !== 404) {
-        console.error("Error checking file existence:", error.response.data);
-        throw error;
-      }
-    }
-
-    // Prepare request payload
-    const requestPayload = {
-      message,
-      content: fileContent,
-      branch,
-    };
-
-    if (fileExists) {
-      const existingFile = await axios.get(url, { headers });
-      requestPayload.sha = existingFile.data.sha;
-    }
-
-    // Upload or update file
-    console.log("Sending PUT request..."); // Debug log
-    const response = await axios.put(url, requestPayload, { headers });
-
-    if (response.status === 201 || response.status === 200) {
-      console.log("Upload successful:", response.data.content.download_url);
-      return response.data.content.download_url;
-    } else {
-      console.error("Upload failed:", response.status, response.statusText);
-      return null;
-    }
-  } catch (error) {
-    console.error("Upload error details:", {
-      status: error.response?.status,
-      data: error.response?.data,
-      message: error.message,
-    });
-    return null;
-  }
-};
 /**
  * @POST /api/recipes/readall
  * @description Returns recipe created by an User
@@ -229,7 +152,7 @@ const getOneUserRecipes = async (req, res) => {
  */
 const updateRecipe = async (req, res) => {
   try {
-    const { name, description, ingredients, steps, type, user, author, id } =
+    const { name, description, ingredients, steps, type, user, author, id, imagename, image } =
       req.body;
     const data = {
       user,
@@ -239,6 +162,8 @@ const updateRecipe = async (req, res) => {
       steps,
       author,
       type,
+      image,
+      imagename
     };
     const update = await Recipe.updateOne(
       { _id: id },
