@@ -327,7 +327,6 @@ const addComment = async (req, res) => {
 const getComments = async (req, res) => {
   try {
     const { recipeId } = req.params;
-    console.log("Fetching comments for recipe:", recipeId);
 
     // Ensure the recipe exists
     const recipe = await Recipe.findById(recipeId);

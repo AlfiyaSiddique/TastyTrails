@@ -140,7 +140,6 @@ const UpdateRecipe = () => {
     if (selectedImage === null) {
       submitable = false;
     }
-    console.log(form)
 
     if (submitable) {
       axios
