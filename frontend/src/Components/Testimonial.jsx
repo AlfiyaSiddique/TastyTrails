@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 const ReviewCard = ({ review }) => (
   <div className="rounded-lg hover:shadow-xl p-4 flex flex-col justify-between h-full transition-shadow duration-300 transform hover:scale-105 shadow-[0_2px_10px_rgba(0,0,0,0.3)] bg-white">
-    <div>{console.log(review)}
+    <div>
       <div className="flex items-center mb-4">
         <img src={review.userId.profile} alt={review.userId.firstName} className="w-16 h-16 rounded-full border-2 mr-4 object-cover" />
         <div>
