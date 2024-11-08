@@ -8,8 +8,8 @@ export const sendVerificationEmail = async (email, token, jwt, user_id) => {
       pass: process.env.EMAIL_PASS,
     },
   });
-
-  const verificationLink = `http://localhost:5173/verify-email?token=${token}&jtoken=${jwt}&id=${user_id}`;
+  const frontendURL = process.env.FRONT_END_URL
+  const verificationLink = `${frontendURL}/verify-email?token=${token}&jtoken=${jwt}&id=${user_id}`;
 
   const mailOptions = {
     from: 'Tasty Trails',
