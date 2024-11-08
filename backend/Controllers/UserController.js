@@ -257,6 +257,64 @@ const getAllFeedback = async (req, res) => {
     });
   }
 }
+const getFeedbackByUserId = async (req, res) => {
+  const { userId } = req.params; // Extract userId from params
+
+  try {
+    // Find all feedback entries by userId and populate user details
+    const feedbackEntries = await Feedback.find({ 'userId._id': userId }).populate('userId', 'firstName lastName profile');
+
+    // Check if feedback entries were found
+    if (!feedbackEntries.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No feedback found for this user",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Feedback retrieved successfully!",
+      data: feedbackEntries,
+    });
+  } catch (error) {
+    console.error("Error retrieving feedback by userId:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error retrieving feedback",
+    });
+  }
+};
+// Feedback deletion controller
+const deleteFeedbackById = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    // Find and delete the feedback by ID
+    const deletedFeedback = await Feedback.findByIdAndDelete(id);
+
+    // Check if feedback was found and deleted
+    if (!deletedFeedback) {
+      return res.status(404).json({
+        success: false,
+        message: "Feedback not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Feedback deleted successfully!",
+    });
+  } catch (error) {
+    console.error("Error deleting feedback:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting feedback",
+    });
+  }
+};
+
+
 
 
 const deleteUserById = async (req, res) => {
@@ -306,7 +364,9 @@ const UserController = {
   UpdateImage,
   FetchUser,
   submitFeedback,
-  getAllFeedback
+  getAllFeedback,
+  getFeedbackByUserId,
+  deleteFeedbackById
 };
 
 

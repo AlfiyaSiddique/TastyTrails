@@ -19,12 +19,11 @@ const Landing = () => {
   const fetchFeedbacks = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/getFeedback`);
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/feedback`);
       if (!response.ok) throw new Error('Network response was not ok');
       
       const feedbacks = await response.json();
       const reviews = feedbacks.data;
-
       // Set infiniteReviews only after ensuring the data is valid
       if (reviews.length > 0) {
         setReviews(reviews);
