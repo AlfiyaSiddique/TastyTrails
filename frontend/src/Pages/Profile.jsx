@@ -126,7 +126,7 @@ export default function UserProfile() {
   return (
     <div className="bg-white min-h-screen">
       {/* Banner and Profile Picture */}
-      <div className="relative h-48 bg-red-700">
+      <div className="relative h-48 bg-gradient-to-r from-red-500 to-red-600">
         <div className="absolute -bottom-16 left-8">
           <img 
             src={imagePreview} 
