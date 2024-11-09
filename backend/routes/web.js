@@ -3,7 +3,7 @@ import UserController from "../Controllers/UserController.js";
 import RecipeController from "../Controllers/RecipeController.js";
 import ChatbotController from "../Controllers/ChatbotController.js";
 import authenticateToken from "../middleware/auth.js";
-
+import VerificationController from "../Controllers/VerificationController.js"
 const router = Router();
 
 // Get Requests
@@ -13,7 +13,11 @@ router.get("/recipes", RecipeController.allRecipe);
 // added route to get previous comments
 router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
 // Post Requests
+
+    //  Signup ROUTES
 router.post("/signup", UserController.Signup);
+router.get("/verify-account", VerificationController.verifyEmail);
+
 router.post("/login", UserController.Login);
 router.post("/submitFeedback", UserController.submitFeedback);
 router.get('/feedback', UserController.getAllFeedback);

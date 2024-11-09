@@ -22,6 +22,7 @@ import NotFound from "./Pages/NotFound.jsx";
 import ResetPassword from "./Pages/ResetPassword.jsx";
 import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
+import EmailVerification from "./Pages/EmailVerification.jsx"
 import UserProfile from "./Pages/Profile.jsx";
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/verify-email" element={<EmailVerification/>}></Route>
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/reset_password/:token" element={<ResetPassword />} />
           <Route

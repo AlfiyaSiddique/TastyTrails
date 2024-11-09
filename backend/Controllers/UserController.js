@@ -5,6 +5,9 @@ import dotenv from "dotenv";
 import Feedback from "../models/feedback.js";
 import Recipe from "../models/Recipe.js";
 import Comment from "../models/Comment.js";
+import {sendVerificationEmail} from "../Utils/emailUtils.js";
+import crypto from "crypto";
+
 dotenv.config();
 
 
@@ -15,33 +18,64 @@ dotenv.config();
  * @access public
  */
 const Signup = async (req, res) => {
+  const { firstName, lastName, username, email, password } = req.body;
+
   try {
-    const encryptPassword = bcrypt.hashSync(req.body.password, 10);
-    const newUser = new User({ ...req.body, password: encryptPassword });
+    // Check if email or username is already registered
+    const existingEmail = await User.findOne({ email });
+    const existingUsername = await User.findOne({ username });
 
-    const user = await User.findOne({ email: req.body.email });
-    const username = await User.findOne({ username: req.body.username });
-
-    if (user)
+    if (existingEmail) {
       return res
         .status(400)
         .json({ success: false, message: "Email Already Registered" });
+    }
 
-    if (username)
+    if (existingUsername) {
       return res
         .status(400)
-        .json({ success: false, message: "Username Already Exist" });
+        .json({ success: false, message: "Username Already Exists" });
+    }
 
-    const createdUser = await newUser.save();
-    const token = jwt.sign({ userId: createdUser._id }, process.env.SECRET, {
+    // Encrypt password
+    const encryptedPassword = bcrypt.hashSync(password, 10);
+
+    // Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    // Create new user with encrypted password and verification token
+    const newUser = new User({
+      firstName,
+      lastName,
+      username,
+      email,
+      password: encryptedPassword,
+      verificationToken,
+    });
+
+    
+    // Save user to the database
+    await newUser.save();
+    const token = jwt.sign({ userId: newUser._id }, process.env.SECRET, {
       expiresIn: "30d",
     });
-    res.status(200).json({ success: true, user: createdUser, token: token });
+    // Send verification email
+    await sendVerificationEmail(email, verificationToken, token, newUser._id);
+
+    res.status(201).json({
+      success: true,
+      message: "Please check your email to verify your account",
+      user: newUser,
+      token: token,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(404).json({ success: false, message: "Internal server error" });
+    console.error(error);
+    res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
   }
 };
+
 
 /**
  * @route {GET} /api/login
@@ -67,32 +101,35 @@ const getAllUserName = async (req, res) => {
  */
 const Login = async (req, res) => {
   try {
-    const user = await User.findOne({
-      $or: [
-        { email: req.body.email }, // Search by email
-        { username: req.body.searchTerm }, // Search by username
-      ],
-    });
-    if (!user)
+    const user = await User.findOne(
+        { email: req.body.searchTerm });
+
+    if (!user) {
       return res
         .status(400)
         .json({ success: false, message: "User not Exist" });
+    }
 
-    const isPasswordCorrect = bcrypt.compareSync(
-      req.body.password,
-      user.password
-    );
+    // Check if the user is verified
+    if (!user.isVerified) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Account not verified. Please verify first" });
+    }
 
-    if (!isPasswordCorrect)
+    const isPasswordCorrect = bcrypt.compareSync(req.body.password, user.password);
+
+    if (!isPasswordCorrect) {
       return res
         .status(400)
         .json({ success: false, message: "Incorrect Password" });
+    }
 
     // If the password is correct, generate a JWT token
-    const token = jwt.sign({ userId: user._id  }, process.env.SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
       expiresIn: "30d",
     });
-  
+
     res.status(200).json({ success: true, user: user, token: token });
   } catch (error) {
     console.log(error);
@@ -101,6 +138,7 @@ const Login = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
 
 /**
  * @route {POST} /api/token
@@ -198,7 +236,6 @@ const resetPassword = async function (req, res) {
   const { password } = req.body;
   try {
     const decoded = jwt.verify(token, process.env.SECRET);
-    console.log(decoded);
     const id = decoded.userId;
     const hashPassword = await bcrypt.hash(password, 10);
     await User.findByIdAndUpdate({ _id: id }, { password: hashPassword });
