@@ -4,13 +4,6 @@ import Comment from "../models/Comment.js";
 import axios from "axios";
 import User from "../models/User.js";
 import mongoose from "mongoose";
-import { Octokit } from "@octokit/rest";
-import { json } from "express";
-
-const g_owner = process.env.OWNER;
-const g_repo = process.env.REPO;
-const g_branch = process.env.BRANCH;
-const g_email = process.env.GITHUB_EMAIL;
 
 /**
  * @route {POST} /api/recipe/add
@@ -37,13 +30,7 @@ const addRecipe = async (req, res) => {
       ? lastDocument._id.toString().slice(-4)
       : "0000";
 
-    // Upload the image to GitHub
     
-
-    // If image upload fails, return an error
-    
-
-    // Prepare the recipe data
     const data = {
       user,
       name,
@@ -123,11 +110,6 @@ const allRecipe = async (req, res) => {
   }
 };
 
-/**
- * @function
- * @description Uploads Image to a github repo and returns the downloadable link
- * @access private
- */
 
 
 /**
