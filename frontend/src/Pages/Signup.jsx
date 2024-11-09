@@ -86,7 +86,6 @@ const Signup = () => {
     e.preventDefault();
     setSubmitting(true)
     let submitable = true;
-    console.log(form)
     Object.values(error).forEach((val) => {
       if (val) {
         submitable = false;

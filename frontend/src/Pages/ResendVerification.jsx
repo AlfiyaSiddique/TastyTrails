@@ -7,7 +7,7 @@ const ResendVerificationPage = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const [timeRemaining, setTimeRemaining] = useState(10); // Initial countdown timer
+  const [timeRemaining, setTimeRemaining] = useState(120); // Initial countdown timer
   const [canResend, setCanResend] = useState(false);
   const location = useLocation();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
@@ -49,7 +49,7 @@ const ResendVerificationPage = () => {
       if (response.status === 200) {
         setSuccess(true);
         setCanResend(false); // Disable resend button again
-        setTimeRemaining(10); // Reset timer after successful resend
+        setTimeRemaining(120); // Reset timer after successful resend
 
         // Trigger the toast only once here
         toast.success("Verification email sent successfully.");
