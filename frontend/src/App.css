@@ -5,7 +5,7 @@
 #root {
   max-width: 1366px;
   margin: 0 auto;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 #Hero {
@@ -15,22 +15,26 @@
   background-size: cover;
 }
 
-.error{
+.error {
   margin-top: 0 !important;
 }
 
 /* Animations */
 .animated-text {
-  animation: scaleText .7s ease-in-out 1 alternate; /* Animation properties */
+  animation: scaleText .7s ease-in-out 1 alternate;
+  /* Animation properties */
   transition: all smooth;
 }
 
 @keyframes scaleText {
   from {
-    font-size: 8rem; /* Initial font size */
+    font-size: 8rem;
+    /* Initial font size */
   }
+
   to {
-    font-size: 4rem; /* Final font size */
+    font-size: 4rem;
+    /* Final font size */
   }
 }
 
@@ -42,17 +46,17 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #fafafc; 
+  background: #fafafc;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background:  #B91C1C !important;
+  background: #B91C1C !important;
   border-radius: 12px !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background:  #B91C1C!important;
+  background: #B91C1C !important;
   border-radius: 12px !important;
 }
 
@@ -62,17 +66,17 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #fafafc; 
+  background: #fafafc;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background:  #B91C1C !important;
+  background: #B91C1C !important;
   border-radius: 12px !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background:  #B91C1C!important;
+  background: #B91C1C !important;
   border-radius: 12px !important;
 }
 
@@ -86,9 +90,10 @@
   }
 }
 
-.navbar{
-  background-color: #fed4d4;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+.navbar {
+background-color: #fed4d4;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
 }
 
 .text-\[4rem\] {
@@ -105,16 +110,13 @@
 
 /* ADD THE CLASS OF CLAMPED-TEXT  */
 .clamped-text {
-  display: -webkit-box; 
-  -webkit-box-orient: vertical; /* Define the orientation as vertical */
-  -webkit-line-clamp: 4; /* Limit the number of lines to 4 */
-  overflow: hidden; /* Hide any overflowed content */
-  text-overflow: ellipsis; /* Add ellipsis (...) for overflow */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  /* Define the orientation as vertical */
+  -webkit-line-clamp: 4;
+  /* Limit the number of lines to 4 */
+  overflow: hidden;
+  /* Hide any overflowed content */
+  text-overflow: ellipsis;
+  /* Add ellipsis (...) for overflow */
 }
-
-
-
-
-
-
-
