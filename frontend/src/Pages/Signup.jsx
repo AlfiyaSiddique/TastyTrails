@@ -86,6 +86,7 @@ const Signup = () => {
     e.preventDefault();
     setSubmitting(true)
     let submitable = true;
+
     Object.values(error).forEach((val) => {
       if (val) {
         submitable = false;
@@ -104,7 +105,9 @@ const Signup = () => {
           .then((res) => {
             if (res.data.success) {
               setSubmitting(false)
+
               navigator(`/reverify-email?email=${form.email}`)
+
               
             }
           })

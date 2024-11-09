@@ -24,6 +24,7 @@ import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
 import EmailVerification from "./Pages/EmailVerification.jsx"
 import ResendVerificationPage from "./Pages/ResendVerification.jsx";
+
 import UserProfile from "./Pages/Profile.jsx";
 
 function App() {

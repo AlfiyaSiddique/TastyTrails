@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+
 import crypto from "crypto";
 import { sendVerificationEmail } from "../Utils/emailUtils.js";
 const verifyEmail = async (req, res) => {
