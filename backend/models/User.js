@@ -58,7 +58,9 @@ const userSchema = new mongoose.Schema({
   verificationToken: {
     type: String
   },
-});
+
+}, {timestamps : true});
+
 
 const User = mongoose.model("User", userSchema);
 

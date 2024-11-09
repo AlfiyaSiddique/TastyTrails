@@ -38,7 +38,6 @@ const AccountVerificationPage = () => {
         const userData = await axios.post(`${backendURL}/api/user/fetch`, {
           id: userId,
         });
-        console.log(userData);
         setTimeout(() => {
           setIsVerified(true);
           navigator(`/user/${userData.data._id}`, {

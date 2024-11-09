@@ -17,6 +17,7 @@ router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
     //  Signup ROUTES
 router.post("/signup", UserController.Signup);
 router.get("/verify-account", VerificationController.verifyEmail);
+router.post("/reverify-account", VerificationController.resendVerificationEmail);
 
 router.post("/login", UserController.Login);
 router.post("/submitFeedback", UserController.submitFeedback);
