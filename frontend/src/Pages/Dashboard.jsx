@@ -13,6 +13,8 @@ const Dashboard = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const token = JSON.parse(localStorage.getItem("tastytoken"));
   const user = useLocation().state.user;
+  const [userData, setUserData] = useState(null)
+  const path = useLocation().pathname;
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [recipes, setRecipes] = useState([]);
@@ -29,7 +31,28 @@ const Dashboard = () => {
   };
   const [viewingState, setViewingState] = useState(ViewState.RECIPE);
   const inputFile = useRef(null); // for redirecting click to open input file
-  
+  useEffect(() => {
+    let token = localStorage.getItem("tastytoken");
+    if (token) {
+      token = JSON.parse(token);
+      axios
+        .get(`${backendURL}/api/token`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            setUserData(res.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setUserData(null);
+    }
+  }, [path]);
   // form to send image change request
   const [form, setForm] = useState({
     id: user._id,
@@ -371,10 +394,13 @@ const Dashboard = () => {
                 <h1>
                   {user.firstName} {user.lastName}
                 </h1>
+                {userData && (
+
                 <h1 className="text-black">
-                  Followers: {user.followers.length} Following:{" "}
-                  {user.following.length}
+                  Followers: {userData.user.followers.length} Following:{" "}
+                  {userData.user.following.length}
                 </h1>
+                )}
                 {/* 
                       <p className="mb-8 leading-relaxed">
                         Meggings kinfolk echo park stumptown DIY, kale chips beard

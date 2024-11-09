@@ -407,10 +407,69 @@ const deleteUnverifiedUsers = async () => {
 
 
 
+const toggleFollowUser = async (req, res) => {
+  const { userId, username: followerUsername } = req.body; 
+  try {
+    // Check if the target user exists
+    const targetUser = await User.findById(userId);
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the logged-in user by their username
+    const loggedInUser = await User.findOne({ username: followerUsername });
+
+    if (!loggedInUser) {
+      return res.status(404).json({ message: "Logged-in user not found" });
+    }
+
+    // Check if already following
+    const isFollowing = targetUser.followers.includes(loggedInUser._id);
+
+    if (isFollowing) {
+      // Unfollow: Remove the target user from logged-in user's following and vice versa
+      targetUser.followers = targetUser.followers.filter(
+        (followerId) => followerId.toString() !== loggedInUser._id.toString()
+      );
+      loggedInUser.following = loggedInUser.following.filter(
+        (followingId) => followingId.toString() !== targetUser._id.toString()
+      );
+      await targetUser.save();
+      await loggedInUser.save();
+
+      return res.status(200).json({
+        message: `Successfully unfollowed ${targetUser.username}`,
+        username: targetUser.username,
+        followingCount: loggedInUser.following.length,
+        followersCount: targetUser.followers.length,
+      });
+    } else {
+      // Follow: Add the target user to logged-in user's following and vice versa
+      targetUser.followers.push(loggedInUser._id);
+      loggedInUser.following.push(targetUser._id);
+      await targetUser.save();
+      await loggedInUser.save();
+
+      return res.status(200).json({
+        message: `Successfully followed ${targetUser.username}`,
+        username: targetUser.username,
+        followingCount: loggedInUser.following.length,
+        followersCount: targetUser.followers.length,
+      });
+    }
+  } catch (error) {
+    console.error("Error toggling follow status:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+
 const UserController = {
   Signup,
   Login,
   getAllUserName,
+  toggleFollowUser,
   deleteUserById,
   verifyUserByToken,
   forgotPassword,

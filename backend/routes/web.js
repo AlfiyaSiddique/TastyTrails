@@ -21,6 +21,7 @@ router.post("/reverify-account", VerificationController.resendVerificationEmail)
 
 router.post("/login", UserController.Login);
 router.post("/submitFeedback", UserController.submitFeedback);
+router.post("/follow", UserController.toggleFollowUser);
 router.get('/feedback', UserController.getAllFeedback);
 router.get('/feedback/:id', UserController.getFeedbackByUserId);
 router.post("/feedback/delete", UserController.deleteFeedbackById);
