@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react
 import { useParams, useLocation } from 'react-router-dom'
+
 import axios from 'axios'
 
 export default function UserProfile() {
   const { id } = useParams() // Get the user ID from the URL params
   const backendURL = import.meta.env.VITE_BACKEND_URL
   const token = JSON.parse(localStorage.getItem("tastytoken")) // Token still comes from local storage for authentication
+
   const [user, setUser] = useState(null)
+
   const [username, setUsername] = useState("ChefJulia")
   const [bio, setBio] = useState("Passionate about creating delicious, healthy recipes that anyone can make!")
   const [imagePreview, setImagePreview] = useState("/placeholder.svg?height=128&width=128")
@@ -18,6 +21,7 @@ export default function UserProfile() {
   const [activeTab, setActiveTab] = useState('recipes')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
   const path = useLocation().pathname;
   useEffect(() => {
     let token = localStorage.getItem("tastytoken");
@@ -58,8 +62,9 @@ export default function UserProfile() {
           setImagePreview(res.data.profile)
           setFollowingCount(res.data.following.length)
           setFollowers(res.data.followers.length)
-          console.log(user)
+
           setFollowing(res.data.followers.includes(user.user._id))
+
         })
         .catch((err) => {
           console.error("Error fetching user data", err)
@@ -108,6 +113,7 @@ export default function UserProfile() {
     fetchUserImage()
     fetchRecipes()
     fetchLikedRecipes()  // Call the fetchLikedRecipes function to get liked recipes
+
   }, [id, backendURL, token, user])  // Use id, backendURL, and token in dependencies
 
   const handleFollow = async () => {
@@ -123,10 +129,13 @@ export default function UserProfile() {
     }
   };
 
+
   return (
     <div className="bg-white min-h-screen">
       {/* Banner and Profile Picture */}
+
       <div className="relative h-48 bg-gradient-to-r from-red-500 to-red-600">
+
         <div className="absolute -bottom-16 left-8">
           <img 
             src={imagePreview} 
