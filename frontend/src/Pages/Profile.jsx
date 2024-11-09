@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 export default function UserProfile() {
   const { id } = useParams() // Get the user ID from the URL params
   const backendURL = import.meta.env.VITE_BACKEND_URL
   const token = JSON.parse(localStorage.getItem("tastytoken")) // Token still comes from local storage for authentication
-
+  const [user, setUser] = useState(null)
   const [username, setUsername] = useState("ChefJulia")
   const [bio, setBio] = useState("Passionate about creating delicious, healthy recipes that anyone can make!")
   const [imagePreview, setImagePreview] = useState("/placeholder.svg?height=128&width=128")
@@ -18,6 +18,30 @@ export default function UserProfile() {
   const [activeTab, setActiveTab] = useState('recipes')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const path = useLocation().pathname;
+  useEffect(() => {
+    let token = localStorage.getItem("tastytoken");
+    if (token) {
+      token = JSON.parse(token);
+      axios
+        .get(`${backendURL}/api/token`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            setUser(res.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setUser(null);
+    }
+  }, [path]);
+
 
   useEffect(() => {
     // Fetch user information
@@ -34,6 +58,8 @@ export default function UserProfile() {
           setImagePreview(res.data.profile)
           setFollowingCount(res.data.following.length)
           setFollowers(res.data.followers.length)
+          console.log(user)
+          setFollowing(res.data.followers.includes(user.user._id))
         })
         .catch((err) => {
           console.error("Error fetching user data", err)
@@ -82,12 +108,20 @@ export default function UserProfile() {
     fetchUserImage()
     fetchRecipes()
     fetchLikedRecipes()  // Call the fetchLikedRecipes function to get liked recipes
-  }, [id, backendURL, token])  // Use id, backendURL, and token in dependencies
+  }, [id, backendURL, token, user])  // Use id, backendURL, and token in dependencies
 
-  const handleFollow = () => {
-    setFollowing(!following)
-    setFollowers(followers + (following ? -1 : 1))
-  }
+  const handleFollow = async () => {
+    try {
+      await axios.post(`${backendURL}/api/follow`, 
+        { username: JSON.parse(localStorage.getItem("username")), userId: id },
+        { headers: { Authorization: `Bearer ${token}` }}
+      );
+      setFollowing(!following);
+      setFollowers(followers + (following ? -1 : 1));
+    } catch (err) {
+      console.error("Error updating follow status", err);
+    }
+  };
 
   return (
     <div className="bg-white min-h-screen">
