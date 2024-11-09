@@ -194,72 +194,8 @@ const deleteRecipe = async (req, res) => {
         .json({ success: false, message: "Recipe not found" });
     }
 
-    const imageName = recipe.image;
-    const owner = g_owner;
-    const repo = g_repo;
-    const branch = g_branch;
-    const result = trimUrl(imageName, owner, repo);
 
-    const octokit = new Octokit({
-      auth: process.env.TOKEN,
-    });
 
-    function trimUrl(url, owner, repo) {
-      // To remove the unncessary part from the URL
-      const parsedUrl = new URL(url);
-      const trimmedPath = decodeURIComponent(parsedUrl.pathname.slice(1)); // Decode the URL and remove leading '/'
-      const partToRemove = `${owner}/${repo}/${branch}/`;
-      const finalPath = trimmedPath.replace(partToRemove, "");
-
-      return finalPath;
-    }
-
-    // The function to fetch the file content
-    const fetchFileContent = async () => {
-      try {
-        // Make the request to the GitHub API
-        const response = await octokit.request(
-          "GET /repos/{owner}/{repo}/contents/{path}",
-          {
-            owner: owner,
-            repo: repo,
-            path: result,
-            headers: {
-              "X-GitHub-Api-Version": "2022-11-28",
-            },
-          }
-        );
-        // Getting the SHA key so that it can assist in deletion
-        const sha = response.data.sha;
-        await octokit.request("DELETE /repos/{owner}/{repo}/contents/{path}", {
-          owner: owner,
-          repo: repo,
-          path: result,
-          message: `deleted the image ${result.replace(
-            "TastyTrails/Recipe/",
-            " "
-          )}`,
-          committer: {
-            name: recipe.author,
-            email: g_email,
-          },
-          sha: sha,
-          headers: {
-            "X-GitHub-Api-Version": "2022-11-28",
-          },
-        });
-      } catch (error) {
-        // Handle and log any errors
-        console.error(
-          "Error fetching file content:",
-          error.response ? error.response.data : error.message
-        );
-        throw new Error("Failed to delete image from GitHub");
-      }
-    };
-
-    // Try to delete the file from GitHub
-    await fetchFileContent();
 
     // If successful, delete the recipe from the database
     await Recipe.deleteOne({ _id: req.body.id });
