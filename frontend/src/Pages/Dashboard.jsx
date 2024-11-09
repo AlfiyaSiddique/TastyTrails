@@ -176,7 +176,7 @@ const Dashboard = () => {
       setError("User data is not available.");
     }
   }, [user._id]);
-  console.log(user)
+  
   const handleDelete = (id) => {
     const val = confirm("Are you sure you want to delete this recipe?");
     if (val) {
