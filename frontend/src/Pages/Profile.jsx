@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react
+import { useState, useEffect } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 
 import axios from 'axios'
@@ -134,7 +134,10 @@ export default function UserProfile() {
     <div className="bg-white min-h-screen">
       {/* Banner and Profile Picture */}
 
-      <div className="relative h-48 bg-gradient-to-r from-red-500 to-red-600">
+      <div className="relative h-48 bg-gradient-to-r from-red-500 to-red-600 bg-cover bg-center" style={{ backgroundImage: 'url(https://cdn.pixabay.com/photo/2022/04/30/19/12/cooking-banner-7166200_1280.jpg)' }}>
+
+
+
 
         <div className="absolute -bottom-16 left-8">
           <img 
