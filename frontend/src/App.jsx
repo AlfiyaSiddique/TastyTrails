@@ -24,6 +24,8 @@ import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
 import EmailVerification from "./Pages/EmailVerification.jsx"
 import ResendVerificationPage from "./Pages/ResendVerification.jsx";
+import UserProfile from "./Pages/Profile.jsx";
+
 function App() {
   const [showScroll, setShowScroll] = useState(false);
 
@@ -83,6 +85,7 @@ function App() {
             element={<Recipes key={"Healthy"} type="Healthy" />}
           />
           <Route path="/user/:id" element={<Dashboard />} />
+          <Route path="/profile/:id" element={<UserProfile />} />
           <Route path="/user/:id/new/recipe" element={<AddRecipe />} />
           <Route path="/user/:id/update/recipe" element={<UpdateRecipe />} />
           <Route path="/recipe/:id" element={<OneRecipe />} />
