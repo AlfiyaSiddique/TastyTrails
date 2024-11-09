@@ -23,6 +23,7 @@ import ResetPassword from "./Pages/ResetPassword.jsx";
 import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
 import EmailVerification from "./Pages/EmailVerification.jsx"
+import ResendVerificationPage from "./Pages/ResendVerification.jsx";
 function App() {
   const [showScroll, setShowScroll] = useState(false);
 
@@ -64,6 +65,7 @@ function App() {
           <Route path="/verify-email" element={<EmailVerification/>}></Route>
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/reset_password/:token" element={<ResetPassword />} />
+          <Route path="/reverify-email" element={<ResendVerificationPage />} />
           <Route
             path="/recipes"
             element={<Recipes key={"recipes"} type="" />}

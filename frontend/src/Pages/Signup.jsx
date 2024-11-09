@@ -105,7 +105,7 @@ const Signup = () => {
           .then((res) => {
             if (res.data.success) {
               setSubmitting(false)
-              toast.success("Please check your Email to verify your account");
+              navigator(`/reverify-email?email=${form.email}`)
               
             }
           })
