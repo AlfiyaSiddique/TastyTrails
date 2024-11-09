@@ -1,10 +1,35 @@
-import { useEffect, useState, useRef } from "react";
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import Cards from "../Components/Cards"; // Import Cards component
+import Modal from "react-modal"
+
+const customStyles = {
+  overlay: {
+    position: 'fixed',
+    overflow: 'hidden',
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    WebkitOverflowScrolling: 'touch',
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch',
+  },
+};
+
+Modal.setAppElement('#root');
+
 
 const Dashboard = () => {
   // Routes hooks and passed data
@@ -28,6 +53,23 @@ const Dashboard = () => {
     id: user._id,
     profile: user.profile,
   });
+
+ 
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = '#f00';
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
   
   // Function to fetch all recipes for the user
   const fetchRecipes = () => {
@@ -300,6 +342,25 @@ const Dashboard = () => {
                     Follow
                   </button>
                 </div>
+                <div className="flex justify-center">
+                  <button
+                    className="inline-flex text-white bg-red-700 border-0 py-2 px-10 focus:outline-none hover:bg-red-500 rounded text-md m-2"
+                    onClick={openModal}
+                  >
+                    Edit Profile
+                  </button>
+                  <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={afterOpenModal}
+                    onRequestClose={closeModal}
+                    style={customStyles}
+                    contentLabel="Example Modal"
+                  >
+                    <div>
+                      <EditProfilePopup closeModal={closeModal}></EditProfilePopup>
+                    </div>             
+                  </Modal>
+                </div>
               </div>
             </div>
           </section>
@@ -309,4 +370,53 @@ const Dashboard = () => {
   );
 };
 
+function EditProfilePopup({closeModal}){
+  const some = "hello";
+  const imagePreview = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
+  return(
+    
+    <div className="w-80 h-[70vh] ">
+          <h1 className="font-bold text-2xl ">Edit Profile</h1>
+          <FontAwesomeIcon icon={faTimes} onClick={closeModal} className="w-7 h-7 relative left-[97%] top-[-48px] text-gray-500 hover:cursor-pointer hover:text-black"/>
+          <img
+            className="w-40 h-40 bg-gray-200 object-cover object-center m-auto rounded-[100%]"
+            alt="profile"
+            src={imagePreview}
+            loading="lazy"
+          />
+          <FontAwesomeIcon
+            icon={faPen}
+            className="relative bottom-6 left-24 bg-neutral-300 rounded-full h-3.5 p-1.5 cursor-pointer hover:bg-neutral-400 hover:rotate-[-12deg]"
+            // onClick={uploadImage} // this function will redirect click to input field below
+          />
+          <input
+            type="file"
+            accept=".jpg, .png, image/jpeg, image/png"
+            // ref={inputFile} // set the above inputFile variable's reference
+            className="hidden"
+            // onChange={handleImageChange}
+          ></input>
+          <div className="flex flex-col w-[70%] h-[45%] mx-4 my-2">
+              {[
+                ['First Name', some],
+                ['Last Name', 'some'],
+                ['Email', 'some'],
+                ['Bio', 'some']
+              ].map(([title, value]) => (
+                <div className="grid grid-cols-2 my-3">
+                  <label className="my-auto text-lg">
+                    {title}:
+                  </label>
+                  <input 
+                    type="text"
+                    className="w-40 border-2 border-red-600 rounded-md px-2 py-1 focus:border-2 focus:border-green-400"
+                    value={value}
+                  />
+                </div>
+                
+              ))}
+          </div>
+    </div>
+  )
+}
 export default Dashboard;
