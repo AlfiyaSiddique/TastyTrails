@@ -109,9 +109,9 @@ const Footer = () => {
           <div className="container mx-auto flex flex-wrap sm:flex-nowrap justify-evenly items-start px-5">
             
             {/* Brand, Description, and Links */}
-            <div className="flex flex-col text-red-700 space-y-4 w-full sm:w-2/4 lg:w-2/4 ml-2 mt-6 mr-8">
+            <div className="flex flex-col text-red-700 space-y-4 w-full sm:w-2/4 lg:w-2/4 ml-0 lg:ml-2 mt-6 mr-8">
               <h1 className="text-xl font-bold">TastyTrails</h1>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <p className="text-sm text-gray-500 leading-relaxed ml-1 lg:ml-0">
                 TastyTrails is more than just recipes — it’s a vibrant social network where food lovers can connect, discover, and share the unique flavors of their cultures. A platform for passionate food enthusiasts to dive into a world of tastes!
               </p>
             </div>
@@ -119,8 +119,8 @@ const Footer = () => {
             <div className="flex flex-col text-gray-600  sm:ml-8 w-full sm:w-1/4 lg:w-1/4 mt-6">
               <ul className="space-y-1">
               <h2 className="font-semibold text-gray-900 mb-2">About</h2>
-                <li><a href="/privacy-policy">Privacy Policy</a></li>
-                <li><a href="/contributors">Contributors</a></li>
+                <li className="ml-1 lg:ml-0"><a href="/privacy-policy">Privacy Policy</a></li>
+                <li className="ml-1 lg:ml-0"><a href="/contributors">Contributors</a></li>
               </ul>
             </div>
 
@@ -128,11 +128,11 @@ const Footer = () => {
             <div className="flex flex-col text-gray-600 sm:ml-8 w-full sm:w-1/4 lg:w-1/4 mt-6">
               <ul className="space-y-1">
               <h2 className="font-semibold text-gray-900 mb-2">Links</h2>
-                <li><a href="/recipes">Recipes</a></li>
-                <li><a href="/mainmeals">Main Meal</a></li>
-                <li><a href="/smallbites">Small Bites</a></li>
-                <li><a href="/healthy">Healthy</a></li>
-                <li><a href="/recipe-suggestions">Recipe Bot</a></li>
+                <li className="ml-1 lg:ml-0"><a href="/recipes">Recipes</a></li>
+                <li className="ml-1 lg:ml-0"><a href="/mainmeals">Main Meal</a></li>
+                <li className="ml-1 lg:ml-0"><a href="/smallbites">Small Bites</a></li>
+                <li className="ml-1 lg:ml-0"><a href="/healthy">Healthy</a></li>
+                <li className="ml-1 lg:ml-0"><a href="/recipe-suggestions">Recipe Bot</a></li>
               </ul>
             </div>
 
@@ -145,7 +145,7 @@ const Footer = () => {
             {/* Social Links and Feedback */}
             <div className="flex flex-col text-gray-700 mt-6 w-full sm:w-1/4 lg:w-1/4">
               <h2 className="font-semibold text-gray-900 mb-2">Connect</h2>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 ml-1 lg:ml-0">
                 <Link to="https://www.instagram.com/alfiya.17.siddiq/" className="text-2xl text-red-700 hover:text-red-500">
                   <FontAwesomeIcon icon={faInstagramSquare} />
                 </Link>
@@ -158,7 +158,7 @@ const Footer = () => {
               </div>
               <button
                 onClick={openModal}
-                className="mt-4 py-2 px-2 inline-block bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white transition-all duration-200 max-w-[8rem] "
+                className="mt-4 py-2 px-2 inline-block bg-transparent border border-red-700 text-red-700 rounded hover:bg-red-700 hover:text-white transition-all duration-200 max-w-[8rem] ml-1 lg:ml-0"
               >
                 Feedback
               </button>
