@@ -8,6 +8,7 @@ const router = Router();
 
 // Get Requests
 router.get("/usernames", UserController.getAllUserName);
+router.get("/users", UserController.getUsersWithSimilarUsername);
 router.get("/token", authenticateToken, UserController.verifyUserByToken);
 router.get("/recipes", RecipeController.allRecipe);
 // added route to get previous comments

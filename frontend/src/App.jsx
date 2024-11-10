@@ -26,6 +26,7 @@ import EmailVerification from "./Pages/EmailVerification.jsx"
 import ResendVerificationPage from "./Pages/ResendVerification.jsx";
 
 import UserProfile from "./Pages/Profile.jsx";
+import UserSearch from "./Pages/SearchPage.jsx";
 
 function App() {
   const [showScroll, setShowScroll] = useState(false);
@@ -73,6 +74,7 @@ function App() {
             path="/recipes"
             element={<Recipes key={"recipes"} type="" />}
           />
+          <Route path="/search" element={<UserSearch />} />
           <Route
             path="/mainmeals"
             element={<Recipes key={"Main-meal"} type="Main-meal" />}

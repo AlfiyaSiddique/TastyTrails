@@ -95,6 +95,43 @@ const getAllUserName = async (req, res) => {
 };
 
 /**
+ * @route {GET} /api/users
+ * @description Returns an array of usernames that match the given substring
+ * @access public
+ */
+
+const getUsersWithSimilarUsername = async (req, res) => {
+  try {
+    const { search } = req.query; // Get the substring from the query parameters
+    if (!search) {
+      return res.status(400).json({ success: false, message: "Username is required" });
+    }
+
+    // Find users matching the search query (case-insensitive)
+    const users = await User.find({
+      username: { $regex: search, $options: 'i' }, // 'i' makes the search case-insensitive
+    });
+
+    if (users.length === 0) {
+      return res.status(404).json({ success: false, message: "No users found with the given username substring" });
+    }
+
+    // Add the number of recipes for each user
+    const usersWithRecipeCount = await Promise.all(users.map(async (user) => {
+      const recipeCount = await Recipe.countDocuments({ user: user._id }); // Count recipes for each user
+      return { ...user.toObject(), recipeCount }; // Add the recipe count to the user object
+    }));
+
+    res.status(200).json({ users: usersWithRecipeCount, success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
+
+/**
  * @route {POST} /api/usernames
  * @description Authenticates an User
  * @access public
@@ -480,7 +517,8 @@ const UserController = {
   getAllFeedback,
   getFeedbackByUserId,
   deleteFeedbackById,
-  deleteUnverifiedUsers
+  deleteUnverifiedUsers,
+  getUsersWithSimilarUsername
 };
 
 
