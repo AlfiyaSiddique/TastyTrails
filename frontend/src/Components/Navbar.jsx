@@ -8,6 +8,8 @@ import {
   faBell,
   faBars,
   faTimes,
+  faSun,
+  faMoon,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
@@ -18,6 +20,30 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+   // Add dark mode state
+   const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedMode = localStorage.getItem('darkMode');
+      if (savedMode !== null) {
+        return JSON.parse(savedMode);
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
+   // Add dark mode effect
+   useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      document.body.style.backgroundColor = '#1a1a1a';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.style.backgroundColor = '#ffffff';
+    }
+    localStorage.setItem('darkMode', JSON.stringify(isDark));
+  }, [isDark]);
 
   useEffect(() => {
     let token = localStorage.getItem("tastytoken");
@@ -67,13 +93,18 @@ const Navbar = () => {
     setMenuOpen(false);
   };
 
+  // Add dark mode toggle function
+  const toggleDark = () => {
+    setIsDark(!isDark);
+  };
+
   return (
     <nav
       className={`z-50 relative navbar ${
-        isSticky ? "fixed top-0 left-0 w-full bg-white shadow-md" : ""
+        isSticky ? `fixed top-0 left-0 w-full ${isDark ? 'bg-gray-900 shadow-gray-800' : 'bg-white shadow-md'}` : ""
       }`}
     >
-      <header className="text-gray-600 body-font">
+      <header className={`${isDark ? 'text-gray-200' : 'text-gray-600'} body-font`}>
         <div className="container mx-auto flex items-center justify-between p-5">
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
@@ -86,7 +117,7 @@ const Navbar = () => {
           <div
             className={`fixed inset-0 z-40 transition-all duration-300 transform ${
               menuOpen ? "translate-x-0" : "-translate-x-full"
-            } flex flex-col top-0 left-0 bg-white w-[250px] h-full p-5`}
+            } flex flex-col top-0 left-0 ${isDark ? 'bg-gray-900' : 'bg-white'} w-[250px] h-full p-5`}
           >
             {/* Close button inside the menu */}
             <div className="flex justify-end">
@@ -255,7 +286,20 @@ const Navbar = () => {
 
           {/* User profile actions */}
           {user === null ? (
-            <div className="flex items-center">
+            <div className="flex items-center space-x-4">
+              {/* Add dark mode toggle button */}
+              <button
+                onClick={toggleDark}
+                className={`p-2 rounded-lg ${
+                  isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+                aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                <FontAwesomeIcon 
+                  icon={isDark ? faSun : faMoon} 
+                  className={isDark ? 'text-yellow-300' : 'text-gray-600'}
+                />
+              </button>
               <Link
                 to={path === "/" || path === "/signup" ? "/login" : "/signup"}
               >
@@ -267,6 +311,19 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="flex justify-center items-center">
+               {/* Add dark mode toggle button */}
+               <button
+                onClick={toggleDark}
+                className={`p-2 rounded-lg mr-4 ${
+                  isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+                aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                <FontAwesomeIcon 
+                  icon={isDark ? faSun : faMoon} 
+                  className={isDark ? 'text-yellow-300' : 'text-gray-600'}
+                />
+              </button>
               <div
                 onClick={() =>
                   navigator(`/user/${user._id}`, { state: { user } })
@@ -277,7 +334,7 @@ const Navbar = () => {
                   icon={faUserCircle}
                   className="mx-2 text-red-700 text-lg"
                 />
-                <span className="text-black font-semibold">Profile</span>
+                <span className={`${isDark ? 'text-white' : 'text-black'} font-semibold`}>Profile</span>
               </div>
               <div
                 onClick={() =>

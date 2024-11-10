@@ -100,7 +100,7 @@ const Landing = () => {
 
       {/* -------------------------- Features Section ----------------------  */}
       <section id="Fetaure" className="sm:py-4 mt-[-36vh] sm:my-20  mx-8">
-        <h1 className="text-center font-semibold text-4xl text-red-700 sm:my-4 font-[Merriweather]">
+        <h1 className="text-center font-semibold text-4xl text-red-700 sm:my-4 font-[Merriweather] dark:text-red-500">
           Features
         </h1>
         <div className="grid sm:grid-cols-1 md:grid-cols-3">
@@ -108,15 +108,15 @@ const Landing = () => {
             <div className="rounded-lg overflow-hidden ">
               <img
                 alt="content"
-                className="object-center w-[30%] h-[30%] m-auto"
+                className="object-center w-[30%] h-[30%] m-auto dark:filter dark:brightness-90"
                 src={Foods}
                 loading="lazy"
               />
             </div>
-            <h2 className="text-xl title-font text-gray-900 mt-5 font-semibold">
+            <h2 className="text-xl title-font text-gray-900 dark:text-white mt-5 font-semibold">
               Array of Delights
             </h2>
-            <p className="text-base leading-relaxed mt-2 text-left">
+            <p className="text-base leading-relaxed mt-2 text-left text-gray-700 dark:text-gray-300">
               Indulge in our diverse array of culinary delights from across the
               globe. Discover a rich assortment of recipes that cater to every
               palate, from comforting classics to innovative flavors, providing
@@ -127,15 +127,15 @@ const Landing = () => {
             <div className="rounded-lg overflow-hidden ">
               <img
                 alt="content"
-                className="object-center w-[30%] h-[30%] m-auto"
+                className="object-center w-[30%] h-[30%] m-auto dark:filter dark:brightness-90"
                 src={Search}
                 loading="lazy"
               />
             </div>
-            <h2 className="text-xl title-font text-gray-900 mt-5 font-semibold">
+            <h2 className="text-xl title-font text-gray-900 dark:text-white mt-5 font-semibold">
               Customized Recipe Search
             </h2>
-            <p className="text-base leading-relaxed mt-2 text-left">
+            <p className="text-base leading-relaxed mt-2 text-left text-gray-700 dark:text-gray-300">
               Explore the art of personalized recipe discovery with our
               intuitive search tools. Tailor your culinary exploration by
               filtering recipes based on ingredients, cuisine types, dietary
@@ -147,15 +147,15 @@ const Landing = () => {
             <div className="rounded-lg overflow-hidden ">
               <img
                 alt="content"
-                className="object-center w-[30%] h-[30%] m-auto"
+                className="object-center w-[30%] h-[30%] m-auto dark:filter dark:brightness-90"
                 src={Cooking}
                 loading="lazy"
               />
             </div>
-            <h2 className="text-xl title-font text-gray-900 mt-5 font-semibold">
+            <h2 className="text-xl title-font text-gray-900 dark:text-white mt-5 font-semibold">
               Create Your Own Masterpiece
             </h2>
-            <p className="text-base leading-relaxed mt-2 text-left">
+            <p className="text-base leading-relaxed mt-2 text-left text-gray-700 dark:text-gray-300">
               Unleash your inner chef and craft your culinary masterpieces.
               Share your unique recipes, secret ingredients, and personal
               touches with our community, fostering a space where creativity
@@ -194,14 +194,14 @@ const Landing = () => {
         <div className="container m-auto">
           <div className=" w-[80vw] mx-auto grid md:grid-cols-2 sm:grid-cols-1">
             <div className="w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0 flex flex-col justify-center items-center">
-              <h2 className="text-sm title-font text-gray-500 tracking-widest">
+              <h2 className="text-sm title-font text-gray-500 tracking-widest dark:text-gray-300">
                 TastyTrails
               </h2>
-              <h1 className="font-bold text-3xl title-font mb-4 font-[Merriweather] text-red-700">
+              <h1 className="font-bold text-3xl title-font mb-4 font-[Merriweather] text-red-700 dark:text-red-500">
                 About Us
               </h1>
 
-              <p className="leading-relaxed mb-4">
+              <p className="leading-relaxed mb-4 text-gray-700 dark:text-gray-300">
               Welcome to TastyTrails, your passport to a world of delectable flavors and culinary adventures! At TastyTrails, we are passionate about bringing together food enthusiasts, aspiring chefs, and seasoned cooks on a flavorful journey. Our platform curates a diverse collection of recipes, from time-honored classics to innovative creations, catering to every taste bud. Whether you are a novice in the kitchen or a seasoned pro, TastyTrails is your companion in exploring, sharing, and celebrating the art of cooking. Join us in discovering, creating, and savoring delightful dishes that inspire and unite food lovers worldwide
               </p>
             </div>
