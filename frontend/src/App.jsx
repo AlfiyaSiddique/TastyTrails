@@ -7,7 +7,7 @@ import Navbar from "./Components/Navbar.jsx";
 import ScrollToTop from "./Components/Scrolltotop.jsx";
 import Landing from "./Pages/Landing.jsx";
 import Footer from "./Components/Footer.jsx";
-import ScrollProgressBar from "./components/ScrollProgressBar.jsx";
+import ScrollProgressBar from "./Components/ScrollProgressBar.jsx";
 import Login from "./Pages/Login.jsx";
 import Signup from "./Pages/Signup.jsx";
 import Recipes from "./Pages/Recipes.jsx";
