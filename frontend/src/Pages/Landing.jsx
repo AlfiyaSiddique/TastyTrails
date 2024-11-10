@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
@@ -9,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
 import Testimonial from "../Components/Testimonial.jsx";
+import RecipeOfTheDay from '../Components/RecipeOfTheDay';
 
 const Landing = () => {
   const navigator = useNavigate();
@@ -164,6 +164,14 @@ const Landing = () => {
           </div>
         </div>
       </section>
+
+      {/* -------------------------- Recipe For The Day Section ----------------------  */}
+      <section id="RecipeOfTheDay" className="py-10 mx-8">
+  <h2 className="text-center font-semibold text-4xl text-red-700 mb-4 font-[Merriweather]">
+    Recipe of the Day
+  </h2>
+  <RecipeOfTheDay /> {/* Add the RecipeOfTheDay component here */}
+</section>
 
       {/* -------------------------- Best Dishes Section ----------------------  */}
       <section id="Trending" className="py-4 my-20 mx-8">

@@ -12,6 +12,8 @@ router.get("/token", authenticateToken, UserController.verifyUserByToken);
 router.get("/recipes", RecipeController.allRecipe);
 // added route to get previous comments
 router.get("/recipe/getcomments/:recipeId", RecipeController.getComments);
+// Route to get a random recipe
+router.get('/random', RecipeController.getRandomRecipe);
 // Post Requests
 
     //  Signup ROUTES
