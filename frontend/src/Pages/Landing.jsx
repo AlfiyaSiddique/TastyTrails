@@ -165,6 +165,14 @@ const Landing = () => {
         </div>
       </section>
 
+{/* -------------------------- Recipe For The Day Section ----------------------  */}
+      <section id="RecipeOfTheDay" className="py-10 mx-8">
+        <h2 className="text-center font-semibold text-4xl text-red-700 mb-4 font-[Merriweather]">
+          Recipe of the Day
+        </h2>
+        <RecipeOfTheDay /> {/* Add the RecipeOfTheDay component here */}
+      </section>
+      
       {/* -------------------------- Best Dishes Section ----------------------  */}
       <section id="Trending" className="py-4 my-20 mx-8">
         <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
