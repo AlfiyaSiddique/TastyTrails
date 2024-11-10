@@ -166,11 +166,10 @@ const Landing = () => {
       </section>
 
 {/* -------------------------- Recipe For The Day Section ----------------------  */}
-      <section id="RecipeOfTheDay" className="py-10 mx-8">
-        <h2 className="text-center font-semibold text-4xl text-red-700 mb-4 font-[Merriweather]">
+      <h2 className="text-center font-semibold text-4xl text-red-700 mb-4 font-[Merriweather]">
           Recipe of the Day
         </h2>
-        <RecipeOfTheDay /> {/* Add the RecipeOfTheDay component here */}
+        {/* Add the RecipeOfTheDay component here */}
       </section>
       
       {/* -------------------------- Best Dishes Section ----------------------  */}
