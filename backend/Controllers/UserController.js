@@ -465,11 +465,55 @@ const toggleFollowUser = async (req, res) => {
 
 
 
+
+import mongoose from "mongoose";
+
+const getFollowerAndFollowingList = async (req, res) => {
+  const { id } = req.params; // Get the user ID from route params
+
+  // Check if the user ID is valid (mongoose checks for ObjectId format)
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid user ID" });
+  }
+
+  try {
+    // Find the user with the provided ID
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Fetch the followers' details
+    const followers = await User.find({ '_id': { $in: user.followers } })
+      .select('firstName lastName username profile');  // Only select necessary fields
+
+    // Fetch the following details
+    const following = await User.find({ '_id': { $in: user.following } })
+      .select('firstName lastName username profile');  // Only select necessary fields
+
+    // Return the followers and following data
+    return res.json({
+      followers,
+      following,
+    });
+  } catch (err) {
+    console.error("Error fetching followers and following", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export { getFollowerAndFollowingList };
+
+
+
+
 const UserController = {
   Signup,
   Login,
   getAllUserName,
   toggleFollowUser,
+  getFollowerAndFollowingList,
   deleteUserById,
   verifyUserByToken,
   forgotPassword,
