@@ -21,6 +21,7 @@ router.get("/verify-account", VerificationController.verifyEmail);
 router.post("/reverify-account", VerificationController.resendVerificationEmail);
 
 router.post("/login", UserController.Login);
+router.get("/user/:id/followers-following", UserController.getFollowerAndFollowingList);
 router.post("/submitFeedback", UserController.submitFeedback);
 router.post("/follow", UserController.toggleFollowUser);
 router.get('/feedback', UserController.getAllFeedback);

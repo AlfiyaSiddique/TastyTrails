@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
-
+import FollowModal from '../Components/FollowerModal'
 import axios from 'axios'
 
 export default function UserProfile() {
@@ -9,7 +9,8 @@ export default function UserProfile() {
   const token = JSON.parse(localStorage.getItem("tastytoken")) // Token still comes from local storage for authentication
 
   const [user, setUser] = useState(null)
-
+const [followingList, setFollowingList] = useState(null)
+  const [followersList, setFollowersList] = useState(null);
   const [username, setUsername] = useState("ChefJulia")
   const [bio, setBio] = useState("Passionate about creating delicious, healthy recipes that anyone can make!")
   const [imagePreview, setImagePreview] = useState("/placeholder.svg?height=128&width=128")
@@ -48,6 +49,7 @@ export default function UserProfile() {
 
 
   useEffect(() => {
+    if (user) {
     // Fetch user information
     const fetchUserImage = () => {
       axios
@@ -113,8 +115,8 @@ export default function UserProfile() {
     fetchUserImage()
     fetchRecipes()
     fetchLikedRecipes()  // Call the fetchLikedRecipes function to get liked recipes
-
-  }, [id, backendURL, token, user])  // Use id, backendURL, and token in dependencies
+  }
+  }, [user])
 
   const handleFollow = async () => {
     try {
@@ -128,8 +130,34 @@ export default function UserProfile() {
       console.error("Error updating follow status", err);
     }
   };
+  useEffect(() => {
+    if(user){
+    const fetchFollowersFollowing = async () => {
+      try {
+        const response = await axios.get(`${backendURL}/api/user/${id}/followers-following`);
+        setFollowersList(response.data.followers);
+        setFollowingList(response.data.following);
+        console.log(response)
+        setLoading(false);
+      } catch (err) {
+        setError("Error fetching data");
+        setLoading(false);
+      }
+    };
 
+    fetchFollowersFollowing();
+  }
+  }, [user]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeModalTab, setActiveModalTab] = useState('followers'); // Tracks which tab to show in modal
+
+  const handleOpenModal = (tab) => {
+    setActiveModalTab(tab);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => setIsModalOpen(false);
   return (
     <div className="bg-white min-h-screen">
       {/* Banner and Profile Picture */}
@@ -155,23 +183,31 @@ export default function UserProfile() {
             <h1 className="text-2xl font-bold">{username}</h1>
             <p className="text-gray-600 mt-1">{bio}</p>
           </div>
+          {(user && (user.user._id !== id)) && 
           <button 
-            className={`px-4 py-2 rounded-full ${
-              following 
-                ? 'bg-white text-red-700 border border-red-700 hover:bg-red-50' 
-                : 'bg-red-700 text-white hover:bg-red-800'
-            }`}
-            onClick={handleFollow}
-          >
-            {following ? 'Following' : 'Follow'}
-          </button>
+          className={`px-4 py-2 rounded-full ${
+            following 
+              ? 'bg-white text-red-700 border border-red-700 hover:bg-red-50' 
+              : 'bg-red-700 text-white hover:bg-red-800'
+          }`}
+          onClick={handleFollow}
+        >
+          {following ? 'Following' : 'Follow'}
+        </button>}
+          
         </div>
 
         {/* User Stats */}
         <div className="flex gap-4 mt-4 text-sm">
           <span><strong>{recipes.length}</strong> Recipes</span>
-          <span><strong>{followers}</strong> Followers</span>
-          <span><strong>{followingCount}</strong> Following</span>
+          
+        <button onClick={() => handleOpenModal('followers')}>
+          <strong>{followers}</strong> Followers
+        </button>
+        <button onClick={() => handleOpenModal('following')}>
+          <strong>{followingCount}</strong> Following
+        </button>
+    
         </div>
       </div>
 
@@ -252,6 +288,14 @@ export default function UserProfile() {
           </div>
         )}
       </div>
+      <FollowModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        followers={followersList} // Replace with actual followers data
+        following={followingList} // Replace with actual following data
+        activeTab={activeModalTab}
+        setActiveTab={setActiveModalTab}
+      />
     </div>
   )
 }
