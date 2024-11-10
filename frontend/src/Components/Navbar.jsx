@@ -47,7 +47,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       console.log(window.scrollY);
-      if (window.scrollY > 0) {
+      if (window.scrollY > window.innerHeight) {
 
         setIsSticky(true);
       } else {
@@ -74,10 +74,12 @@ const Navbar = () => {
     //   className={`z-50 relative navbar ${isSticky ? "fixed top-0 left-0 w-full bg-white shadow-md" : ""
     //     }`}
     // >
+    
+
     <nav
       style={{
-        position: "sticky",
-        top: 0,
+        position: isSticky ? "sticky" : "relative",
+        top: isSticky ? 0 : "auto",
         zIndex: 1000,
         backgroundColor: isSticky ? "#fed4d4" : "#fed4d4",
         boxShadow: isSticky ? "0 4px 6px rgba(0, 0, 0, 0.3)" : "none",

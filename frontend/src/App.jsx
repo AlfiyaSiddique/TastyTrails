@@ -7,6 +7,7 @@ import Navbar from "./Components/Navbar.jsx";
 import ScrollToTop from "./Components/Scrolltotop.jsx";
 import Landing from "./Pages/Landing.jsx";
 import Footer from "./Components/Footer.jsx";
+import ScrollProgressBar from "./components/ScrollProgressBar.jsx";
 import Login from "./Pages/Login.jsx";
 import Signup from "./Pages/Signup.jsx";
 import Recipes from "./Pages/Recipes.jsx";
@@ -23,6 +24,18 @@ import ResetPassword from "./Pages/ResetPassword.jsx";
 import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
 import UserProfile from "./Pages/Profile.jsx";
+
+
+// function App() {
+//   return (
+//     <div>
+//       {/* Render ScrollProgressBar at the top */}
+//       <ScrollProgressBar />
+//       <Navbar />
+//       {/* Other components, routes, or layouts */}
+//     </div>
+//   );
+// };
 
 function App() {
   const [showScroll, setShowScroll] = useState(false);
