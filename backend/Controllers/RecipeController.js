@@ -1,9 +1,28 @@
-
 import Recipe from "../models/Recipe.js";
 import Comment from "../models/Comment.js";
 import axios from "axios";
 import User from "../models/User.js";
 import mongoose from "mongoose";
+
+/**
+ * @GET /api/recipes/random
+ * @description Get a random recipe
+ * @access public
+ */
+const getRandomRecipe = async (req, res) => {
+  try {
+    const count = await Recipe.countDocuments();
+    if (count === 0) {
+      return res.status(404).json({ success: false, message: "No recipes found" });
+    }
+    const random = Math.floor(Math.random() * count);
+    const recipe = await Recipe.findOne().skip(random); // Get a random recipe
+    return res.status(200).json({ success: true, recipe });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 /**
  * @route {POST} /api/recipe/add
@@ -486,6 +505,7 @@ const RecipeController = {
   updateShareCount,
   getRecipeById,
   deleteComment,
+  getRandomRecipe,
 };
 
 export default RecipeController;
