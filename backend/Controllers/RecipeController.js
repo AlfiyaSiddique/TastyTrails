@@ -505,9 +505,5 @@ const RecipeController = {
   updateShareCount,
   getRecipeById,
   deleteComment,
-};
-
-export default {
-  RecipeController,
   getRandomRecipe,
 };
