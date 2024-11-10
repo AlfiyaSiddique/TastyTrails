@@ -152,6 +152,17 @@ const Navbar = () => {
               >
                 Recipe bot
               </NavLink>
+              <NavLink
+                to="/search"
+                className={({ isActive }) =>
+                  `mr-5 hover:text-red-700 font-semibold ${
+                    isActive ? "text-red-700" : "text-black"
+                  }`
+                }
+                onClick={handleLinkClick}
+              >
+                Search
+              </NavLink>
             </nav>
           </div>
 
@@ -228,6 +239,17 @@ const Navbar = () => {
               onClick={handleLinkClick}
             >
               Recipe bot
+            </NavLink>
+            <NavLink
+              to="/search"
+              className={({ isActive }) =>
+                `mr-5 hover:text-red-700 font-semibold ${
+                  isActive ? "text-red-700" : "text-black"
+                }`
+              }
+              onClick={handleLinkClick}
+            >
+              Search
             </NavLink>
           </nav>
 
