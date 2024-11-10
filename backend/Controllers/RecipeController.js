@@ -507,3 +507,5 @@ const RecipeController = {
   deleteComment,
   getRandomRecipe,
 };
+
+export default RecipeController;
