@@ -17,6 +17,7 @@ router.post("/signup", UserController.Signup);
 router.post("/login", UserController.Login);
 router.post("/feedback", UserController.submitFeedback);
 router.post("/user/imageUpdate", UserController.UpdateImage);
+router.post("/user/infoUpdate", UserController.UpdateInfo);
 router.post("/user/fetch", UserController.FetchUser);
 router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);
 router.post("/recipe/update", authenticateToken, RecipeController.updateRecipe);
