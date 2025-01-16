@@ -262,7 +262,6 @@ const Dashboard = () => {
       })
       .catch((err) => {
         toast.error("Some Error occured please try again later.");
-        // console.log(err);
       });
   };
 
@@ -603,7 +602,6 @@ function EditProfilePopup({userInfo, setUserInfo}) {
       })
       .catch((err) => {
         toast.error("Some Error occured please try again later.");
-        // console.log(err);
       });
   }
 
@@ -619,14 +617,13 @@ function EditProfilePopup({userInfo, setUserInfo}) {
   return(
     <div className="flex justify-center">
       <button
-        className="ml-4 inline-flex text-white bg-red-700 border-0 py-2 px-6 focus:outline-none hover:bg-red-500 rounded text-md m-2"
+        className="inline-flex text-white bg-red-700 border-0 py-2 px- focus:outline-none hover:bg-red-500 rounded text-md m-2"
         onClick={openModal}
       >
         Edit Profile
       </button>
       <Modal
         isOpen={modalIsOpen}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
