@@ -619,7 +619,7 @@ function EditProfilePopup({userInfo, setUserInfo}) {
   return(
     <div className="flex justify-center">
       <button
-        className="inline-flex text-white bg-red-700 border-0 py-2 px-10 focus:outline-none hover:bg-red-500 rounded text-md m-2"
+        className="ml-4 inline-flex text-white bg-red-700 border-0 py-2 px-6 focus:outline-none hover:bg-red-500 rounded text-md m-2"
         onClick={openModal}
       >
         Edit Profile
