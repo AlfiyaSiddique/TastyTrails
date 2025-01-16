@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import router from "./routes/web.js";
 import mongoose from "mongoose";
 import { rateLimit } from "./middleware/rateLimit.js";
+import UserController from "./Controllers/UserController.js";
+import { CronJob} from "cron";
 import client from "prom-client";
 dotenv.config();
 
@@ -88,17 +90,32 @@ app.get("/metrics", async (_, res) => {
 // Database Connection and server
 try {
   await mongoose
-    .connect(process.env.DATABASE, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    .then(() => {
-      console.log("Successfully Connected To MongoDB Server!");
-
-      app.listen(port, () => {
-        console.log(`The server is running at ${process.env.PORT}`);
-      });
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Successfully Connected To MongoDB Server!");
+    
+    app.listen(port, () => {
+      console.log(`The server is running at ${process.env.PORT}`);
     });
+  });
 } catch (error) {
   console.log(error);
 }
+
+
+
+const job = new CronJob('0 0 * * *', async () => {  // Changed for testing every minute
+  console.log('User Cleanup Job triggered');
+  try {
+    await UserController.deleteUnverifiedUsers();
+  } catch (error) {
+    console.error('Error running scheduled task:', error);
+  }
+});
+console.log("Scheduler started: Unverified users cleanup task will run every day at midnight.")
+
+job.start()
+

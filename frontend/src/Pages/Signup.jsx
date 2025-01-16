@@ -8,6 +8,9 @@ import { toast } from "react-toastify";
 
 import useGoogleAuth from "../../common/useGoogleAuth"
 
+import image from "../../public/registerimage.jpg"
+
+
 
 const Signup = () => {
 
@@ -15,7 +18,8 @@ const Signup = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     // Signup Form Data
     firstName: "",
@@ -80,7 +84,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     // Handle Signup Submit
     e.preventDefault();
-    setLoading(true)
+    setSubmitting(true)
     let submitable = true;
 
     Object.values(error).forEach((val) => {
@@ -93,36 +97,27 @@ const Signup = () => {
     if (submitable) {
       const usernames = await getUsernames();
       if (usernames.includes(form.username)) {
-        setLoading(false)
+        setSubmitting(false)
         toast.error("Username already exist please try another.");
       } else {
         axios
           .post(`${backendURL}/api/signup`, form)
           .then((res) => {
             if (res.data.success) {
-              setLoading(false)
-              toast.success("User Created Successfully");
-              localStorage.setItem(
-                "tastytoken",
-                JSON.stringify(res.data.token)
-              );
-              // creating a token named "username" for storing logged in user's name for comment purposes
-              localStorage.setItem(
-                "username",
-                JSON.stringify(res.data.user.username)
-              );
-              navigator(`/user/${res.data.user._id}`, {
-                state: { user: res.data.user },
-              });
+              setSubmitting(false)
+
+              navigator(`/reverify-email?email=${form.email}`)
+
+              
             }
           })
           .catch((err) => {
-            setLoading(false)
+            setSubmitting(false)
             toast.error(err.response.data.message);
           });
       }
     } else {
-      setLoading(false)
+      setSubmitting(false)
       toast.error("Fill all fields with valid values");
     }
   };
@@ -160,215 +155,229 @@ const Signup = () => {
   };
 
 
-  const googleSignup = useGoogleAuth(handleGoogleSignup, true);
-return(
-    <div>
 
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="font-[Merriweather] text-xl font-bold leading-tight tracking-tight text-red-700 md:text-2xl dark:text-white">
-              Create an account
-            </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-              {/* First Name and Last Name Side by Side */}
-              <div className="flex gap-4">
-                <div className="flex-1">
+  return (
 
-                  <label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
-                    placeholder="Ex. John"
-                    value={form.firstName}
-                    onChange={handleChange}
-                    required={true}
-                  />
-                  {error.firstName && (
-                    <p className="text-red-500 text-sm">
-                      {error.firstNameError}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex-1">
-                  <label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
-                    placeholder="Ex. Doe"
-                    value={form.lastName}
-                    onChange={handleChange}
-                    required={true}
-                  />
-                  {error.lastName && (
-                    <p className="text-red-500 text-sm">
-                      {error.lastNameError}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Username Field */}
-              <div>
+   <div className="Container min-h-screen mt-16 bg-white flex justify-center items-center  px-4 sm:px-8 md:px-12 lg:px-16">
+    <div className="InnerDiv  w-full max-w-[95vw] lg:max-w-[85vw]  xl:max-w-[75vw] md:w-[75vw] mb-8 flex flex-col md:flex-row justify-between items-center lg:flex-row  space-y-12 lg:space-y-0">
+      {/* Left Section */}
+      <div className="left w-full md:w-[45%] lg:w-[40%] text-center lg:text-left space-y-8">
+        <div className="content w-full">
+          <h2 className="font-extrabold text-3xl sm:text-4xl md:text-4xl text-center md:text-left">
+            Join the Community of Over{" "}
+            <span className="text-red-500">1 million+ people</span>
+          </h2>
+          <div className="image  ml-6  mt-6">
+            <img
+              className="w-full max-w-[28rem] rounded-full md:h-[65vh]  shadow-md "
+              src={image}
+              alt="Community"
+            />
+          </div>
+          <h3 className="font-extrabold text-2xl sm:text-3xl md:text-3xl mt-8 text-center lg:text-4xl">
+            <span className="">#1</span> Food Review{" "}
+            <span className="text-red-500">Explore</span> Site
+          </h3>
+        </div>
+      </div>
+  
+      {/* Right Section (Form) */}
+      <div className="right w-full  md:w-[50%] lg:w-[50%] flex justify-center">
+        <div className="form w-full max-w-[90%]  md:w-[80%] lg:max-w-[80%] h-auto p-6 border-2 shadow-md rounded-xl ">
+          <h1 className="text-black text-xl lg:text-2xl text-center mb-6">Register</h1>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* First and Last Name */}
+            <div className="name flex flex-col md:flex-row justify-between space-y-4 md:space-y-0">
+              <div className="first w-full md:w-[48%] ">
                 <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-black"
                 >
-                  Username
+                  First Name
                 </label>
                 <input
                   type="text"
-                  id="username"
-                  name="username"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
-                  placeholder="Ex. jhonedoe12"
-                  value={form.username}
+                  id="firstName"
+                  name="firstName"
+                  className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                  placeholder="Ex. John"
+                  value={form.firstName}
                   onChange={handleChange}
-                  required={true}
+                  required
                 />
-                {error.username && (
-                  <p className="text-red-500 text-sm">
-                    {error.usernameError}
-                  </p>
+                {error.firstName && (
+                  <p className="text-red-500 text-sm">{error.firstNameError}</p>
                 )}
               </div>
-
-              {/* Email Field */}
-              <div>
+  
+              <div className="second w-full md:w-[48%]">
                 <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-black"
                 >
-                  Email
+                  Last Name
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
-                  placeholder="abc@gmail.com"
-                  value={form.email}
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                  placeholder="Ex. Doe"
+                  value={form.lastName}
                   onChange={handleChange}
-                  required={true}
+                  required
                 />
-                {error.email && (
-                  <p className="text-red-500 text-sm">{error.emailError}</p>
+                {error.lastName && (
+                  <p className="text-red-500 text-sm">{error.lastNameError}</p>
                 )}
               </div>
-
-              {/* Password Field */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Password
-                </label>
-                <div className="relative">
-                  <input
-                    type={show ? "text" : "password"}
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
-                    required={true}
-                    value={form.password}
-                    onChange={handleChange}
-
-                    onFocus={() => setPasswordFocused(true)}
-                    onBlur={() => setPasswordFocused(false)}
-
-                  />
-                  <FontAwesomeIcon
-                    icon={show ? faEye : faEyeSlash}
-                    onClick={() => setShow(!show)}
-                    className="absolute top-0 right-0 m-3 cursor-pointer"
-                  />
-                </div>
-                {error.password && (
-                  <div className="text-red-500 text-sm mt-2">
-                    <ul className="list-disc list-inside">
-                      <li>Minimum 8 characters</li>
-                      <li>At least 1 uppercase letter</li>
-                      <li>At least 1 lowercase letter</li>
-                      <li>At least 1 number</li>
-                      <li>At least 1 symbol</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              {/* Confirm Password Field */}
-              <div>
-                <label
-                  htmlFor="cpassword"
-                  className="block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="cpassword"
-                  id="cpassword"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors duration-200 ease-in-out"
-                  required={true}
-                  value={form.cpassword}
-                  onChange={handleChange}
-                />
-                {error.cpassword && (
-                  <p className="error text-red-500 text-sm mt-0 mb-2">
-                    {error.cpasswordError}
-                  </p>
-                )}
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pt-gray-900 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            </div>
+  
+            {/* Username */}
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-black"
               >
-                Sign Up
-              </button>
-            </form>
-            <button onClick={() => googleSignup()} className="w-full text-white bg-red-700 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ">
-            <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" className="w-8 h-8 mr-2 inline-block"/> Sign up with Google
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                placeholder="Ex. jhonedoe12"
+                value={form.username}
+                onChange={handleChange}
+                required
+              />
+              {error.username && (
+                <p className="text-red-500 text-sm">{error.usernameError}</p>
+              )}
+            </div>
+  
+            {/* Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-black"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                placeholder="abc@gmail.com"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+              {error.email && (
+                <p className="text-red-500 text-sm">{error.emailError}</p>
+              )}
+            </div>
+  
+            {/* Password */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-black"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={show ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
+                <FontAwesomeIcon
+                  icon={show ? faEye : faEyeSlash}
+                  onClick={() => setShow(!show)}
+                  className="absolute top-0 right-3 m-3 cursor-pointer"
+                />
+              </div>
+              {error.password && (
+                <div className="text-red-500 text-sm mt-2">
+                  <ul className="list-disc pl-5">
+                    <li>Minimum 8 characters</li>
+                    <li>At least 1 uppercase letter</li>
+                    <li>At least 1 lowercase letter</li>
+                    <li>At least 1 number</li>
+                    <li>At least 1 symbol</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+  
+            {/* Confirm Password */}
+            <div>
+              <label
+                htmlFor="cpassword"
+                className="block text-sm font-medium text-black"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="cpassword"
+                id="cpassword"
+                placeholder="••••••••"
+                className="w-full p-3 rounded-lg bg-white border border-gray-300 text-gray-900 focus:ring-primary-600 focus:border-primary-600"
+                value={form.cpassword}
+                onChange={handleChange}
+                required
+              />
+              {error.cpassword && (
+                <p className="text-red-500 text-sm mt-0 mb-2">
+                  {error.cpasswordError}
+                </p>
+              )}
+            </div>
+  
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full   md:ml-16 md:w-[18vw] h-[5vh] mx-auto mt-6 bg-red-700 text-white rounded-md hover:bg-red-600 transition hover:border-white hover:border-solid hover:border-2"
+            >
+              Sign up
             </button>
-               {/* Already Have an Account */}
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already Have an Account?{" "}
-                <Link
-                  to="/login"
-                  className="font-medium text-pt-gray-900 hover:underline dark:text-primary-500 hover:text-red-700"
-                >
-                  Login
-                </Link>
-              </p>
+  
+            {/* Login Link */}
+            <p className="text-black text-center mt-4 text-[18px]">
+              Already have an account?{" "}
+              <Link
+                to="/Login"
+                className="text-blue-400 hover:text-blue-500 pl-2"
+              >
+                Login
+              </Link>
+            </p>
+          </form>
+          {submitting && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <div className="flex justify-center items-center space-x-2">
+            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-t-transparent border-blue-500" role="status"></div>
+            <p className="text-lg font-semibold text-gray-800">Processing Sign-Up... Please Wait</p>
           </div>
         </div>
       </div>
-    </section>
+      )}
+        </div>
+      </div>
+    </div>
   </div>
+  );
+};
 
-
-              );
-              };
 export default Signup
 
 

@@ -5,10 +5,11 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-
+import image from "../../public/newFoodSignup.jpeg"
 
 import useGoogleAuth from "../../common/useGoogleAuth"
-import image from "../../public/newFoodSignup.jpeg"
+
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -80,8 +81,6 @@ const Login = () => {
   const googleLogin = useGoogleAuth(handleLogin);
 
   return (
-
-
 
     <>
     <div className="w-full  min-h-screen flex justify-center items-center md:flex-row px-4">

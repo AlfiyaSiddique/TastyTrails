@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Foods from "../assets/Images/ArrayOfFoods.png";
 import Search from "../assets/Images/Seach Recipe.png";
@@ -9,14 +8,32 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RecipeCardSkeleton from "./RecipeSkeleton.jsx";
 import Testimonial from "../Components/Testimonial.jsx";
+import RecipeOfTheDay from '../Components/RecipeOfTheDay';
 
 const Landing = () => {
   const navigator = useNavigate();
   const [best, setBest] = useState([])
   const [loading, setLoading] = useState(true);
-   const backendURL = import.meta.env.VITE_BACKEND_URL;
-   
-
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const [reviews, setReviews] = useState(null);
+  const fetchFeedbacks = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/feedback`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const feedbacks = await response.json();
+      const reviews = feedbacks.data;
+      // Set infiniteReviews only after ensuring the data is valid
+      if (reviews.length > 0) {
+        setReviews(reviews);
+      }
+    } catch (error) {
+      console.error('Error fetching feedbacks:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(()=>{
     let token = localStorage.getItem("tastytoken");
    if(token){
@@ -35,6 +52,7 @@ const Landing = () => {
       console.log(err)
      })
    }
+   fetchFeedbacks();
   }, [])
 
   
@@ -147,6 +165,13 @@ const Landing = () => {
         </div>
       </section>
 
+{/* -------------------------- Recipe For The Day Section ----------------------  */}
+      <section id="RecipeOfTheDay" className="py-10 mx-8">
+        <h2 className="text-center font-semibold text-4xl text-red-700 mb-4 font-[Merriweather]">
+        </h2>
+        <RecipeOfTheDay /> {/* Add the RecipeOfTheDay component here */}
+      </section>
+      
       {/* -------------------------- Best Dishes Section ----------------------  */}
       <section id="Trending" className="py-4 my-20 mx-8">
         <h1 className="text-center font-semibold text-4xl text-red-700 my-4 font-[Merriweather]">
@@ -197,7 +222,10 @@ const Landing = () => {
         </div>
       </section>
       <section>
-        <Testimonial />
+        {reviews &&(
+
+        <Testimonial infiniteReviews={reviews} />
+        )}
       </section>
     </div>
   );

@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import Cards from "../Components/Cards"; // Import Cards component
+import { Star } from "lucide-react";
+import { FaTrash  } from 'react-icons/fa';
 import Modal from "react-modal"
 
 const customStyles = {
@@ -37,15 +39,46 @@ const Dashboard = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const token = JSON.parse(localStorage.getItem("tastytoken"));
   const user = useLocation().state.user;
+  const [userData, setUserData] = useState(null)
+  const path = useLocation().pathname;
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState(null); // Track any errors
+  const [feedbacks, setFeedbacks] = useState([]);
   const [likedRecipes, setLikedRecipes] = useState([]);
   const [viewingLikedRecipes, setViewingLikedRecipes] = useState(false); // Track if we are viewing liked recipes
-  const [userInfo, setUserInfo] = useState({}); // default image to preview
+  const [userInfo, setUserInfo] = useState({});
 
+  const ViewState = {
+    RECIPE: 'RECIPE',
+    LIKED_RECIPE: 'LIKED_RECIPE',
+    FEEDBACK: 'FEEDBACK',
+  };
+  const [viewingState, setViewingState] = useState(ViewState.RECIPE);
   const inputFile = useRef(null); // for redirecting click to open input file
-  
+  useEffect(() => {
+    let token = localStorage.getItem("tastytoken");
+    if (token) {
+      token = JSON.parse(token);
+      axios
+        .get(`${backendURL}/api/token`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            setUserData(res.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setUserData(null);
+    }
+  }, [path]);
   // form to send image change request
   const [form, setForm] = useState({
     id: user._id,
@@ -106,16 +139,71 @@ const Dashboard = () => {
       });
   };
 
+  const fetchFeedbacks = () => {
+    setLoading(true);
+   
+    fetch(`${backendURL}/api/feedback/${user._id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch feedbacks.');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setFeedbacks(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching feedbacks:", error);
+        setError("Failed to fetch feedbacks. Please try again.");
+      })
+      .finally(() => setLoading(false)); // Set loading to false after fetching
+  };
+  
+  const handleFeedbackDelete = (id)=>{
+    const val = confirm("Are you sure you want to delete this feedback?");
+    if (val) {
+      axios
+        .post(
+          `${backendURL}/api/feedback/delete`,
+          { id: id },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.success) {
+            toast.success("Feedback Deleted Successfully");
+            setFeedbacks((prevFeedbacks) =>
+              prevFeedbacks.filter((feedback) => feedback._id !==   id)
+            );
+          } else {
+            toast.error("Failed to delete feedback. Please try again later.");
+          }
+        })
+        .catch((err) => {
+          toast.error(`Error deleting the feedback: ${err.message}`);
+        });
+    }
+    
+  }
   useEffect(() => {
     if (user._id) {
       fetchRecipes(); // Only fetch recipes if user ID is available
-      fetchUserInfo(); // fetch user image if ID available
+      fetchFeedbacks();
+      fetchUserInfo(); // fetch user info(with image) if ID available
     } else {
       console.error("User ID is missing!");
       setError("User data is not available.");
     }
   }, [user._id]);
-
+  
   const handleDelete = (id) => {
     const val = confirm("Are you sure you want to delete this recipe?");
     if (val) {
@@ -188,7 +276,22 @@ const Dashboard = () => {
     localStorage.removeItem("tastytoken");
     navigator("/");
   };
-
+  const handleAccountDelete = async () => {
+    try {
+      const response = await axios.delete(`${backendURL}/api/user/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token if required
+        },
+      });
+      if (response.data.success) {
+        logout();
+      }
+    } catch (error) {
+      console.error("error deleting account", error);
+      toast.error("Error! Account Deletion Failed")
+    }
+  };
+  
   return (
     <div id="userDashboard" className="border-gray-200 border-t-[1px]">
       <div className="grid md:grid-cols-[70%_30%] grid-cols-1 relative">
@@ -199,22 +302,30 @@ const Dashboard = () => {
           <nav className="md:ml-auto md:mr-auto flex flex-wrap items-start text-base justify-star border-b border-gray-200">
             <span
               className={`mr-5 hover:text-gray-900 cursor-pointer border-b pb-1 ${
-                !viewingLikedRecipes ? "border-red-700" : ""
+                viewingState === ViewState.RECIPE ? "border-red-700" : ""
               }`}
-              onClick={() => setViewingLikedRecipes(false)}
+              onClick={() => setViewingState(ViewState.RECIPE)}
             >
               My Recipe
             </span>
             <span
               className={`mr-5 hover:text-gray-900 cursor-pointer ${
-                viewingLikedRecipes ? "border-red-700" : ""
+                viewingState === ViewState.LIKED_RECIPE ? "border-red-700" : ""
               }`}
               onClick={() => {
-                setViewingLikedRecipes(true);
+                setViewingState(ViewState.LIKED_RECIPE);
                 fetchLikedRecipes(); // Fetch liked recipes when the tab is clicked
               }}
             >
               Liked Recipe
+            </span>
+            <span
+              className={`mr-5 hover:text-gray-900 cursor-pointer border-b pb-1 ${
+                (viewingState == ViewState.FEEDBACK) ? "border-red-700" : ""
+              }`}
+              onClick={() => setViewingState(ViewState.FEEDBACK)}
+            >
+              Feedbacks
             </span>
           </nav>
           <section className="text-gray-600 body-font overflow-hidden">
@@ -223,12 +334,11 @@ const Dashboard = () => {
                 <div>Loading...</div>
               ) : (
                 <div className="-my-8 divide-y-2 divide-gray-100">
-                  {viewingLikedRecipes
-                    ? likedRecipes.map((recipe) => (
+                  {viewingState === ViewState.LIKED_RECIPE && likedRecipes.map((recipe) => (
                         <Cards key={recipe._id} dish={recipe} />
                         // Ensure recipe._id is unique
-                      ))
-                    : recipes.map((recipe) => (
+                      )) }
+                    {viewingState === ViewState.RECIPE && recipes.map((recipe) => (
                         <div
                           key={recipe._id}
                           className="cursor-pointer py-8 flex flex-wrap md:flex-nowrap"
@@ -271,6 +381,15 @@ const Dashboard = () => {
                           </div>
                         </div>
                       ))}
+                  {viewingState === ViewState.FEEDBACK &&
+                    feedbacks.map((feedback) => (
+                      <div
+                        key={feedback._id}
+                        className="py-4"
+                      >
+                       <FeedbackCard feedback={feedback} handleFeedbackDelete={handleFeedbackDelete}/>
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
@@ -301,10 +420,13 @@ const Dashboard = () => {
                 <h1>
                   {userInfo.firstName} {userInfo.lastName}
                 </h1>
+                {userData && (
+
                 <h1 className="text-black">
-                  Followers: {user.followers.length} Following:{" "}
-                  {user.following.length}
+                  Followers: {userData.user.followers.length} Following:{" "}
+                  {userData.user.following.length}
                 </h1>
+                )}
                 {/* 
                       <p className="mb-8 leading-relaxed">
                         Meggings kinfolk echo park stumptown DIY, kale chips beard
@@ -322,8 +444,22 @@ const Dashboard = () => {
                   <button className="ml-4 inline-flex text-gray-700 bg-gray-100 py-2 px-3 focus:outline-none hover:bg-gray-200 rounded text-md border border-red-600 m-2">
                     Follow
                   </button>
+                  
                 </div>
                 <EditProfilePopup userInfo={userInfo} setUserInfo={setUserInfo}/>
+                <button className="ml-4 inline-flex text-gray-700 bg-gray-100 py-2 px-3 focus:outline-none hover:bg-gray-200 rounded text-sm border border-red-600 m-2"
+                onClick={() => setModalOpen(true)}>
+                    Delete Account
+                  </button>
+                  <ConfirmationModal
+        isOpen={isModalOpen}
+        username={user.username}
+        onClose={() => setModalOpen(false)}
+        onConfirm={() => {
+          handleAccountDelete();
+          setModalOpen(false);
+        }}
+      />
               </div>
             </div>
           </section>
@@ -332,6 +468,68 @@ const Dashboard = () => {
     </div>
   );
 };
+
+
+const FeedbackCard = ({feedback, handleFeedbackDelete})=>{
+  return(
+  <div className="rounded-lg mr-5 w-2/3 p-4 flex flex-col justify-between h-full transition-shadow duration-300 transform hover:scale-105 shadow-[0_2px_10px_rgba(0,0,0,0.3)] bg-white">
+    <div>
+      <div className="flex items-center mb-4">
+        <img src={feedback.userId.profile} alt={feedback.userId.firstName} className="w-16 h-16 rounded-full border-2 mr-4 object-cover" />
+        <div>
+          <h3 className="font-semibold text-lg text-gray-800">{feedback.userId.firstName} {feedback.userId.lastName}</h3>
+          <p className="text-sm text-red-600">{feedback.role}</p>
+        </div>
+        <div className="cursor-pointer absolute top-4 right-4 cursor-pointer" onClick={()=>handleFeedbackDelete(feedback._id)}>
+
+        <FaTrash size={35} color="#FA5252" />
+        </div>
+      </div>
+      <p className="text-xl font-bold mb-2 text-gray-800">"{feedback.quote}"</p>
+      <p className="mb-4 text-gray-600">{feedback.review}</p>
+    </div>
+    <div className="flex items-center">
+      {[...Array(5)].map((_, i) => (
+        <Star key={i} className={`w-5 h-5 ${i < feedback.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+      ))}
+    </div>
+  </div>
+)}
+
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, username }) => {
+  const [inputValue, setInputValue] = useState("");
+
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+      <div className="bg-white rounded p-5 shadow-lg">
+        <h2 className="text-lg font-semibold">Are you sure?</h2>
+        <p className="mt-2">This action will permanently delete your account.</p>
+        <p className="mt-2">Type <span className="bg-gray-200 font-bold rounded px-2">{username}</span> to confirm:</p>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="border border-gray-300 rounded px-2 py-1 mt-2 w-full"
+          placeholder="Enter your username"
+        />
+        <div className="mt-4 flex justify-between">
+          <button onClick={onClose} className="text-gray-600 border border-red-500 px-4 py-2 rounded">Cancel</button>
+          <button
+            onClick={onConfirm}
+            className={`bg-red-500 text-white px-4 py-2 rounded ${inputValue === username ? '' : 'opacity-50 cursor-not-allowed'}`}
+            disabled={inputValue !== username} // Disable button if username does not match
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 // info won't be updated on frontend after clicking 'done' below func will
 function EditProfilePopup({userInfo, setUserInfo}) {

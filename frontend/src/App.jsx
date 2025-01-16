@@ -7,6 +7,7 @@ import Navbar from "./Components/Navbar.jsx";
 import ScrollToTop from "./Components/Scrolltotop.jsx";
 import Landing from "./Pages/Landing.jsx";
 import Footer from "./Components/Footer.jsx";
+import ScrollProgressBar from "./Components/ScrollProgressBar.jsx";
 import Login from "./Pages/Login.jsx";
 import Signup from "./Pages/Signup.jsx";
 import Recipes from "./Pages/Recipes.jsx";
@@ -22,6 +23,23 @@ import NotFound from "./Pages/NotFound.jsx";
 import ResetPassword from "./Pages/ResetPassword.jsx";
 import ForgotPassword from "./Pages/ForgotPassword.jsx";
 import RecipeSuggestions from "./Pages/RecipeSuggestions.jsx";
+import EmailVerification from "./Pages/EmailVerification.jsx"
+import ResendVerificationPage from "./Pages/ResendVerification.jsx";
+
+import UserProfile from "./Pages/Profile.jsx";
+import UserSearch from "./Pages/SearchPage.jsx";
+
+
+// function App() {
+//   return (
+//     <div>
+//       {/* Render ScrollProgressBar at the top */}
+//       <ScrollProgressBar />
+//       <Navbar />
+//       {/* Other components, routes, or layouts */}
+//     </div>
+//   );
+// };
 
 function App() {
   const [showScroll, setShowScroll] = useState(false);
@@ -61,12 +79,15 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/verify-email" element={<EmailVerification/>}></Route>
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/reset_password/:token" element={<ResetPassword />} />
+          <Route path="/reverify-email" element={<ResendVerificationPage />} />
           <Route
             path="/recipes"
             element={<Recipes key={"recipes"} type="" />}
           />
+          <Route path="/search" element={<UserSearch />} />
           <Route
             path="/mainmeals"
             element={<Recipes key={"Main-meal"} type="Main-meal" />}
@@ -80,6 +101,7 @@ function App() {
             element={<Recipes key={"Healthy"} type="Healthy" />}
           />
           <Route path="/user/:id" element={<Dashboard />} />
+          <Route path="/profile/:id" element={<UserProfile />} />
           <Route path="/user/:id/new/recipe" element={<AddRecipe />} />
           <Route path="/user/:id/update/recipe" element={<UpdateRecipe />} />
           <Route path="/recipe/:id" element={<OneRecipe />} />
