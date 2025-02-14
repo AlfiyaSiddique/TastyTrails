@@ -30,6 +30,7 @@ router.get('/feedback', UserController.getAllFeedback);
 router.get('/feedback/:id', UserController.getFeedbackByUserId);
 router.post("/feedback/delete", UserController.deleteFeedbackById);
 router.post("/user/imageUpdate", UserController.UpdateImage);
+router.post("/user/infoUpdate", UserController.UpdateInfo);
 router.post("/user/fetch", UserController.FetchUser);
 router.delete("/user/:id", UserController.deleteUserById);
 router.post("/recipe/add", authenticateToken, RecipeController.addRecipe);

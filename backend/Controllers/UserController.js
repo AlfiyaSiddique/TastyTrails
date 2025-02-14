@@ -224,6 +224,18 @@ const UpdateImage = async (req, res) => {
   }
 }
 
+const UpdateInfo = async (req, res) => {
+  try {
+    const { id, profile, username, firstName, lastName, email, bio} = req.body
+    const update = await User.updateOne({ _id: id }, { $set: {profile: profile, username:username, firstName:firstName, lastName:lastName, email:email, bio:bio} }, { new: true })
+    return res.status(200).json({ success: true, message: "Info Updated Successfully" })
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ success: false, message: "Internal server error" });
+  }
+}
+
+
 const forgotPassword = async function (req, res) {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -556,6 +568,7 @@ const UserController = {
   forgotPassword,
   resetPassword,
   UpdateImage,
+  UpdateInfo,
   FetchUser,
   submitFeedback,
   getAllFeedback,

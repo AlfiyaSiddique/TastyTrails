@@ -1,12 +1,38 @@
-import { useEffect, useState, useRef } from "react";
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import Cards from "../Components/Cards"; // Import Cards component
 import { Star } from "lucide-react";
 import { FaTrash  } from 'react-icons/fa';
+import Modal from "react-modal"
+
+const customStyles = {
+  overlay: {
+    position: 'fixed',
+    overflow: 'hidden',
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    WebkitOverflowScrolling: 'touch',
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch',
+  },
+};
+
+Modal.setAppElement('#root');
+
+
 const Dashboard = () => {
   // Routes hooks and passed data
   const navigator = useNavigate();
@@ -21,9 +47,9 @@ const Dashboard = () => {
   const [error, setError] = useState(null); // Track any errors
   const [feedbacks, setFeedbacks] = useState([]);
   const [likedRecipes, setLikedRecipes] = useState([]);
-  const [imagePreview, setImagePreview] = useState(
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-  ); // default image to preview
+  const [viewingLikedRecipes, setViewingLikedRecipes] = useState(false); // Track if we are viewing liked recipes
+  const [userInfo, setUserInfo] = useState({});
+
   const ViewState = {
     RECIPE: 'RECIPE',
     LIKED_RECIPE: 'LIKED_RECIPE',
@@ -56,8 +82,9 @@ const Dashboard = () => {
   // form to send image change request
   const [form, setForm] = useState({
     id: user._id,
-    profile: user.profile,
+    profile: userInfo.profile,
   });
+
   
   // Function to fetch all recipes for the user
   const fetchRecipes = () => {
@@ -101,11 +128,11 @@ const Dashboard = () => {
       });
   };
 
-  const fetchUserImage = () => {
+  const fetchUserInfo = () => {
     axios
       .post(`${backendURL}/api/user/fetch`, { id: user._id })
       .then((res) => {
-        setImagePreview(res.data.profile);
+        setUserInfo(res.data);
       })
       .catch((err) => {
         console.error("Error fetching user data", err);
@@ -169,8 +196,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (user._id) {
       fetchRecipes(); // Only fetch recipes if user ID is available
-      fetchUserImage(); // fetch user image if ID available
       fetchFeedbacks();
+      fetchUserInfo(); // fetch user info(with image) if ID available
     } else {
       console.error("User ID is missing!");
       setError("User data is not available.");
@@ -213,7 +240,7 @@ const Dashboard = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setUserInfo({ ...userInfo, profile: reader.result });
       };
       reader.readAsDataURL(file);
       reader.onload = () => {
@@ -223,8 +250,7 @@ const Dashboard = () => {
   };
 
   // this convert image into Base64 format and send backend request to update profile field
-  const changeImageBackend = (userImgBase64) => {
-    form.profile = userImgBase64; //update profile value in form variable above
+  const changeImageBackend = () => {
     axios
       .post(`${backendURL}/api/user/imageUpdate`, form)
       .then((res) => {
@@ -236,7 +262,6 @@ const Dashboard = () => {
       })
       .catch((err) => {
         toast.error("Some Error occured please try again later.");
-        // console.log(err);
       });
   };
 
@@ -271,7 +296,7 @@ const Dashboard = () => {
       <div className="grid md:grid-cols-[70%_30%] grid-cols-1 relative">
         <div className="p-16 h-[100vh] relative overflow-y-scroll max-w-[100%]">
           <h1 className="title-font sm:text-4xl text-2xl mb-4 font-medium text-gray-900 font-[Merriweather]">
-            {user.username}
+            {userInfo.username}
           </h1>
           <nav className="md:ml-auto md:mr-auto flex flex-wrap items-start text-base justify-star border-b border-gray-200">
             <span
@@ -375,13 +400,13 @@ const Dashboard = () => {
               <img
                 className="w-40 h-40 bg-gray-200 object-cover object-center rounded-[100%]"
                 alt="profile"
-                src={imagePreview}
+                src={userInfo.profile}
                 loading="lazy"
               />
               <FontAwesomeIcon
                 icon={faPen}
                 className="relative bottom-6 right-12 bg-neutral-300 rounded-full h-3.5 p-1.5 cursor-pointer hover:bg-neutral-400 hover:rotate-[-12deg]"
-                onClick={uploadImage} // this function will redirect click to input field below
+                onClick={() => uploadImage()} // this function will redirect click to input field below
               />
               <input
                 type="file"
@@ -392,7 +417,7 @@ const Dashboard = () => {
               ></input>
               <div className="text-center lg:w-2/3 w-full">
                 <h1>
-                  {user.firstName} {user.lastName}
+                  {userInfo.firstName} {userInfo.lastName}
                 </h1>
                 {userData && (
 
@@ -420,6 +445,7 @@ const Dashboard = () => {
                   </button>
                   
                 </div>
+                <EditProfilePopup userInfo={userInfo} setUserInfo={setUserInfo}/>
                 <button className="ml-4 inline-flex text-gray-700 bg-gray-100 py-2 px-3 focus:outline-none hover:bg-gray-200 rounded text-sm border border-red-600 m-2"
                 onClick={() => setModalOpen(true)}>
                     Delete Account
@@ -504,4 +530,154 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, username }) => {
 };
 
 
+// info won't be updated on frontend after clicking 'done' below func will
+function EditProfilePopup({userInfo, setUserInfo}) {
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  const inputFile = useRef(null); // for redirecting click to open input file
+  const [profile, setProfile] = useState(userInfo.profile);
+  const [uname, setUname] = useState(userInfo.username);
+  const [fname, setFname] = useState(userInfo.firstName);
+  const [lname, setLname] = useState(userInfo.lastName);
+  const [email, setEmail] = useState(userInfo.email);
+  const [bio, setBio] = useState(userInfo.bio);
+  const uploadImage = async () => {
+    inputFile.current.click();
+  };
+  useEffect(() => { 
+    setUname(userInfo.username)
+    setProfile(userInfo.profile)
+    setFname(userInfo.firstName)
+    setLname(userInfo.lastName)
+    setEmail(userInfo.email)
+    setBio(userInfo.bio)
+  }, [userInfo] )
+
+  const [form, setForm] = useState({
+    id: userInfo._id,
+    profile: profile,
+    username: uname,
+    firstName: fname,
+    lastName: lname,
+    email: email,
+    bio: bio
+  });
+
+  useEffect(() => {
+    setForm({
+      id: userInfo._id,
+      profile: profile,
+      username: uname,
+      firstName: fname,
+      lastName: lname,
+      email: email,
+      bio: bio
+    })
+  }, [profile, uname, fname, lname, email, bio])
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfile(reader.result);
+      };
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setForm({...form, profile: profile})
+      };
+    }
+  };
+
+  function changeInfoBackend() {
+    axios
+      .post(`${backendURL}/api/user/infoUpdate`, form)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success(res.data.message);
+          window.location.reload();
+        } else {
+          toast.error("Some Error occured please try again later.");
+        }
+      })
+      .catch((err) => {
+        toast.error("Some Error occured please try again later.");
+      });
+  }
+
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+  return(
+    <div className="flex justify-center">
+      <button
+        className="inline-flex text-white bg-red-700 border-0 py-2 px- focus:outline-none hover:bg-red-500 rounded text-md m-2"
+        onClick={openModal}
+      >
+        Edit Profile
+      </button>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="w-80 h-[70vh]">
+          <h1 className="font-bold text-xl ">Edit Profile</h1>
+          <FontAwesomeIcon icon={faTimes} onClick={closeModal} className="w-7 h-7 relative left-[97%] top-[-48px] text-gray-500 hover:cursor-pointer hover:text-black"/>
+          <img
+            className="w-28 h-28 relative bottom-6 bg-gray-200 object-cover object-center m-auto rounded-[100%]"
+            alt="profile"
+            src={profile}
+            loading="lazy"
+          />
+          <FontAwesomeIcon
+            icon={faPen}
+            className="relative bottom-10 left-28 bg-neutral-300 rounded-full h-3.5 p-1 cursor-pointer hover:bg-neutral-400 hover:rotate-[-12deg]"
+            onClick={uploadImage} // this function will redirect click to input field below
+          />
+          <input
+            type="file"
+            accept=".jpg, .png, image/jpeg, image/png"
+            ref={inputFile} // set the above inputFile variable's reference
+            className="hidden"
+            onChange={handleImageChange}
+          ></input>
+          <div className="flex flex-col w-[70%] h-[45%] mx-4 my-[-30px]">
+              {[
+                ['User Name', uname, setUname],
+                ['First Name', fname, setFname],
+                ['Last Name', lname, setLname],
+                ['Email', email, setEmail],
+                ['Bio', bio, setBio]
+              ].map(([title, value, setValue]) => (
+                <div className="grid grid-cols-2 my-2.5">
+                  <label className="my-auto text-lg">
+                    {title}:
+                  </label>
+                  <input 
+                    type="text"
+                    className="w-40 border-2 border-red-600 rounded-md px-2 py-[4px] focus:border-2 focus:border-green-400"
+                    defaultValue={value}
+                    onChange={(e) => {setValue(e.target.value)}}
+                  />
+                </div>
+              ))}
+            <button className="ml-4 w-fit inline-flex relative left-24 text-gray-700 bg-gray-100 py-2 px-3 focus:outline-none hover:bg-gray-200 rounded text-md border border-red-600 m-2"
+              onClick={changeInfoBackend}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </div>
+  )
+}
 export default Dashboard;
